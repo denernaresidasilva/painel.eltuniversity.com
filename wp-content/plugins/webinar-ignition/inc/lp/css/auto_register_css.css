@@ -1,0 +1,25 @@
+        body {
+            background-color: #f0f0f0;
+            font-family: "Arial";
+            color: #414141;
+        }
+
+        .loaderBox {
+            margin-right: auto;
+            margin-left: auto;
+            width: 250px;
+            background-color: #fff;
+            border-radius: 10px;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            border-bottom: 3px solid #DDD;
+        }
+
+        .informationBox {
+            width: 350px;
+            margin-right: auto;
+            margin-left: auto;
+            margin-top: 30px;
+            text-align: center;
+        }

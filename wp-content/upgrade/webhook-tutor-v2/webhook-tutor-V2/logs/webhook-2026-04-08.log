@@ -1,0 +1,33 @@
+[2026-04-08 01:43:24] Webhook ID: nova-era-dos-c-lios-eduzz
+{"id":"jitqujvttvk2ew3yvybfv6d76","event":"myeduzz.invoice_paid","data":{"id":"98650533","status":"paid","buyer":{"id":"23690371","name":"PATRICIA HELENA MELO DE CASTRO","document":"21935559826","email":"pathyhmc@gmail.com","phone":null,"phone2":null,"cellphone":"+5512982320092","address":{"street":null,"number":null,"neighborhood":null,"complement":null,"city":null,"state":null,"country":null,"zipCode":""}},"producer":{"id":"87174157","name":"ERIKA FABIANA SOARES DE MORAES SANTOS GUEDES 32293044890","email":"erikamoraesacademy@gmail.com"},"offer":{"name":null},"utm":null,"createdAt":"2026-04-07T22:42:27.000Z","dueDate":"2026-04-09T22:42:27.000Z","price":{"currency":"BRL","value":197,"paid":{"currency":"BRL","value":197}},"orderBump":{"has":false,"isMainSale":false,"mainSaleId":null},"installments":1,"items":[{"productId":"2669374","name":"MASTER LASH PRO","parentId":null,"refundPeriod":{"durationType":"days","value":7},"price":{"currency":"BRL","value":197,"coupon":null},"coupon":null,"partnerId":null,"billingType":"single","skuReference":null}],"totalItems":1,"billetUrl":"https://sun.eduzz.com/c_d1627a6cb5da4d67abbb8b0cfbcf89d3","checkoutUrl":"https://sun.eduzz.com/801E3AVRW7","bankslipUrl":null,"barcode":null,"paymentMethod":"pix","contract":null,"payment":{"method":"pix","details":"pix"},"paid":{"currency":"BRL","value":197},"affiliate":null,"paidAt":"2026-04-07T22:43:19.000Z","transaction":{"id":"148300848","key":"d1627a6cb5da4d67abbb8b0cfbcf89d3"},"student":{"id":"23088360","name":"PATRICIA HELENA MELO DE CASTRO","document":"21935559826","email":"pathyhmc@gmail.com","phone":null,"phone2":null,"cellphone":"+5512982320092"}},"sentDate":"2026-04-08T01:43:23.615Z"}
+[2026-04-08 01:43:24] MAPEAMENTO: Iniciando mapeamento automático para webhook nova-era-dos-c-lios-eduzz
+[2026-04-08 01:43:24] MAPEAMENTO: Plataforma detectada: generic
+[2026-04-08 01:43:24] MAPEAMENTO: Dados mapeados: Array
+(
+    [payer_email] => pathyhmc@gmail.com
+    [first_name] => PATRICIA
+    [last_name] => HELENA MELO DE CASTRO
+    [cpf] => 21935559826
+    [telefone] => 
+    [product_name] => PATRICIA HELENA MELO DE CASTRO
+    [product_id] => jitqujvttvk2ew3yvybfv6d76
+    [product_sku] => jitqujvttvk2ew3yvybfv6d76
+    [product_price] => 1
+    [product_quantity] => 1
+    [product_category] => digital
+    [payment_method] => unknown
+    [parcelas] => 1
+    [produtos_adicionais] => Array
+        (
+        )
+
+    [delivery_link] => 
+)
+
+[2026-04-08 01:43:24] VENDA PROCESSADA: ID 0 - Cliente: pathyhmc@gmail.com - Produto: PATRICIA HELENA MELO DE CASTRO
+[2026-04-08 01:43:24] DEBUG: Iniciando processamento de order bumps para usuário 87
+[2026-04-08 01:43:24] DEBUG: Dados de produtos adicionais: Array
+(
+)
+
+[2026-04-08 01:43:24] DEBUG: Nenhum produto adicional encontrado

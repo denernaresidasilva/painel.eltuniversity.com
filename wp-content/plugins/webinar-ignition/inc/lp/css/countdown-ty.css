@@ -1,0 +1,108 @@
+.countdownArea{
+	/*width: 320px;*/
+	margin-left: auto;
+	margin-right: auto;
+}
+/* jQuery Countdown styles 1.6.1. */
+
+.hasCountdown {
+	/*float: left;*/
+/*	border: 1px solid #ccc;
+	background-color: #eee;*/
+	/*width: 320px;*/
+	/*text-align: center;*/
+	/*padding-left: 160px;*/
+	/*margin-top: 6px;*/
+}
+.countdown_rtl {
+	direction: rtl;
+}
+.countdown_holding span {
+	color: #888;
+}
+.countdown_row {
+	/*clear: both;
+	width: 100%;
+	padding: 20px 20px;
+	text-align: center;*/
+}
+.countdown_show1 .countdown_section {
+	text-align: center;
+	width: 88%;
+}
+.countdown_show2 .countdown_section {
+	text-align: center;
+	width: 33%;
+}
+.countdown_show3 .countdown_section {
+	text-align: center;
+	width: 22%;
+}
+.countdown_show4 .countdown_section {
+	text-align: center;
+	width: 15%;
+}
+.countdown_show5 .countdown_section {
+	text-align: center;
+	width: 15%;
+}
+.countdown_show6 .countdown_section {
+	text-align: center;
+	width: 15%;
+}
+.countdown_show7 .countdown_section {
+	text-align: center;
+	width: 15%;
+}
+.countdown_section {
+	padding: 15px;
+	/*margin-right: 20px;*/
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	display: inline-block;
+	font-size: 14px;
+	text-align: center;
+	line-height: 24px;
+}
+.countdown_amount {
+	/*font-size: 24px;
+	line-height: 24px;
+	font-weight: bold;
+	padding: 15px;
+	text-align: center;*/
+}
+.countdown_descr {
+	display: block;
+	width: 100%;
+}
+
+.countdown_holding span {
+	color: #7b4e37;
+}
+
+.ticketCDArea{
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+.ticketCDAreaBTN{
+	width: 100%;
+}
+
+.countdown_section {
+	/*color: #7b4e37;*/
+	/*background-color: #feda71;
+	font-size: 11px;
+	font-weight: normal;
+	/*float: left;*/
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	border: 2px solid rgba(0,0,0,0.10);
+	text-shadow: 1px 1px 0px rgba(0,0,0,0.20);
+    filter: dropshadow(color=rgba(0,0,0,0.20), offx=1, offy=1);
+	/*margin-right: 15px;*/
+	/*color: #842826;*/
+	/*border: 2px solid rgba(0,0,0,0.1) !important;*/
+}

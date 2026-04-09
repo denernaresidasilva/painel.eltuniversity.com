@@ -1,0 +1,1240 @@
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.ctaArea{
+    /*
+    border: 2px solid rgba(0,0,0,0.13);
+    -webkit-box-shadow: 0 1px 11px 1px rgba(0,0,0,0.35);
+    -moz-box-shadow: 0 1px 11px 1px rgba(0,0,0,0.35);
+    box-shadow: 0 1px 11px 1px rgba(0,0,0,0.35);
+    margin-left: 0px;
+    */
+}
+
+.headlineArea {
+    padding: 20px 0 10px;
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/* ===================================
+    Buttons
+   =================================== */
+.wiButton {
+    display: inline-block;
+    margin-bottom: 0;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+.wiButton:focus,
+.wiButton:active:focus,
+.wiButton.active:focus,
+.wiButton.focus,
+.wiButton:active.focus,
+.wiButton.active.focus {
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+}
+.wiButton:hover,
+.wiButton:focus,
+.wiButton.focus {
+    color: #333333;
+    text-decoration: none;
+}
+.wiButton:active,
+.wiButton.active {
+    background-image: none;
+    outline: 0;
+    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+.wiButton.disabled,
+.wiButton[disabled],
+fieldset[disabled] .wiButton {
+    cursor: not-allowed;
+    filter: alpha(opacity=65);
+    opacity: 0.65;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+a.wiButton.disabled,
+fieldset[disabled] a.wiButton {
+    pointer-events: none;
+}
+
+
+.wiButton-primary {
+    color: #ffffff;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+}
+.wiButton-primary:focus,
+.wiButton-primary.focus {
+    color: #ffffff;
+    background-color: #286090;
+    border-color: #122b40;
+}
+.wiButton-primary:hover {
+    color: #ffffff;
+    background-color: #286090;
+    border-color: #204d74;
+}
+.wiButton-primary:active,
+.wiButton-primary.active,
+.open > .dropdown-toggle.wiButton-primary {
+    color: #ffffff;
+    background-color: #286090;
+    background-image: none;
+    border-color: #204d74;
+}
+.wiButton-primary:active:hover,
+.wiButton-primary.active:hover,
+.open > .dropdown-toggle.wiButton-primary:hover,
+.wiButton-primary:active:focus,
+.wiButton-primary.active:focus,
+.open > .dropdown-toggle.wiButton-primary:focus,
+.wiButton-primary:active.focus,
+.wiButton-primary.active.focus,
+.open > .dropdown-toggle.wiButton-primary.focus {
+    color: #ffffff;
+    background-color: #204d74;
+    border-color: #122b40;
+}
+.wiButton-primary.disabled:hover,
+.wiButton-primary[disabled]:hover,
+fieldset[disabled] .wiButton-primary:hover,
+.wiButton-primary.disabled:focus,
+.wiButton-primary[disabled]:focus,
+fieldset[disabled] .wiButton-primary:focus,
+.wiButton-primary.disabled.focus,
+.wiButton-primary[disabled].focus,
+fieldset[disabled] .wiButton-primary.focus {
+    background-color: #337ab7;
+    border-color: #2e6da4;
+}
+.wiButton-primary .badge {
+    color: #337ab7;
+    background-color: #ffffff;
+}
+.wiButton-success {
+    color: #ffffff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+}
+.wiButton-success:focus,
+.wiButton-success.focus {
+    color: #ffffff;
+    background-color: #449d44;
+    border-color: #255625;
+}
+.wiButton-success:hover {
+    color: #ffffff;
+    background-color: #449d44;
+    border-color: #398439;
+}
+.wiButton-success:active,
+.wiButton-success.active,
+.open > .dropdown-toggle.wiButton-success {
+    color: #ffffff;
+    background-color: #449d44;
+    background-image: none;
+    border-color: #398439;
+}
+.wiButton-success:active:hover,
+.wiButton-success.active:hover,
+.open > .dropdown-toggle.wiButton-success:hover,
+.wiButton-success:active:focus,
+.wiButton-success.active:focus,
+.open > .dropdown-toggle.wiButton-success:focus,
+.wiButton-success:active.focus,
+.wiButton-success.active.focus,
+.open > .dropdown-toggle.wiButton-success.focus {
+    color: #ffffff;
+    background-color: #398439;
+    border-color: #255625;
+}
+.wiButton-success.disabled:hover,
+.wiButton-success[disabled]:hover,
+fieldset[disabled] .wiButton-success:hover,
+.wiButton-success.disabled:focus,
+.wiButton-success[disabled]:focus,
+fieldset[disabled] .wiButton-success:focus,
+.wiButton-success.disabled.focus,
+.wiButton-success[disabled].focus,
+fieldset[disabled] .wiButton-success.focus {
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+}
+.wiButton-success .badge {
+    color: #5cb85c;
+    background-color: #ffffff;
+}
+.wiButton-info {
+    color: #ffffff;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+.wiButton-info:focus,
+.wiButton-info.focus {
+    color: #ffffff;
+    background-color: #31b0d5;
+    border-color: #1b6d85;
+}
+.wiButton-info:hover {
+    color: #ffffff;
+    background-color: #31b0d5;
+    border-color: #269abc;
+}
+.wiButton-info:active,
+.wiButton-info.active,
+.open > .dropdown-toggle.wiButton-info {
+    color: #ffffff;
+    background-color: #31b0d5;
+    background-image: none;
+    border-color: #269abc;
+}
+.wiButton-info:active:hover,
+.wiButton-info.active:hover,
+.open > .dropdown-toggle.wiButton-info:hover,
+.wiButton-info:active:focus,
+.wiButton-info.active:focus,
+.open > .dropdown-toggle.wiButton-info:focus,
+.wiButton-info:active.focus,
+.wiButton-info.active.focus,
+.open > .dropdown-toggle.wiButton-info.focus {
+    color: #ffffff;
+    background-color: #269abc;
+    border-color: #1b6d85;
+}
+.wiButton-info.disabled:hover,
+.wiButton-info[disabled]:hover,
+fieldset[disabled] .wiButton-info:hover,
+.wiButton-info.disabled:focus,
+.wiButton-info[disabled]:focus,
+fieldset[disabled] .wiButton-info:focus,
+.wiButton-info.disabled.focus,
+.wiButton-info[disabled].focus,
+fieldset[disabled] .wiButton-info.focus {
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+.wiButton-info .badge {
+    color: #5bc0de;
+    background-color: #ffffff;
+}
+.wiButton-lg {
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.3333333;
+    border-radius: 6px;
+}
+.wiButton-sm {
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+.wiButton-xs {
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+.wiButton-block {
+    -webkit-box-sizing: border-box!important;
+    -moz-box-sizing: border-box!important;
+    box-sizing: border-box!important;
+    display: block;
+    width: 100%;
+}
+.wiButton-block + .wiButton-block {
+    margin-top: 5px;
+}
+
+/*Remove margins when used in Gutenberg*/
+.wp-block-columns .optinFormArea {
+    margin:0 !important;
+    background: var(--wp--preset--color--base, #fff);
+}
+
+#optinBTN, #verifyEmailBTN, .wi_arrow_button {
+    width: 100%;
+    background-color: #74BB00 !important ;
+    border: 1px solid rgba(0, 0, 0, 0.20);
+    background-repeat: no-repeat;
+    background-position: center right;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.20);
+    white-space: normal;
+}
+
+#optinBTN:hover, #verifyEmailBTN:hover, .wi_arrow_button:hover {
+    color: #fff;
+}
+
+
+/* ===================================
+    Forms
+   =================================== */
+
+input[type="radio"][disabled],
+input[type="checkbox"][disabled],
+input[type="radio"].disabled,
+input[type="checkbox"].disabled,
+fieldset[disabled] input[type="radio"],
+fieldset[disabled] input[type="checkbox"] {
+    cursor: not-allowed;
+}
+
+input[type="file"] {
+    display: block;
+}
+
+input[type="range"] {
+    display: block;
+    width: 100%;
+}
+
+select[multiple],
+select[size] {
+    height: auto;
+}
+
+input[type="file"]:focus,
+input[type="radio"]:focus,
+input[type="checkbox"]:focus {
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+}
+
+input[type=email].wiFormControl,
+input[type=number].wiFormControl,
+input[type=password].wiFormControl,
+input[type=search].wiFormControl,
+input[type=tel].wiFormControl,
+input[type=text].wiFormControl,
+input[type=url].wiFormControl,
+textarea.wiFormControl,
+.wiFormControl {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555555;
+    background-color: #ffffff;
+    /*background-image: none;*/
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    -webkit-box-sizing: border-box!important;
+    -moz-box-sizing: border-box!important;
+    box-sizing: border-box!important;
+    font-family: inherit;
+}
+
+input[type=email].wiFormControl:focus,
+input[type=number].wiFormControl:focus,
+input[type=password].wiFormControl:focus,
+input[type=search].wiFormControl:focus,
+input[type=tel].wiFormControl:focus,
+input[type=text].wiFormControl:focus,
+input[type=url].wiFormControl:focus,
+textarea.wiFormControl:focus,
+.wiFormControl:focus {
+    border-color: #66afe9;
+    outline: 0;
+}
+
+.wiFormControl::-moz-placeholder {
+    color: #999999;
+    opacity: 1;
+}
+
+.wiFormControl:-ms-input-placeholder {
+    color: #999999;
+}
+
+.wiFormControl::-webkit-input-placeholder {
+    color: #999999;
+}
+
+.wiFormControl::-ms-expand {
+    background-color: transparent;
+    border: 0;
+}
+
+.wiFormControl[disabled],
+.wiFormControl[readonly],
+fieldset[disabled] .wiFormControl {
+    background-color: #eeeeee;
+    opacity: 1;
+}
+
+.wiFormControl[disabled],
+fieldset[disabled] .wiFormControl {
+    cursor: not-allowed;
+}
+
+textarea.wiFormControl {
+    height: auto;
+}
+
+.wiFormControl.errorField {
+    color: #972121 !important;
+    border: 1px solid #972121 !important;
+}
+
+input[type="checkbox"].required.errorField {
+    outline: 1px solid #972121 !important;
+    color: #972121 !important;
+}
+.wiFormControl.errorField::-moz-placeholder {
+    color: rgba(151,33,33,0.5) !important;
+}
+
+.wiFormControl.errorField:-ms-input-placeholder {
+    color: rgba(151,33,33,0.5) !important;
+}
+
+.wiFormControl.errorField::-webkit-input-placeholder {
+    color: rgba(151,33,33,0.5) !important;
+}
+
+.wiFormControl.successField {
+    color: #3f8707 !important;
+    border: 1px solid #3f8707 !important;
+}
+.wiFormControl.successField::-moz-placeholder {
+    color: rgba(63,135,7,0.5) !important;
+}
+
+.wiFormControl.successField:-ms-input-placeholder {
+    color: rgba(63,135,7,0.5) !important;
+}
+
+.wiFormControl.successField::-webkit-input-placeholder {
+    color: rgba(63,135,7,0.5) !important;
+}
+
+.wiSpamMessage {
+    font-size: 0.875rem;
+    color: var(--wp--preset--color--base, #5c5c5c);
+    text-align: center;
+    margin-top: 7px;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    input[type="date"].wiFormControl,
+    input[type="time"].wiFormControl,
+    input[type="datetime-local"].wiFormControl,
+    input[type="month"].wiFormControl {
+        line-height: 34px;
+    }
+
+    input[type="date"].input-sm,
+    input[type="time"].input-sm,
+    input[type="datetime-local"].input-sm,
+    input[type="month"].input-sm,
+    .input-group-sm input[type="date"],
+    .input-group-sm input[type="time"],
+    .input-group-sm input[type="datetime-local"],
+    .input-group-sm input[type="month"] {
+        line-height: 30px;
+    }
+
+    input[type="date"].input-lg,
+    input[type="time"].input-lg,
+    input[type="datetime-local"].input-lg,
+    input[type="month"].input-lg,
+    .input-group-lg input[type="date"],
+    .input-group-lg input[type="time"],
+    .input-group-lg input[type="datetime-local"],
+    .input-group-lg input[type="month"] {
+        line-height: 46px;
+    }
+}
+
+.wiFormGroup {
+    margin-bottom: 0px;
+}
+
+.wiFormGroup .intl-tel-input {
+    width: 100%;
+}
+
+.wiFormRadio,
+.wiFormCheckbox {
+    position: relative;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    line-height: 1.2;
+}
+
+.wiFormRadio.disabled label,
+.wiFormCheckbox.disabled label,
+fieldset[disabled] .wiFormRadio label,
+fieldset[disabled] .wiFormCheckbox label {
+    cursor: not-allowed;
+}
+
+.wiFormRadio label,
+.wiFormCheckbox label {
+    margin-bottom: 0;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.gdprHeading {
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--wp--preset--color--contrast, rgb(51, 65, 85));
+    font-family: inherit;
+}
+
+.wiFormRadio-sm label,
+.wiFormCheckbox-sm label {
+    font-size: 14px;
+}
+
+.wiFormRadio-md label,
+.wiFormCheckbox-md label {
+    font-size: 16px;
+}
+
+.wiFormRadio-lg label,
+.wiFormCheckbox-lg label {
+    font-size: 18px;
+}
+
+.wiFormRadio-xl label,
+.wiFormCheckbox-xl label {
+    font-size: 22px;
+}
+
+.wiFormRadio input[type="radio"],
+.wiFormRadio-inline input[type="radio"],
+.wiFormCheckbox input[type="checkbox"],
+.wiFormCheckbox-inline input[type="checkbox"] {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.wiFormRadio + .wiFormRadio,
+.wiFormCheckbox + .wiFormCheckbox {
+    margin-top: -5px;
+}
+
+.wiFormRadio-inline,
+.wiFormCheckbox-inline {
+    position: relative;
+    display: inline-block;
+    padding-left: 20px;
+    margin-bottom: 0;
+    font-weight: 400;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.wiFormRadio-inline.disabled,
+.wiFormCheckbox-inline.disabled,
+fieldset[disabled] .wiFormRadio-inline,
+fieldset[disabled] .wiFormCheckbox-inline {
+    cursor: not-allowed;
+}
+
+.wiFormRadio-inline + .wiFormRadio-inline,
+.wiFormCheckbox-inline + .wiFormCheckbox-inline {
+    margin-top: 0;
+    margin-left: 10px;
+}
+
+.wiFormControl-static {
+    min-height: 34px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    margin-bottom: 0;
+}
+
+.wiFormControl-static.input-lg,
+.wiFormControl-static.input-sm {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.input-sm {
+    height: 30px;
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+
+select.input-sm {
+    height: 30px;
+    line-height: 30px;
+}
+
+textarea.input-sm,
+select[multiple].input-sm {
+    height: auto;
+}
+
+.wiFormGroup-sm .wiFormControl {
+    height: 30px;
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+
+.wiFormGroup-sm select.wiFormControl {
+    height: 30px;
+    line-height: 30px;
+}
+
+.wiFormGroup-sm textarea.wiFormControl,
+.wiFormGroup-sm select[multiple].wiFormControl {
+    height: auto;
+}
+
+.wiFormGroup-sm .wiFormControl-static {
+    height: 30px;
+    min-height: 32px;
+    padding: 6px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.input-lg {
+    height: 46px;
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.3333333;
+    border-radius: 6px;
+}
+
+select.input-lg {
+    height: 46px;
+    line-height: 46px;
+}
+
+textarea.input-lg,
+select[multiple].input-lg {
+    height: auto;
+}
+
+.wiFormGroup-lg input[type=email].wiFormControl,
+.wiFormGroup-lg input[type=number].wiFormControl,
+.wiFormGroup-lg input[type=password].wiFormControl,
+.wiFormGroup-lg input[type=search].wiFormControl,
+.wiFormGroup-lg input[type=tel].wiFormControl,
+.wiFormGroup-lg input[type=text].wiFormControl,
+.wiFormGroup-lg input[type=url].wiFormControl,
+.wiFormGroup-lg textarea.wiFormControl,
+.wiFormGroup-lg .wiFormControl {
+    height: 46px;
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.3333333;
+    border-radius: 6px;
+}
+
+.wiFormGroup-lg select.wiFormControl {
+    height: 46px;
+}
+
+.wiFormGroup-lg textarea.wiFormControl,
+.wiFormGroup-lg select[multiple].wiFormControl {
+    height: auto;
+}
+
+.wiFormGroup-lg .wiFormControl-static {
+    height: 46px;
+    min-height: 38px;
+    padding: 11px 16px;
+    font-size: 18px;
+    line-height: 1.3333333;
+}
+
+@media (min-width: 768px) {
+}
+
+@media (min-width: 768px) {
+}
+
+@media (min-width: 768px) {
+}
+
+@media (min-width: 768px) {
+}
+
+.wiTicketSection {
+    margin-bottom: 25px;
+}
+
+.ctaArea.video img {
+    width: 100%;
+    height: auto;
+}
+
+
+/* ===================================
+    Registration page
+   =================================== */
+.wiOptinHeadline {
+    margin-bottom: 15px;
+}
+
+.wiOptinHeadline1 {
+    text-align: center;
+    display: block;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.wiOptinHeadline2 {
+    text-align: center;
+
+    font-size: 20px;
+}
+
+.wiSalesCopy {
+    padding: 10px;
+}
+.wiSalesCopy p{
+    color: var(--wp--preset--color--base, #000);
+    font-family: inherit;
+    font-size: 1.2rem;
+}
+
+.wiSalesCopy p:last-child {
+    margin-bottom: 0;
+}
+
+.addedArrow {
+    background-image: url(../images/arrows2.png);
+    background-repeat: no-repeat;
+    background-position: center right;
+}
+
+.innerHeadline {
+    text-align: center;
+    color: #FFF;
+    font-size: 24px;
+    font-weight: bold;
+    background-color: #0496AC;
+    padding: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
+    border-top: 4px solid rgba(0, 0, 0, 0.20);
+    border-bottom: 4px solid rgba(0, 0, 0, 0.06);
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.20);
+    filter: dropshadow(color=rgba(0, 0, 0, 0.20), offx=2, offy=2);
+}
+
+.autoTitle,
+.autoSubTitle {
+    font-weight: normal;
+    text-align: left;
+}
+
+.autoTitle {
+    font-size: 22px;
+    margin-bottom: 5px;
+    margin-top: 0;
+}
+
+.autoSubTitle {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    margin-top: 0;
+}
+
+
+
+.hostInfoBlock {
+    background-color: #F1F1F1;
+    padding: 10px;
+}
+
+.hostInfoPhoto {
+    overflow: hidden;
+    text-align: center;
+}
+
+.hostInfoPhoto img {
+    height: 100%;
+    max-height: 350px;
+    width: auto;
+    max-width: none;
+    display: inline-block;
+}
+
+.hostInfoCopy {
+    font-size: 14px;
+}
+
+@media only screen and (min-width: 576px) {
+    .hostInfoBlock {
+        position: relative;
+        padding-left: 130px;
+        min-height: 120px;
+    }
+
+    .hostInfoPhoto {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        width: 100px;
+        height: 100px;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .autoTitle {
+        font-size: 20px;
+        margin-bottom: 15px;
+        font-family: Arial;
+
+    }
+
+    .autoSubTitle {
+        font-size: 22px;
+        margin-bottom: 15px;
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+
+}
+
+@media only screen and (min-width: 1200px) {
+
+}
+
+@media only screen and (min-width: 1400px) {
+
+}
+
+/* ===================================
+    Thankyou page
+   =================================== */
+.tyHeadlineContainer {
+    padding: 15px;
+}
+
+.tyTicketInfoContainer {
+    position: relative;
+    height: auto;
+    padding: 5px;
+    padding-left: 75px;
+    min-height: 55px;
+}
+
+.tyTicketInfoContainer::before {
+    display: inline-block;
+    position: absolute;
+    width: 55px;
+    text-align: center;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'FontAwesome';
+    font-size: 45px;
+    color: #878787;
+}
+
+.tyTicketInfoContainer.tyTicketInfoContainerWebinar::before {
+    content: "\f108";
+}
+
+.tyTicketInfoContainer.tyTicketInfoContainerHost::before {
+    content: "\f130";
+}
+
+.tyTicketInfoNewHeadline {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.webinarURLArea{
+    background-color: #e6e6e6;
+    padding: 15px;
+}
+
+.webinarURLHeadline {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.webinarURLHeadline2 {
+    font-size: 12px;
+}
+
+@media only screen and (min-width: 576px) {
+
+}
+
+@media only screen and (min-width: 768px) {
+
+}
+
+@media only screen and (min-width: 992px) {
+    .tyHeadlineContainer {
+        position: relative;
+        height: auto;
+    }
+
+    .tyHeadlineContainer::before {
+        display: inline-block;
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-family: 'FontAwesome';
+        content: "\f14a";
+        font-size: 65px;
+        color: #6a9f37;
+    }
+
+    .tyHeadlineCopy {
+
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+
+}
+
+@media only screen and (min-width: 1400px) {
+
+}
+
+/* ===================================
+    Webinar page
+   =================================== */
+.webinarVideo, .webinarVideoCTA{
+    /*padding: 15px;*/
+    /*background-color: #212121;*/
+}
+.webinarVideoCTA{
+    padding: 0;
+}
+
+@media only screen and (max-width : 991px) {
+    .timedUnderArea.cta_border_hide_mobile {
+        border:none;
+    }
+}
+@media only screen and (min-width : 992px) {
+    .timedUnderArea.cta_border_hide_desktop {
+        border:none;
+    }
+}
+
+
+
+.webinarVideoCTA.webinarVideoCTAActive{
+    display: block;
+}
+
+.webinarVideo .ctaArea{
+    /*border: 2px solid rgba(0,0,0,0.13);*/
+    /*-webkit-box-shadow: 0 1px 11px 1px rgba(0,0,0,0.35);*/
+    /*-moz-box-shadow: 0 1px 11px 1px rgba(0,0,0,0.35);*/
+    /*box-shadow: 0 1px 11px 1px rgba(0,0,0,0.35);*/
+    /*margin-left: 0px;*/
+}
+.webinarTopBar{
+    padding: 10px 12px;
+    background-color: #242424;
+    color: #FFF;
+    font-weight: bold;
+    -webkit-border-top-left-radius: 6px;
+    -webkit-border-top-right-radius: 6px;
+    -moz-border-radius-topleft: 6px;
+    -moz-border-radius-topright: 6px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.timedUnderArea {
+    background-color: #FFF;
+    padding: 15px;
+    /* text-align: center; */
+    border-radius: 6px;
+}
+
+.webinarInner{
+    padding: 10px;
+    padding-bottom: 0px;
+    border-top: 3px solid rgba(0,0,0,0.06);
+}
+
+.webinarTitleBar{
+    font-weight: bold;
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    background-color: rgba(0,0,0,0.02);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    /*border-top: 1px solid rgba(0,0,0,0.10);*/
+    padding: 10px;
+}
+
+.webinarTitleBarAdded{
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.webinarTitleBar i{
+    margin-right: 10px;
+}
+
+.webinarInfoCopy{
+    font-size: 12px;
+    line-height: 21px;
+    color: #4a4a4a;
+    margin-bottom: 15px;
+}
+
+.eventDate {
+    border-top: 1px solid var(--wp--preset--color--contrast, #ebebeb);
+    border-bottom: 1px solid var(--wp--preset--color--contrast, #ebebeb);
+    margin-top: 15px;
+    margin-bottom: 15px;
+    /*padding: 10px;*/
+    padding-top: 15px;
+    padding-bottom: 15px;
+    display: flex;
+    align-items: center;
+    color: var(--wp--preset--color--contrast, #000);
+    font-family: inherit;
+    font-size: 1.2rem;
+    background: var(--wp--preset--color--base, #fff);
+}
+.eventTime{
+       color: var(--wp--preset--color--base, #000); 
+}
+.wi-time-inline{
+    color: var(--wp--preset--color--base, #000);
+    font-family: inherit;
+    font-size: 1.2rem;
+}
+.wi-timezone-inline{
+    color: var(--wp--preset--color--base, #000); 
+    font-family: inherit;
+    font-size: 1.2rem;
+}
+
+.wi-date-inline{
+    color: var(--wp--preset--color--base, #000); 
+    font-family: inherit;
+    font-size: 1.2rem;
+}
+
+.evergreen-Registration{
+    flex-direction: column;
+    align-items: flex-start;
+}
+.evergreen-Registration .wiFormGroup{
+    width: 100%;
+}
+.evergreen-Registration #webinarTime{
+    width: 100%;
+}
+.eventDate.fixed-type * {
+    vertical-align: middle;
+}
+
+.eventDate.fixed-type span {
+    margin-right: 10px;
+    font-weight: 700;
+}
+
+.dateIcon {
+    float: left;
+    width: 50px !important;
+    height: 50px !important;
+    background-image: url(../images/datebgnew.png);
+    background-repeat: no-repeat;
+}
+
+.dateMonth {
+    padding-top: 9px;
+    text-transform: uppercase;
+    text-align: center;
+    color: #FFF;
+    font-weight: bold;
+    font-size: 12px;
+    width: 81px;
+    line-height: 12px;
+    text-shadow: -1px -1px 0px rgba(0, 0, 0, 0.25);
+    filter: dropshadow(color=rgba(0, 0, 0, 0.25), offx=-1, offy=-1);
+}
+
+.dateDay {
+    padding-top: 14px;
+    text-transform: uppercase;
+    text-align: center;
+    color: #2a2a2a;
+    font-weight: bold;
+    font-size: 28px;
+    line-height: 28px;
+    width: 81px;
+}
+
+.dateDayWeek {
+    text-align: center;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 12px;
+    width: 81px;
+}
+
+.dateInfo {
+    float: left;
+    padding-left: 15px;
+}
+
+.dateHeadline {
+    font-size: 18px;
+    /* padding-top: 20px; */
+    font-weight: bold;
+    color: var(--wp--preset--color--contrast, #000);
+}
+
+.dateSubHeadline {
+    font-size: 1rem;
+    padding-top: 5px;
+    color: var(--wp--preset--color--contrast, #000);
+}
+
+.webinarVideoCtaCombined {
+    position: relative;
+}
+
+.webinarVideoCtaCombined .webinarVideoCTA {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+}
+
+#no-autoplay-block {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+}
+
+#mobile-play-button {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 100;
+    cursor: pointer;
+}
+
+#mobile-overlay {
+	background: rgba(0, 0, 0, 1);
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	z-index: 90;        
+}
+
+
+#mobile-play-button-text {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 200px;
+    margin: auto;
+    z-index: 200;
+    color: white;
+    width: 20%;
+    height: 30px;
+    text-align: center;
+    font-size: 1.3em;
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px) {
+    #mobile-play-button-text {
+        display:none;
+    }
+}
+
+#video-loading-content-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 150px;
+    z-index: 110;
+    border-radius: 10px;
+}
+
+#video-loading-overlay {
+    background: white;
+}
+
+#video-loading-overlay, #muted-overlay, #mobile-overlay {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 90;
+}
+
+.powered_by_text_wrap{
+    text-align: center;
+    margin-top: 5px;
+    color: var(--wp--preset--color--contrast, #000);
+    font-size: 1rem;
+    font-family: inherit;
+}
+.powered_by_text_wrap a{
+    text-decoration: none;
+}
+.wi-ignore-fsc .powered_by_text_wrap{
+    color: var(--wi-brand-contrast-color);
+}

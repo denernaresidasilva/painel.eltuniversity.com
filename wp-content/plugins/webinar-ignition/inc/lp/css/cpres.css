@@ -1,0 +1,164 @@
+@media screen and (max-width: 480px) {
+
+	.salesWrapper{
+		width: 320px;
+	}
+	.headlineArea{
+		width: 300px;
+		/*padding-left: 20px;*/
+		text-align: center;
+	}
+	.ctaRight{
+		display: none !important;	
+	}
+
+	.bannerTop{
+		width: 320px;
+	}
+
+	.bannerTop img{
+		width: 320px;
+	}
+
+	.ctaRightMobile{
+		display: block !important;
+		margin-top: 15px;
+	}
+
+	#optName{
+		background-position: 244px;
+	}
+
+	#optEmail{
+		background-position: 244px;
+	}
+
+	#optinBTN{
+		width: 278px;
+		text-align: center;
+		background-image: none;
+	}
+
+	.cpWrapper{
+		width: 320px;
+	}
+
+	.cpDateUnder{
+		width: 300px;
+		padding-left: 20px;
+	}
+
+	.cpLeftSide{
+		width: 278px;
+	}
+
+	.hostInfoCopy{
+		width: 100%;
+		float: none;
+		/*padding-left: 15px;*/
+	}
+	.hostInfoPhoto{
+		margin-right: 20px;
+	}
+
+	.cpHostBlock{
+		width: 100%;
+		float: none;
+		margin-bottom: 20px;
+		padding-bottom: 20px;
+		border-bottom: 1px solid #DDD;
+	}
+
+	.cpCopyArea{
+		float: none;
+		width: 100%;
+	}
+
+	.cpRightSide{
+		/*float: none;*/
+		margin-top: 20px;
+		width: 278px;
+	}
+
+	.ctaArea{
+		width: 278px;
+		margin-left: 0px;
+	}
+
+	.optinHeadline{
+		text-align: center;
+	}
+
+}
+
+@media (min-width: 490px) and (max-width: 820px) {
+
+	.salesWrapper{
+		width: 768px;
+	}
+	.headlineArea{
+		width: 748px;
+		padding-left: 20px;
+	}
+	.ctaRight{
+		display: none !important;	
+	}
+
+	.bannerTop{
+		width: 768px;
+	}
+
+	.bannerTop img{
+		width: 768px;
+	}
+
+	.ctaRightMobile{
+		display: block !important;
+		margin-top: 15px;
+	}
+
+	#optName{
+		background-position: 254px;
+	}
+
+	#optEmail{
+		background-position: 254px;
+	}
+
+	#optinBTN{
+		width: 290px;
+		text-align: center;
+		background-image: none;
+	}
+
+	.cpWrapper{
+		width: 768px;
+	}
+
+	.cpDateUnder{
+		width: 748px;
+		padding-left: 20px;
+	}
+
+	.cpLeftSide{
+		width: 290px;
+	}
+
+	.hostInfoCopy{
+		width: 620px;
+	}
+
+	.cpHostBlock{
+		width: 100%;
+		float: none;
+		margin-bottom: 20px;
+		padding-bottom: 20px;
+		border-bottom: 1px solid #DDD;
+	}
+
+	.cpCopyArea{
+		float: none;
+		width: 100%;
+	}
+
+}

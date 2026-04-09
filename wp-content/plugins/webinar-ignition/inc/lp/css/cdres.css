@@ -1,0 +1,72 @@
+@media screen and (max-width: 480px) {
+
+	.salesWrapper, .headlineArea, .bannerTop, .bannerTop img{
+		width: 100%;
+		max-width: 310px;
+	}
+
+	.countdownArea{
+		width: 100%;
+		max-width: 320px !important;
+		border-top: 1px dashed #DDD;
+		border-bottom: 1px dashed #DDD;
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+
+	.hasCountdown{
+		width: 100%;
+		max-width: 320px !important;
+	}
+
+	.cd_auto_date{
+		width: 100%;
+		max-width: 320px !important;
+	}
+
+	.mainWrapper{
+		padding-top: 20px;
+	}
+
+	.countdown_amount{
+		font-size: 32px !important;
+		line-height: 32px !important;
+		background-color: none !important;
+		background-image: none !important;
+		border: none !important;
+		box-shadow: none !important;
+	}
+
+	.countdown_section{
+		background-color: #F1F1F1 !important;
+		background-image: none !important;
+		border: none !important;
+		box-shadow: none !important;
+		text-shadow: none !important;
+		color: #222222 !important;
+		margin-right: 20px !important;
+	}
+
+
+
+}
+
+@media (min-width: 483px) and (max-width: 820px) {
+
+	.salesWrapper, .headlineArea, .bannerTop, .bannerTop img{
+		width: 100%;
+		max-width: 768px;
+	}
+
+	.countdownArea{
+		width: 100% !important;
+		max-width: 768px !important;
+	}
+
+	.hasCountdown{
+		width: 100% !important;
+		max-width: 768px !important;
+	}
+
+
+}

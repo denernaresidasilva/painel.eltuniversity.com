@@ -1,0 +1,100 @@
+[2025-09-01 03:08:12] Dados do webhook salvos para ID: pro-checkout-supermembros-lite
+[2025-09-01 03:08:12] Webhook ID: pro-checkout-supermembros-lite
+{"event":"venda_aprovada","payment_method":"credit_card","data":{"first_name":"Jo\u00e3o","last_name":"Silva","cpf":"123.456.789-00","telefone":"(11) 99999-9999","payer_email":"teste@example.com","product_name":"Produto de Teste","product_price":97,"product_sku":"TESTE123","product_quantity":1,"product_category":"educacao","delivery_link":"https:\/\/seusite.com\/entregavel\/123","produtos_adicionais":[{"id":1,"nome":"Order Bump Teste","preco":47,"quantidade":1}],"metodo_pagamento":"Cart\u00e3o de cr\u00e9dito","parcelas":1,"product_id":9452175}}
+[2025-09-01 03:08:12] MAPEAMENTO: Iniciando mapeamento automático para webhook pro-checkout-supermembros-lite
+[2025-09-01 03:08:12] MAPEAMENTO: Plataforma detectada: generic
+[2025-09-01 03:08:12] MAPEAMENTO: Dados mapeados: Array
+(
+    [first_name] => João
+    [last_name] => Silva
+    [cpf] => 123.456.789-00
+    [telefone] => (11) 99999-9999
+    [payer_email] => teste@example.com
+    [product_name] => Produto de Teste
+    [product_price] => 97
+    [product_sku] => TESTE123
+    [product_quantity] => 1
+    [product_category] => educacao
+    [delivery_link] => https://seusite.com/entregavel/123
+    [produtos_adicionais] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 1
+                    [nome] => Order Bump Teste
+                    [preco] => 47
+                    [quantidade] => 1
+                )
+
+        )
+
+    [metodo_pagamento] => Cartão de crédito
+    [parcelas] => 1
+    [product_id] => 9452175
+)
+
+[2025-09-01 03:08:12] VENDA PROCESSADA: ID 0 - Cliente: teste@example.com - Produto: Produto de Teste
+[2025-09-01 03:08:12] DEBUG: Iniciando processamento de order bumps para usuário 27
+[2025-09-01 03:08:12] DEBUG: Dados de produtos adicionais: Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [nome] => Order Bump Teste
+            [preco] => 47
+            [quantidade] => 1
+        )
+
+)
+
+[2025-09-01 03:08:12] DEBUG: Nenhuma configuração de order bump encontrada para webhook: pro-checkout-supermembros-lite
+[2025-09-01 03:09:34] Dados do webhook salvos para ID: pro-checkout-supermembros-pro
+[2025-09-01 03:09:34] Webhook ID: pro-checkout-supermembros-pro
+{"event":"venda_aprovada","payment_method":"credit_card","data":{"first_name":"Jo\u00e3o","last_name":"Silva","cpf":"123.456.789-00","telefone":"(11) 99999-9999","payer_email":"teste@example.com","product_name":"Produto de Teste","product_price":97,"product_sku":"TESTE123","product_quantity":1,"product_category":"educacao","delivery_link":"https:\/\/seusite.com\/entregavel\/123","produtos_adicionais":[{"id":1,"nome":"Order Bump Teste","preco":47,"quantidade":1}],"metodo_pagamento":"Cart\u00e3o de cr\u00e9dito","parcelas":1,"product_id":9452177}}
+[2025-09-01 03:09:34] MAPEAMENTO: Iniciando mapeamento automático para webhook pro-checkout-supermembros-pro
+[2025-09-01 03:09:34] MAPEAMENTO: Plataforma detectada: generic
+[2025-09-01 03:09:34] MAPEAMENTO: Dados mapeados: Array
+(
+    [first_name] => João
+    [last_name] => Silva
+    [cpf] => 123.456.789-00
+    [telefone] => (11) 99999-9999
+    [payer_email] => teste@example.com
+    [product_name] => Produto de Teste
+    [product_price] => 97
+    [product_sku] => TESTE123
+    [product_quantity] => 1
+    [product_category] => educacao
+    [delivery_link] => https://seusite.com/entregavel/123
+    [produtos_adicionais] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 1
+                    [nome] => Order Bump Teste
+                    [preco] => 47
+                    [quantidade] => 1
+                )
+
+        )
+
+    [metodo_pagamento] => Cartão de crédito
+    [parcelas] => 1
+    [product_id] => 9452177
+)
+
+[2025-09-01 03:09:34] VENDA PROCESSADA: ID 0 - Cliente: teste@example.com - Produto: Produto de Teste
+[2025-09-01 03:09:34] DEBUG: Iniciando processamento de order bumps para usuário 28
+[2025-09-01 03:09:34] DEBUG: Dados de produtos adicionais: Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [nome] => Order Bump Teste
+            [preco] => 47
+            [quantidade] => 1
+        )
+
+)
+
+[2025-09-01 03:09:34] DEBUG: Nenhuma configuração de order bump encontrada para webhook: pro-checkout-supermembros-pro

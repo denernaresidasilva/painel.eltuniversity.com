@@ -1,0 +1,4032 @@
+= 4.05.13 – 2025-10-07 =
+
+**MILESTONE: Gutenberg Templates (preparations) & Registration UX Redesign**
+
+* Registration fields now screen reader compatible, redesigned, and fully translated
+* Forms may appear longer due to new accessibility labels (column layout support coming soon)
+* Updated field settings appear when you delete/re-add fields or create a new webinar
+* New "Participant Reason" registration field added with 1-click setup, import/export, and editor dropdown
+* Added support for 1-click URLs with "Lastname", "Participant Reason", and "Title" fields
+* On-Air section: added reload icon for CTAs, enabling real-time updates (benefits: polls show live results)
+* Added notices for optimization plugin compatibility (Jetpack auto-excluded for WordPress.com hosting)
+* Added dropdown with all registration fields in emails and CTAs for easy auto-fill
+
+**Improvements**
+
+* Auto-fill data in WooCommerce checkout forms
+* Major registration form improvements: inherits color palettes from Gutenberg/FSE themes, integrates smoothly with other WordPress themes
+* Improved "Create Webinar" button usability
+* Improved reliability of 1-click links and `login=false` setups on some sites
+* Expanded and refined translation strings across all supported languages
+
+= 4.04.8 – 2025-08-25 =
+
+**Bug Fixes & Core Improvements**
+
+* Changelog inside plugin working again with videos
+* 1-Click registration working again after timezone added
+* Live with `login=false` to auto-fill data; `login=true` to auto-fill, register, and redirect to thank you/webinar page
+
+= 4.04.0 – 2025-08-20 =
+
+**MILESTONE: Built-In 100ms Video Meetings Integration**
+
+* Ultra-fast video streaming (100ms latency)
+* 1–10,000 participants with fluent pricing per minute/participant
+* 10,000 free minutes each month (no app needed, browser-based)
+* Easy role definition: host, guest, viewer on stage, viewer—switch roles instantly during webinar
+* Built-in quiz, poll with live-updated results
+* Chat with pause/delete messages and private messaging
+
+**Additional Features**
+
+* Notification emails: replaced `{FIRSTNAME}` with `{FULLNAME}` for formal salutations
+* Import/export: all registration page lead data can be used; added example lead download button
+* Show full day name on live webinar creation, registration page, and emails
+* Code added for disabling auto-update (allows testing before applying updates)
+* Duration now shows nicely on all pages and translations (e.g., "9:15 p.m. | Duration: 60 minutes")
+* Participant timezone shown on registration page, emails, and thank you page
+
+= 4.03.0 – 2025-06-04 =
+
+**MILESTONE: Unlimited Live CTAs**
+
+* Each CTA loads individually
+* Prepare all CTAs and publish with 2 clicks
+* Added CTA parameter `{EMAIL}` `{FIRSTNAME}` to auto-fill name and email via URL inside iframes of external calendar, checkout pages
+* Added CTA examples inside "On Air" tab in live console: tidycal, WooCommerce, Mentimeter, Digistore24, Freemius, booking/appointment calendar, democracy polls, group chat
+
+**Additional Features**
+
+* Live duration on pages, emails, calendars
+* New webinar grid design following FSE (Gutenberg) colors
+* New live calendar icons and date/time on the side
+* Added honeypot on live registration to filter bots (no settings needed, especially useful on 1-click registration)
+* Meeting audio improvement (more to come via premium beta release inside account)
+* Meeting admin improvement: unlimited admins can preview the webinar room before the webinar starts without setting status to live
+
+= 4.02.0 – 2025-04-13 =
+
+**MILESTONE: Calendar Integration & CTA Overhaul**
+
+* Functionality for sending ICS file, Google calendar link with registration confirmation, 1 hour and 1 day emails (so calendar reminders also notify attendees)
+* Live Console: new logo, responsive design, and overhauled CTA content tab
+* Registration page video now continues when the page reloads (important for social registration)
+* Send site logo by default in email header (if you have a site logo, it will be used instead of placeholder for better brand recognition)
+* Added to one-click registration: `login=false` option (auto-fill but not register user; manual registration by clicking button avoids mail server bots auto-registering)
+
+**Bug Fixes**
+
+* Live Only: CTA not showing due to nonce issue (page now reloads automatically if nonce issue occurs)
+* VDOCipher integration working again
+* Video elements (play, pause, jump) working when enabled in settings
+* Exporting status and order of participants fixed
+* Code improvements (seen in debug.log and PCP plugin)
+* Import file now sends registration email and adds to participants list
+* Text area leads now import correctly
+* 1 hour before reminder triggers at correct time
+* Future message showing on translated webinar
+* Live webinar now auto-closes correctly
+* Live CTA 60% width issue fixed (CTA/webinar settings save width correctly)
+* Leads no longer rearrange on console (top lead is last registered)
+* Import and clone webinars working again
+* Secret code now works with thank you URL
+* Live attendee count and "already attended" status fixed on live console
+* Preview working in incognito; URL manipulation no longer possible (redirects to registration page if URL is wrong)
+* LIVE only: When switch to closed status, users are redirected to the closed webinar page
+
+= 4.04.6 - 4.04.8 2025.08.25 =
+
+* Changelog inside plugin working again with videos...
+* 1-Click registration working again after time zone added.
+Live with login=false to just auto fill data
+Live with login=true to auto fill data and register user and redirect to thank you page or webinar page
+Hint: 1-Click not yet make sense on paid webinars because the form shown after payment done. If you need it we implement it.
+
+We since a while working on make the import leads data as nice as the registration data.
+So later can be easy transfered via webhooks anywhere and via WP2LEADS to KlickTipp.
+
+Lead data long term goal get the enriched lead data from WP2LEADS and add to WI.
+Data like time spent in webinar, CTA1 seen, time left, ...
+
+From the 1.09. we are happy to have M-Ali full-time and implement the 90% ready 3 Gutenberg templates.
+Which is even working on non Gutenberg pages. Benefits: direct editing and 80% drop of design settings.
+3 very nice templates are build in.
+
+Improve the webinar room and make it gutenberg fast and editable.
+
+= 4.04.0 - 4.04.5 2025.08.20 =
+
+= Milestones =
+
+= NEW built-in / Integrated video meeting and live streaming solution =
+
+Benefits:
+
+* Ultra fast video stream, i guess the name 100ms comes from this
+* You can customize room on 100ms.live
+* 1-10000 participants fluent pricing per minute/participant (ZOOM 100, 300, 500 user monthly paid levels)
+* 10.000 free minutes each month
+* No APP needed. Nice integrated in WebinarIgnition and browser
+That is the reason we not integrated ZOOM video SDK. They focus on APP mainly and charge $100/mo for recording.
+* Easy define roles host, guest (video conference), viewer on stage, viewer
+You can switch roles instantly during the webinar. For example: sent request to viewer to be added on stage.
+* Built-in quiz, poll with live updated results
+* Chat you can pause and delete messages. Private messages.
+
+https://www.youtube.com/watch?v=vGu8yh4uBSE
+
+[experience live:](https://webinarignition.com/#signup)
+[KB article]( https://webinarignition.tawk.help/article/integrated-meeting-and-streaming-solution)
+
+Why new? The other solution was not documented well and we got audio issues not solved.
+The service we use now is total mature and client proofed. A no brainer to use.
+
+=  What else? =
+
+* In notification mails, on new webinars only replaced {FIRSTNAME} with {FULLNAME}.
+Looks nice in mail. "Hello Mr. Tobias Conrad,".
+Sure when no salutation or last name given only the first name is shown.
+You can add extra field on registration page to use this feature.
+
+* import, export
+All registration page lead data can be used in import, export
+Added example lead download button, to get an empty label columns header file to fill #3144
+I personally register once, then export to see CSV file filled with live data. Then add the new data.
+My favorite, unchanged leads in CSV file will be skipped. If name changed it will be updated. Smart yeah.
+In development: Make lead info imported transfer via WP2LEADS to KlickTipp (German E-Mail Marketing)
+At the moment data is different than on normal registration. Normal registration transfer is working well.
+
+* Show full day name on live on create webinar, on registration page and mails.
+Before on live, day name was in icon and that icon replaced and not show data. now added after webinar time
+So after the update your date and time info will be:
+Thursday, August 7, 2025
+9:15 p.m. | Duration: 60 minutes
+
+* Added code for disable auto update the plugin
+So you see an update, its changes and if you need to react after update.
+So your webinar when tested working stays working.
+We allow minor autoupdates  4.04.x to be automatic to serve you quickly with a fix in function or security.
+
+* Language that comes with the plugin, or your overwrites will be only used
+So you get the latest language updates directly from us.
+We not use outdated language files auto loaded from wp.org and are in the system folder.
+When you overwrites are in the loco folder then they will be used too before our files.
+Be aware: When we update the language and you have an custom language file your language files not get update.
+You miss translated strings. May from time to time you delete yours and re-add changes.
+Or with loco translate you sync your file with the latest pot file, code strings and translate missing strings.
+Background become a wp.org translator for each language is a lenghty process.
+
+* Duration now shows nicely on all pages and translations
+like 9:15 p.m. | Duration: 60 minutes
+
+* Lot of fixes during testing the participants journeys
+* Especially show the participant timezone on registration page, mails, thank you page
+
+= Upcoming Milestones =
+
+* New Gutenberg default pages on create new webinars
+That let us reduce 80% of the design settings and let you edit all directly.
+Comes with Improved shortcodes registration fields layout, usability and design
+[Preview Gutenberg designs:](https://wordpress-1301098-5451085.cloudwaysapps.com/)
+Sure anytime you can get them via the support.
+
+* Update readability in registration fields by Faheem
+
+* In development: Make lead info imported transfer via WP2LEADS to KlickTipp (German E-Mail Marketing)
+At the moment data is different than on normal registration. Normal registration transfer is working well.
+
+* Your ideas
+
+= 4.03.34 - 4.03.38 2025.07.23 =
+
+* bugfixes
+
+= 4.03.32 + 4.03.33 2025.07.23 =
+
+* Security fix. All update please! 
+Thanks Wordfence for finding, Thx WP.org to get all details and thanks Talha for fixing.
+
+= 4.03.31 2025.07.16 =
+
+= Unlimited Live CTAs triggered with 1 click inside the webinar = 
+
+* Screencast with details soon
+* Added shortcode dropdown in the Maill Editor
+So you can easy fill parameters in CTA URLs
+So forms get prefilled when show inside Webinar CTAs
+
+= import/export =
+
+* Added fields full name, salutation, last name, phone, time zone
+* auto mapping per language
+You export and import with the same column headers/labels
+* with fields mapping beta 
+You import a CSV and can map not matching headers/labels
+On 4.04.0 out of beta
+
+improved:
+
+* Webhooks 
+custom user links fixed
+added salutation and last name
+* Language translations
+fixed a lot of mistranslation
+* Grid view
+matching FSE colors
+or own colors in global settings
+
+= 4.03.0 2025.06.04 =
+
+= Unlimited Live CTAs = 
+
+* Each loading individual
+* Prepare all CTAs and then by 2 clicks publish them
+* Added CTA parameter {EMAIL} {FIRSTNAME}
+To autofill name and email via URL inside iframes of external calendar, checkout, ... pages
+* Added CTA examples inside the "On Air" tab in the live console: 
+tidycal, WooCommerce, Mentimeter, Digistore24, Freemius, Booking/Appointment calendar, democracy polls, group chat wise chat
+
+* Webinar switch function without saving
+To avoid saving wrong status, when save settings and throw participants out.
+* Added Live duration on pages, mails, calendards
+* New webinar grid design
+Following the FSE (Gutenberg) colors
+Other set brand colors in global settings please
+Enhance the UI of webinar grid settings and add menu item
+* New live calendar icons and date & time on the side
+On the side because date and time could get very long
+* Added honeypot on the live registration to filter bots
+No settings needed. Especially useful on 1-click registration
+* Meeting Audio improvement
+More to come soon via premium beta release inside the account
+* Meeting Admin improvement
+Now unlimited admins can be preview the webinar before the webinar starts
+Without setting status to live, just by click preview webinar room.
+Sure each one should have its on user.
+* improved translation source
+So the auto translation is better
+If you find a more common string, help us
+
+All free to use in the trial. [Sign up now](https://webinarignition.com/#signup) up for a 30-day free trial and enjoy our [free setup service](https://webinarignition.com/meet-us/#unlimited-plus-license).
+Want to see it in action? Join the [live webinar next Thursday](https://webinarignition.com/the-webinar-driving-school/), [(Wednesday in german)](https://webinar.campfiremarketing.de/webinar-fahrschule/) or [watch demo examples on-demand](https://demo.webinarignition.com/).
+
+
+= Soon =
+
+* Time zone of the visitors (80% finished)
+Show the webinar in the right timezone
+* Last 5 minutes registered leads get less mails
+* Trigger Unlimited live CTAs directly inside the webinar
+For easy on host webinars
+
+= Milestones =
+
+* New registrations, Thanks, webinar pages
+Remove most of the settings, because directly to editable
+* Live CTA scene
+to set multiple CTA at once
+* 10000+ streaming users
+* Meeting video scene ideas
+Allow 50 : 50, 66 : 33 videos
+
+= 4.02.0 2025.04.13 =
+
+Join now "Your ideas in webinar and Q&A" free webinar: 
+
+[register here:](https://webinarignition.com/qa-webinar-2/)
+
+= New =
+
+* Card#2785 added functionality for sending ics file, google calendar link with reg. confirmation, 1 hour and 1 day emails
+So in calendar there is also an reminder and you have more attending user.
+
+* Live Console 
+New, logo, responsive design and overhault the CTA content tab
+* Card#2488 Live: future d&t&tz selection now show the re-notification message if the selected date is 15 minutes in the future.
+Before you needed to switch to a new date to see the message and could re-notificate.
+* Registration page video now continues when reload the page 
+We implemented this because on social register the page reloads and video would start again.
+Soon we will add on the right side of the video a restart video button, so if the visitor missed the beginning because muted, video can be started again.
+* Card#2836 send site logo by default in email header
+We added to have nice mails out of the box.
+If you have a site logo it will be used inside the mails by default instead of the placeholder.
+Change/see in settings. If you set an logo then sure it is kept. User better remind you and click in mails.
+
+* #2860 Added to one-click registration login=false
+Now you can autofill and do read-only but not register the user. 
+I find it handy because often mail server bots click and register.
+So a manual registration by click the button avoid this. 
+Just set in the 1-click URL login=false
+
+
+= Fixed =
+
+* Live Only: CTA was not showing because of a nonce issue
+On page load and if a nonce issue occurs, the page reloads. 
+That results in CTA is showing beginning or mid webinar.
+* VDOCipher integration working again, Thanks Victor (3+ years, 8+ languages agency client) (secure the video by show mail address ect. in video)
+* #2920 Make work again video elements (play, pause, jump) when enabled in settings (by default off), Thx Robert
+* #2916 resolved exporting status and order of the participants issue
+* Several code improvements, seen in debug.log and PCP plugin (WP org toolbox)
+* #2902 fixed issue of the import file not sending the registration email and add to participants list
+* #2902 solved the issue of text area leads not importing
+* #2902 solved the issue of one hour before triggering on wrong time
+* #2902 solved the issue of the future message not showing on translated webinar
+* #2888 solved the issue of live webinar not autoclosing
+* 2895: Fixed the 60% width issue on the live cta
+No you can save CTA or webinar settings and width settings will not be overwritten.
+* #2863 issue of leads rearranging solved on console
+Top lead is the last registered.
+* Now again can import and clone webinars
+Button to create webinar was missing due to re-styling.
+
+* #2834 solved issue of secret code not working with the thankyou url
+* #2863 solved issue of live attendent count and already attendend status on Live console
+We still need to work on this as not tracked on all web hosting. 
+Please give feedback if not working on your hosting and what hosting you have.
+* #2838 solved issue of preview working in incognito and url manipulation possible
+Now redirect to registration page if not have right URL.
+* Re-designed the "Create new webinar screen"
+* #2838 LIVE only: When switch to closed status, user are redirected to the closed webinar page.
+Benefits: Webinar and offers are gone. Important for sales.
+We can redirect to an other page too. What you suggest? Registration page, webinars list?
+
+= Usability =
+
+* Add check if meeting assets request settings is correct (WordPress site should handle feedback)
+Especially on WordPress com hosting the settings needs to be switched.
+After switched the meeting is working well.
+
+= Coming soon =
+
+* Video about each new features and if benefits: Meeting, calendar files and links in mails, unlimited live CTAs
+* #2953 Fix Evergreen when no sidebar	tab is shown, timed CTA is always showing. 
+Workaround add a modern Tab with tawk.to chat for example. https://webinarignition.tawk.help/article/chat-integration-3rd-party-live-chat-service
+* #2953 CTA content editor issue
+* Unlimited LIVE CTAs (Final testing and fixing.)
+and trigger them directly inside the webinar
+so prepare all CTAs and trigger then when you need them
+* Nice built in quick start ready webinars 
+* Registration video autoplaying and continue: Soon we will add on the right side of the video a restart video button.
+
+* streaming integration for 10.000+ participants and a live chat for this amount
+* Show the Timezone the user is in and calculate the webinar time to it.
+Show then the users local time in mails ect. 
+* Re-notify paid webinars (Comming later as need to big change WooCommerce integration)
+* Add option to define webinar closed page, can be the next webinar, webinars list, or other page like main page ...
+
+= Idea =
+
+* Idea: if the participant attended the webinar get him to the "next level" webinar, if not attended show him the registration page or webinars overview.
+Idea of auto writing to the participants who not attended and ask why and show next webinar.
+
+Please write us what we missed to make WebinarIgnition working best for you. Or tell in the Q&A webinar.
+
+= Join now "Your ideas in webinar and Q&A" free webinar: =
+
+[register here:](https://webinarignition.com/qa-webinar-2/)
+
+= Please read also below, what has changed in V4.00.0 =
+
+= 4.01.1 2025.04.01 Premium only =
+
+* Fix the meeting room, now all can access. Thanks Vlad.
+
+= What you get with 4.x =
+
+= Notice =
+
+If you use the WordPress.org version and 
+upgrade to new version you will lose enabled webhooks, admin notifications on new users, paid webinars, 
+CTA alignment in overlay to see speaker, send users via HTML subscription code, view and export leads.
+
+The 2013-2024 licensing system has been removed, and nice offers have been made to switch.
+Background: To follow wp.org rules, free and pro code must be separated. 
+On WordPress.org only free code allowed and Free must always be free without restrictions 
+(like counting free registrations) and contain only free code (We had both in Free).
+
+= Good news coming with 4.x = 
+
+* 10 months of reworked plugin by 4 developers according to WordPress coding standards
+* You can opt-in separately and the plugin stays the same.
+* More compatible with other plugins and theme (Own CSS classes)
+* More secure, as all possible data is secured (escaped)
+* Modern, mobile responsive backend, after save stay in tab and section (Thanks Faheem)
+* Huge amount of fixes during intensive testing (Thanks Arman and team)
+* Unlimited support (Thanks Ehtisham)
+* Free "New to WebinarIgnition 1:1 Meeting" [here:](https://webinarignition.com/meet-us/)
+* Free chat support [here:](https://webinarignition.com/#contact-us)
+* Unlimited updates
+* Unlimited webinars
+* Unlimited registrations
+* Unlimited attendees
+* Unlimited webinar time
+* Unlimited custom webinar funnels
+* Unlimited feature requests sent to us that will be reviewed and considered developed
+
+* Our own meeting integration, 
+10.000 minutes free/month after pay per minute and participant. (Unlimited plus and free Trial)
+see it live every Thursday in the your ideas and Q&A webinar: 
+[register here:](https://webinarignition.com/qa-webinar-2/)
+meet with 300+ users, directly in the webinar
+Not settings for the attendee, only need a browser and accept camera and microphone.
+You can allow one attendee to screen share
+Stuning noice canceling
+Stunning video quality 1080p+
+Settings to hide features for participants
+Settings to add hosts
+https://webinarignition.tawk.help/article/integrated-meeting-and-streaming-solution
+For streaming integration, with unlimited users, see upcoming below
+* Social registration 
+with 22+ providers by one expert plugin by default, but can do/add any other plugin.
+https://webinarignition.tawk.help/article/social-webinar-registration
+* Remind registered live webinar leads for next webinar, with one click.
+* Unsubscribe from next webinar or all types of this webinar
+With unsubscribe header, links in all mails, pages and status shown in live console > participants
+For live webinars with the re-notification function makes most sense.
+For Evergreen can stop the current notification sending.
+
+* Sell mid Webinars made easy, with advanced iframe examples where you just replace the URL. (Unlimited plus and free Trial)
+https://webinarignition.tawk.help/article/sell-anything-inside-webinar
+[see demos::](https://demo.webinarignition.com/)
+* On save plugin, plugin now remembers which settings where open last and open and scroll to it after reload.
+
+= You will only miss, because we removed =
+
+* the SMS/TXT notification 
+Will be re-added later by making an external professional plugin compatible.
+
+= 3.05.0 2023.12.05 =
+
+= Webhooks update, Video mute feature, Helper texts, Up coming new version  = 
+
+= Video mute feature = 
+
+* New: Added mute icon for autoplaying videos on registration/thank you pages 
+(shortcodes and default designed registration page)
+Benefits: Page visitors do less bounce instead of leave the page to avoid video audio. 
+Now they just mute it and stay.
+
+https://www.youtube.com/watch?v=GTbA4rb3Vbw
+
+[If you can not see video above, click to open changelog on wp.org please](https://de.wordpress.org/plugins/webinar-ignition/#developers)
+
+= Webhooks update (you need to act!) =
+
+Important! webinar date was before = 2023.12.04 19:00:00
+Now = 2023.12.04 (Nice to be viewed in notifications)
+Time is also now separated (Nice to be viewed in notifications)
+
+If you want the webinar date & time user the new UNIX webinar date & time "2023-12-05T18:00:00+05:00"
+Nice to trigger email notifications before, on and after webinar.
+
+* Added: Separate webinar date, webinar time, registration date, and registration time in webhook response.
+* Added: UNIX webinar/registration date & time with timezone "date_time": "2023-12-04T16:00:00-05:00" in webhook response.
+* Added: Webinar URL after registered 
+like https://domain.com/webinar-1/?confirmed&lid=fbc782e4de6e618e
+Benefits: With this link your user directly access the thank you page or the webinar page when live.
+* Revealed: With you only adding the webhook link and enable you get all the webinar data like date, time, URLs
+Benefits 1: You can now trigger all webinar notifications within your CRM/Autoresponder.
+Benefits 2: You know exactly when the webinar is over (webinar time + webinar lengths) and react on users action bought/or not bought.
+Benefits 3: You can sent them again to the registration page if not bought, attended...
+Cases: Send notifications: before (reminder, onboarding), during (rejoin link combined with tracking pixel feature) and directly after a webinar (sell, upsell).
+[Read more and see example data](https://webinarignition.tawk.help/article/outgoing-webhooks-sending-attendees-data-anywhere)
+
+https://www.youtube.com/watch?v=AB0SHxYAjvI
+
+[If you can not see video above, click to open changelog on wp.org please](https://de.wordpress.org/plugins/webinar-ignition/#developers)
+
+= Helper texts  = 
+
+* New: Added help text to change FROM EMAIL address and NAME EMAIL and link to KB article in settings.
+Background: Woocommerce and other big plugins do not have email settings and refer to SMTP plugins, so do we.
+* Added: Global warning message when running "old" webinars $date_before = '2022-03-25' that may not work as expected.
+Instead of getting frustrated and uninstalling the plugin, re-run the webinar from scratch. (Importing, duplicating will not solve anything).
+I guarantee the experience will be totally different. 
+Background: DB structure has changed.
+Better to do a completely new webinar where everything works fine.
+
+= Other =
+
+* Added a webinar video icon in the webinar room in the branded version.
+(Branded version has 100 free registrations per month with all features) 
+* Updated: Freemius SDK for better optin, license handling, ...
+
+= Upcoming = 
+
+* We are doing nice easy editable Gutenberg templates and new easy plugin.
+
+= 3.04.5 07.11.2023 =
+
+* Fixed: Showing "Webinar is Full..." message on tier2 & tier3
+Benefits: Open registration on new plans. Thanks Lorenzo for bringing this up.
+
+= 3.04.3 + 3.04.4 01.11.2023 =
+
+* Updated: Freemius SDK, for nice free email onboarding after opt-in
+* Added: 2 licenses for 1 price
+Benefits: Inside the plugin you can now get 2 licenses for $34
+Upgrade is available for current customers and new customers
+* Added: New pricing plans
+Benefits: Pricing $ 9.99 for 250 registrations and 2 hours of webinar time
+Upgrade is available for free users, as others may get to licenses instead of downgrading
+* Added: 14 days trial version for the $ 9.99 monthly plan (250 registrations)
+* Reduced: Branding free registrations per month to 100
+* Improved: Update webinar permalink if post permalink changed
+Benefits: When you change slug/URL of the default page webinar will still work.
+Background: Inside webinar settings click on edit and it leads you to the default page, used by this webinar.
+Please do not change if you sent out notifications already, because the link in mail will not work.
+
+Still in free version you get all live and evergreen features, just with a time limit and a registration limit.
+
+= 3.04.2 12.10.2023 =
+
+* Improved: Add footer code to modern webinar template
+Benefits: You can now again transfer all essential attendee data to KlickTipp
+[Read more here.](https://webinarignition.tawk.help/de/article/klick-tipp-webinar-webinarignition-anbindung-an-klick-tipp)
+Other fixes done directly inside the WebinarIgnition Instant Transfer to KlickTipp plugin.
+* Fixed: Transfer to Autoresponder (AR) via HTML form stopped working
+Please report back if still not working for you.
+* Fixed: Redirect to webinar page from thankyou page after countdown finished
+Benefits: No need to click on countdown link to access webinar room
+Story: I was missing first minutes myself on other webinar platform because the redirect was not working.
+* Fixed: Set webinar branding text if empty on activation
+Benefits: Branding option working more stable and give you 500 free registrations
+* Added: anonymous plugin usage back after Freemius fixed opt-in of new user on Freemius server
+Benefits: Without opt-in you can use the plugin again.
+
+= 25.09.2023 =
+
+* Freemius has more options for the confirmed users.
+So we test to allow only confirmed user to use the software to give you the most option.
+Tell us in the chat what you think and if you still have issues to enable the 500 free registrations.
+Freemius is also fixing an first time opt-in issue when new to Freemius.
+
+= 3.04.1 20.09.2023 =
+
+* Fix: Do posts creation in patches
+Preparing for the next version with new backend
+* Change: Move WebinarIgnition menu to top
+Benefits: You can see it now on second place for faster access and to use it more for your success.
+
+= 3.04.0 17.09.2023 =
+
+= Innovative method for loading CTA content with shortcodes =
+
+[If you can not see video below, click to open changelog on wp.org please](https://de.wordpress.org/plugins/webinar-ignition/#developers)
+
+https://www.youtube.com/watch?v=QuGt_-VLI0Q
+
+[CTA loading issues? Load all plugins/shortcodes in CTAs (please right click and open in new tab)](https://webinarignition.tawk.help/article/cta-loading-issues)
+
+* Solved problem: In webinar room not showing timed action content nicely
+* Background: The delayed/time based loading of the CTAs was sometimes breaking style and function of some plugins/shortcodes output.
+* Benefits: Automatically loading via iframe, by checking a box, solve this issue.
+* Yes, iframes in iframes working too.
+* What are CTAs?
+Call-to-Actions are actions in the webinar room to interact with your attendees, like in a live webinar
+CTAs in evergreen webinars are automated and time based (connected to the MP4/video time)
+* How you solved the problem of the form that on submit reloads the whole webinar room?
+By placing the form in an iframe the content in the iframe will reload only.
+* Is it complicated to load the content in an Iframe?
+You decide: If install/activate free "advanced iframe" plugin and click "enable" button, below the CTA content, is complicated ;-)
+
+* [Article: CTA loading issues? Load all plugins/shortcodes in CTAs](https://webinarignition.tawk.help/article/cta-loading-issues)
+
+PS: In combination with the already developed features automation in evergreen webinars raised to new heights.
+To name some:
+
+* On reload the page, attendee continues video on the time left (MP4, WEBM,... only, not iframe)
+* Unlimited CTAs because all are shown inside the webinar room.
+CTAs can be any shortcodes appointment/survey/poll... forms, WooCommerce Shop, or an external sales page.
+* Send registered/attended status to CRM via webhook and do more specific marketing.
+
+PPS: Is the iframe advanced plugin totally free?
+Yes and no. At the moment from 10.000 views a months the iframe plugin shows a backlink.
+And you can get rig of the link by buying the pro version [At the moment 19$ one time](https://codecanyon.net/item/advanced-iframe-pro/5344999)
+
+iframed CTA Roadmap: 
+
+* Problem: Loading the Iframed CTA could take some time than loading the normal CTA
+Why? Because we hidden loading the whole page and show only the content you want to get.
+Workaround: If you want to show the CTA at 1:15 start the CTA at 1:00 time
+Solution: Preloading the CTA, out of the view of the user and show on CTA time.
+* As we have a cooperation with Michael the developer of Iframe advance free/pro he come up with more improvements 
+Maybe you have some edge cases that need tweaking and we lucky to help you...
+
+= No Premium Plugin code needed as all is in OpenSource Version = 
+
+* From my own experience i like to test all before i buy.
+* Still buying is not needed until you reach the free 500 registrations per months or like webinars longer than 45 minutes.
+* Which other webinar service gives you so much for free?
+* Why? To play, test, make some money and give back. That maybe make some user able to start own lifelong business.
+* Also i like all to use e.g. the webhooks, paid webinars ect. and suggest features and improvements.
+* Current Ultimate Unlimited user will still get updates through Freemius.
+* Ultimate Unlimited user can install the free version and get faster updates.
+
+= Further fixes, improvements =
+
+* Updated: German language file (Thank you Ronny)
+* Updated: All translations and fixes some strings. 
+Please report not working or not good translation.
+* Freemius SDK update
+Fixes in clone resolution and multisite license activation
+Fixed update notice issue when free and premium versions of a plugin is running in parallel
+* Fixed: Webhook trigger on attended webinar when user was not instantly viewing the webinar. (Thanks Mathias)
+Trigger sent when user watched MP4 video for one second and more. Iframe video on visited webinar room.
+
+= Fixed: Redirect to first custom registration page when open the default registration page =
+
+(only redirect for non logged-in user, like your webinar visitors, so you as admin can still access the built in page)
+Benefits: The not setup default registration page is not shown to your visitors.
+If you use custom pages you need to manually select a default custom page and deselect the default page.
+
+Workaround for existing and new webinars:
+
+* In an Webinar dashboard
+* Select a default custom registration page
+* Unselect built in registration page in list
+* Save
+* Redo when default still shown in the list.
+
+I hope soon we can improve admin experience by setting the first custom page as default/fallback page.
+
+= The Unlimited Registration features is the milestone that needed the improvement = 
+
+https://www.youtube.com/watch?v=QiV_TsN_3vk
+
+= If you have issues go back to = 
+
+[3.03.2](https://webinarignition.com/wp-content/uploads/webinar-ignition-3.03.2.zip)
+[2.16.3](https://webinarignition.com/wp-content/uploads/webinar-ignition-2.zip)
+
+by uploading the plugin via add new plugin and downgrade.
+Please then report issue on https://support.webinarignition.com/
+Pormise we will find a solution quickly.
+
+= 3.03.2 22.08.2023 =
+
+* Fix: Language special characters producing JS errors
+Benefits: You can run WebinarIgnition on any site language and all will be translated.
+Benefits: AR Test button working again 
+Missing languages you can request DeepL translation in chat, or translate yourself via loco translate.
+* Fix: Webinar settings language resets on test AR settings
+
+= 3.03.0 20.08.2023 =
+
+* Fixed: Issues with urdu and italian special characters by escaping all text in backend (make language strings not executable)
+Benefits: All languages can be used in backend.
+Tutorial: On create webinar you choose the language the content shown to the user is translated in. Like registration form/pages, email/txt reminder.
+The settings language follows the user and the site language. We think of removing the "also use the webinar language in settings" option. You can give us cases when this option is needed and we will fix it.
+At the moment on saving the webinar, only the settings language change back to the site/user language. Use the chat for suggestions.
+
+= Team news =
+
+* We welcome our new team member Chris
+* Many thanks to Juan our customer that become our business coach. Juan the man with the human success glue.
+* Thank you Edris (Senior developer since 2008 with WP) to work now 8h a day 
+and do bugfix and the new plugin version.
+* Looking forward to the new version, give us some months to redo settings and base everything on gutenberg and WordPress UX.
+
+= Upcoming iframe loading of CTA content with shortcodes = 
+
+* Background: The delayed/time based loading of the CTAs was normally breaking style and function of some plugins output.
+* Benefits: Automatically loading via iframe, by checking a box, solve this issue.
+We are testing already final version. 
+
+= 3.02.1 26.07.2023 =
+
+* Fixed yeah: Show browser confirmation popup only when changes are unsaved (on backend)
+Why reloading was added? Because all settings are saved in one Array and the reload apply the settings.
+Benefits: When move away from a settings page no asking of leaving the page.
+Only reload after save to apply settings ;-)
+
+After testing live on one evergreen site working on other still showing the message.
+Please add your ideas, dev will investigate further...
+
+= 3.02.0 25.07.2023 =
+
+* Fix: "Sure to leave page" browser popup on Confirmation page
+Ongoing: "Sure to leave page" browser message on backend without any settings changed
+* Fixed: Live webinars live console: Leads import field issue (first line got skipped)
+Import via field trigger the right notification emails
+Ongoing: CSV file import: Import is working but notifications are not triggered correctly
+
+* New article: Load all your applications/shortcodes like appointments, shop, survey, ect. inside your webinar room
+[See article with workaround here](https://webinarignition.tawk.help/article/cta-loading-issues) 
+
+* Buy now 1:1 setup service on [webinarignition.com](https://webinarignition.com) via the "1:1 Setup Service" menu, service which is highly used and reviewed.
+
+
+In development 
+
+* Easy CTA solution, by michael from advanced iframe
+Benefits: Loading nearly all shortcodes inside webinar room
+Problem was that some shortcodes needs to load with the page 
+and not be viewed timed/delayed like in CTAs.
+* Gutenberg Shortcodes block by Chris
+* Fixes and new plugin by Edris
+* Better onboarding emails (Chris & Tobias)
+* Better KB content (Chris & Tobias)
+
+= Roadmap =
+
+Tell us what you like to improve:
+[In the WhatsApp Mastermind group](https://chat.whatsapp.com/FncN4ITR0z9GXCYBx0LGDn)
+
+Sooner:
+
+* I want direct open of the webinar when live.
+* I want auto redirect from thank you page to webinar page like on the countdown page
+* I want to import and notify my live webinar users (fix in development)
+* I want to add more registration pages and have a fixed webinar URL from the default webinar page
+
+Later:
+
+* I like a new backend 
+* I like to have 	post types to sort my webinars
+
+Your Ideas:
+
+* 1
+* 2 
+
+= 3.01.3 14.07.2023 =
+
+* Change: Edit webinar title button will open webinar default page
+Benefit: Find the default registration page by click the edit button near the webinar title
+There you can change Title and slug for the whole webinar.
+Also you can remove the existing message and do SEO.
+* SDK update
+* Fixed: Too many redirects issue
+* Fix: Make URL/slug more secure
+* Change: Remove 45 mins limit column for former license table
+Yes former license holder have full ultimate functionality.
+* Fix: Invalid/Negative countdown time in preview mode
+
+= 3.01.2 20.06.2023 =
+
+* Fixed: "webinar closed" when click in email reminder "We are live now"
+
+= 3.01.1 20.06.2023 =
+
+* FIXED: Multiple Custom Registration pages now working with 10web hosting ect.
+Benefits: Create and use as much registration pages with shortcodes as you like.
+Case 1: Different sources can have different registration pages
+Case 2: A/B test registration pages by an Splittest plugin and the goal pixel in webinar room or thank you page
+
+https://www.youtube.com/watch?v=QiV_TsN_3vk
+
+* updated german language
+* removed trial version as you now can test all features in free version
+* first page will now be the WebinarIgnition dashboard instead the KnowledgeBase page
+
+* workaround "webinar closed" when click in email reminder "We are live now"
+In "Webinar Replay" tab under "Countdown - Expiring..." 
+add "Replay Availability" greater than 0 like 1
+Visitor will see the replay video.
+Sure we will find a nice solution and release ASAP.
+
+= 3.01.0 15.06.2023 =
+
+* New: Multiple Custom Registration pages
+Benefits: Create and use as much registration pages with shortcodes as you like.
+Case 1: Different sources can have different registration pages
+Case 2: A/B test registration pages by an Splittest plugin and the goal pixel in webinar room or thank you page
+
+https://www.youtube.com/watch?v=QiV_TsN_3vk
+
+* Updated: Freemius SDK (That handles opt-in to get free registrations, license ect.)
+* Fix: Default WP language issue (Some text are not in site language and site language not selected by default)
+One more step in the direction of being more like WordPress
+Benefits: Your site is in spanish and your webinar text, settings is in spanish by default
+Note: If the admin... user language is different than the site language, the site language is still offert when create a new webinar.
+Note: If you want latin spanish select espanol de mexico, that will save you to translate. Same with Portugues....
+
+* Incompatible: CTA video Shortcode for registration page not working when WP DSGVO Tools (GDPR) is installed. 
+WP DSGVO Tools (GDPR) JS causing an error and video gets out of shape. We try to harden WI to solve it.
+
+*  Incompatible: 10web hosting user like webinarignition.com have a redirect to default registration page issue 
+We working hard to solve it. until fixed demo not available. You only see the issue when you are logged out.
+
+If you have issue go back to 
+3.00.3 https://webinarignition.com/wp-content/uploads/webinar-ignition.zip
+2.16.3 https://webinarignition.com/wp-content/uploads/webinar-ignition-2.zip
+
+= 3.00.3 25.05.2023 =
+
+= All features free and webinars and settings in 18 languages = 
+
+plus your own language via loco translate or via our support (like polish recently)
+
+= That make WebinarIgnition maybe the only WordPress webinar plugin in unlimited languages = 
+
+* Fix: Default WP translation issues
+Benefits: Your site is in german, spanish and the webinar (and settings are) in this language too. 
+Like you are used to it when working with plugins.
+* Fixed: Language for Japan email tab was not showing (complete re-	translation)
+* Change: Disable non opt-in options
+* Change: Show opt-in buttons on disabled options
+* Change: Remove opt-in button above
+* Fix: All features available issue for former licenses (basic/pro/enterprise)
+
+* Soon: Default webinar settings language follows the user language or the site language. 
+(by removing the option and do WP default behavior)
+Benefits: Language in settings like you are used to it.
+Example: Your website is setup in spanish and the admin does not speak spanish he gets his settings in english.
+Workaround: On create webinar set "use webinar language in settings" to "no". 
+For me workaround was not working and still got the webinar language in settings.
+
+= 3.00.2 18.05.2023 =
+
+* Fixed free version without admin opt-in: Admin can now create evergreen webinars in own language and date & time format
+Benefits: You can test all features just by activating the plugin and if you like more registrations opt-in via the dashboard.
+* Updated: Freemius SDK (That handles opt-in to get free registrations, license ect.)
+* SOON Fixed free version without admin opt-in: Admin can now create live webinars in own language and date & time format
+Workaround: If you like live webinars in own language and date & time format opt-in via the dashboard.
+
+Overall you see the limitations of free version have been widely added and step by step they are discovered and removed.
+Not to add limitations code brings the benefits of faster development and less stress on my side testing. ;-)
+And you can test all ultimate features just by activating the plugin.
+
+= Gifts for user with license bought 2013 - 01/2021 =
+
+* If you are basic we generated at least 3 license keys. 
+Use them to activate license inside Version 3 and get 100 free registrations per months with all ultimate features. 
+* If you are Premium/Enterprise we generated at least 10 license keys. 
+Use them to activate license inside Version 3 and get 200 free registrations per months with all ultimate features. 
+
+Steps to get free registrations: 
+
+* [Access keys here with the email address you bought the licenses:](https://webinarignition.com/members/)
+* Make sure you upgraded to Version 3 inside the WP plugins page before you add the keys.
+* You need to opt-in on inside WebinarIgnition dashboard, to move amount from 5 -> 200 ;-) 
+
+Still available: 
+
+* For unlimited registrations use your keys inside Version 2.x 
+* [Get the latest 2.16.3. version here](https://webinarignition.com/?fluentcrm=1&route=smart_url&slug=bdtsr27)
+
+= 3.00.1 13.05.2023 =
+
+Recurring debug and error log check revealed some warnings we fixed
+* Fix: PHP notices and warnings in error log
+* Fix: Error in Premium version
+
+* Added: Reset registration count when trial is activated
+Benefits: When start trial you get the full 500 registrations.
+The 45 minutes limit is still active when not paid license.
+* Added: Stop counting registrations when ultimate is activated
+Benefits: When used over 500 registrations and going back to free registration is still open. 
+The 45 minutes limit is still active when not paid license.
+
+Changes per license level see below please
+
+A fixed 2.x version is not yet available, feel free to use version 3
+
+= 3.00.0 09.05.2023 =
+
+= Upgrade 3.x with major free, former license changes =
+
+= Is there any change for the paying Ultimate users? =
+
+No
+
+* Background:
+Not when it is about the features. You get already all features ad in future you will get all features.
+You will benefit by the new development speed by maintain only one ultimate license level.
+Background: The different license levels (basic, enterprise, free, trial, paid) took so much time: 
+describing to dev, developing, testing, describing to you.
+
+= Is there any change for the trial Ultimate users? =
+
+* Yes. You also get the 45 minutes webinar room attendee time limit
+
+= Is there any change for the free Ultimate users? =
+
+* Yes. You also get the 45 minutes webinar room attendee time limit
+* Yes. You get a over all webinars registration limit 5-500 registrations per month
+To activate 500 free registrations per month for unlimited time you need to opt-in and show branding.
+* <strong>You get all ultimate features</strong>
+* <strong>This is an manual update and can be only done via plugins and only alone. </strong>
+
+= Is there any change for the former license owner 2013 to 01-2021? =
+
+* Yes. You get a over all webinars registration limit (basic 100, other 200 registrations per month)
+* <strong>You get all ultimate features </strong>
+* <strong>This is an manual update and can be only done via plugins and only alone. </strong>
+
+= On issues or if you like former unlimited registrations = 
+
+[Get the latest 2.16.3. version here](https://webinarignition.com/?fluentcrm=1&route=smart_url&slug=bdtsr27)
+Benefits: 
+* If you are former license owner 2013 to 01-2021 you can go back to features you had when bought plugin and with unlimited registrations.
+* If something is not working you can use this as a fallback version. Please do a screencast and report the issue before going to 2.x.
+
+= If you want unlimited registrations and unlimited webinar room attendee time buy the paid license as low as $16 a month (yearly paid) =
+
+= 2.16.3 09.05.2023 =
+
+* Updated: Freemius SDK
+
+= Last update before 3.x with major free license changes =
+
+Looking forward to the real changes: All features for free for unlimited time, with a registration, time limit only.
+Benefits: You can setup, test, start all for free.
+
+= When 3.x is released? =
+
+TODAY. 
+
+= 2.16.2 13.04.2023 =
+
+* Text update
+
+= 2.16.1 11.04.2023 =
+
+* Added back: language .po files
+Benefits: Easy to translate again. 
+Background: With loco translate and only the .mo files you possible miss data and need to translate again
+* Added: Polish deepL translated language files
+Background: User ask us via support to add his languages and we did
+Benefits: User can now have all text on pages, notifications, settings ect. in his language polish
+* Updated Freemius SDK
+Benefits: One error less
+
+= 2.16.0 28.03.2023 =
+
+= All Update Please =
+
+I did a mistake in 2.15.6 and if update to 2.16.0 or higher is NOT shown: 
+Please deinstall plugin and install again via "plugins" "Add new" "WebinarIgnition". 
+Sorry Tobias
+
+= Last update before 3.x with major changes =
+
+* Added: Deactivate auto update on "plugins" page
+* Added: Deactivate bulk update on "plugins" page
+* Added: Hide update on "updates" page
+* Added: Manual update once to version 3.x
+* Added: Massage of major changes for free, former (Basic, Pro, Enterprise) lisenses
+Will be viewed before upgrade to 3.x and when version 3.00.0 is released 
+
+= What else? =
+
+Trial user also get now the webhooks feature
+Tested with PHP 8.1.16 seeing only some warnings (will check the warnings later)
+To be on the save side please use 8.0.28+
+
+= 2.15.6 22.03.2023 =
+
+= All update please =
+
+= Final Freemius SDK update =
+
+* fix: Fatal error: Uncaught Error: Call to undefined method Freemius_Api_WordPress::RemoteRequest()
+For details see: https://github.com/Freemius/wordpress-sdk/releases/tag/2.5.5
+
+Looking forward to the real changes: All features for free for unlimited time.
+Benefits: You can test, setup, begin all for free.
+
+= 2.15.4 + 2.15.5 17.03.2023 =
+
+* Updated Freemius: for better handling of opt-in, license, analytics, affiliation, ...
+
+= 2.15.3 07.03.2023 =
+
+= Freemius SDK update =
+
+* improving connection 
+* Stopp connection test on plugin activation
+* Create Affiliation inside the plugin is working again 
+please join and earn 40% on new customer including renewals
+
+Version 3.x+ will be ultimate features for all with total registration limited per months.
+
+= 2.15.1 + 2.15.2 22.02.2023 =
+
+* Fix: Translation issues in French and some other languages are fixed
+Benefits: You can now use single and double quotation in translation without issues.
+* Change: Activate only one plugin instance at a time
+Benefits: When you upgrade to premium by installing the premium plugin, the free plugin got deactivated to avoid issues.
+Hint: Keep the deactivated free plugin to see all updates, if you stop your subscription and could not update premium, continue using the latest free version.
+
+BEST: As the free plugin files contains all features, keep free and activate your license inside and have always the latest most stable version ...
+
+= 2.15.0 09.02.2023 =
+
+= Jippi live webinars are fixed. Thank you so much developer Idrees =
+
+* Fix: On-Air CTA data wiped-out on save webinar settings
+* Fix: On-Air CTA stopped displaying if we turn it off and on again
+* Change: Instantly display On-Air CTA on toggling on/off without clicking save button
+
+See for how beautiful it is now working 
+
+https://www.youtube.com/watch?v=O43bYCdouig
+
+PS: You can also add shortcodes inside the CTA
+
+See video how to add a shortcode to a live CTA please:
+
+https://www.youtube.com/watch?v=myJ3e5nwLuc
+
+[Possible CTA Content:](https://webinarignition.tawk.help/article/do-you-also-have-only-one-action-in-webinar)
+
+= New color picker working more nicely =
+
+* Fix: New color picker does not work for evergreen webinars CTAs button on cloning
+* Fix: Landing page area background color not working
+Benefits: On default registration pages you can now set the background color to even attract more attention.
+* New: Added Thank you page CTA border color
+* Change: Registration, thank you page CTA area should be without borders by default
+Benefits: By default the video, iframe and image does not have a border anymore ;-)
+
+= Display Your Webinars in a Grid Layout (beta) =
+
+https://www.youtube.com/watch?v=yrIEB33ZpgQ
+
+[Full article with details](https://webinarignition.tawk.help/article/display-your-webinars-in-a-grid-layout)
+
+
+[Thank you ajd07, truecare, bfit1 for so nice WordPress.org reviews](https://wordpress.org/support/plugin/webinar-ignition/reviews/)
+
+[Free setup appointments: Available, highly and successfully used](https://webinarignition.com/?fluentcrm=1&route=smart_url&slug=zinal6)
+
+
+= 2.14.4 31.01.2023 =
+
+* Updated: Fix: Apply transparency border on Registration Image CTA does not work for 2nd design on mobile
+* Updated: Languages
+* Updated: WebinarIgnition logos ect. the footer branding
+
+= 2.14.3 26.01.2023 =
+
+* Fix: Security vulnerability found by "patchstack"
+* Change: Replace color picker to wp-color-picker
+Benefits: Color picker is more easy to use
+* Added: Apply transparency via color picker
+Benefits: No border when select transparency (clear color) ;-)
+Example: For example borderless MP4/Youtube/Image registration CTA
+* Added: Transparency option.
+Hint: Option does not make sense on all settings.
+For example on webinar background does not work because not showing host details and footer text.
+* Plugin is running with PHP version 8.1.14 in test environment
+PHP 8.1.x changelog https://www.php.net/ChangeLog-8.php#PHP_8_1
+We suggest to run the latest 8.0.x version
+PHP 8.0.x changelog https://www.php.net/ChangeLog-8.php#PHP_8_0
+WordPress itself: "PHP 7.4 or greater"
+https://wordpress.org/about/requirements/
+
+> Truecare: Great Support!
+> Thank you Ehtisham for your support! You are soo easy to work with and you are very patient. I will refer all my business associates who need support to you!!!
+[Source: WordPress.org reviews](https://wordpress.org/support/plugin/webinar-ignition/reviews/)
+
+[Get the same webinar success support -> book your free 1:1 setup appointment now](https://webinarignition.com/?fluentcrm=1&route=smart_url&slug=zinal6)
+
+= Roadmap: =
+
+We have plans to do a complete new mainly WP based plugin.
+Gutenberg as main design editor to directly edit all pages
+New WP/WOO like backend and complete PHP 8.1.x+ coding
+Redo live webinars and combine them with evergreen
+One click registration for evergreen, ...
+
+= 2.14.2 13.01.2023 =
+
+Happy new 2023
+
+* Improved: When you install the premium version the free version automatically get deactivated
+PS: You can delete the free version
+
+= 2.14.1 29.12.2022 =
+
+* Fix: Autoresponder (AR) JS error
+Found when adding RAW HTML Aweber form with some JS, thanks Carma, Ehtisham for bringing it up. [Aweber Integration Article](https://webinarignition.tawk.help/article/aweber-integration)
+
+This will improve other Integrations too, give feedback please.
+* More preparation of the main plugin for upcoming webinar grid
+
+= Freemius (payment and license handling) =
+
+* PHP 8.1 Compatibility improvements
+That does not mean WebinarIgnition is fully PHP 8.1.x compatible! This improves only Freemius!
+You can run WebinarIgnition on PHP 8.1.x and you will get notifications to update code.
+This are not errors, that keeps the plugin from running. When you got an error write us please.
+* Requires PHP, now shows on update when not using a compatible PHP version and stopp you from updating(to a version that is not running on your system).
+at the moment Requires PHP: 7.2.5
+* Tested up to improved (when value 6.1 is compatible to 6.1.2 too)
+
+= Last Milestones: =
+
+* MP4 files on registration and thank you pages
+* Added "Ending Redirect Delay" for auto webinar
+* Keep showing CTAs at the end of the webinar
+* Beautiful custom (Shortcodes) webinar room CTAs with transparency
+* Do nearly the whole webinar room with ShortCodes SCs inside your page builder like elementor
+Sidebar is not yet available as a SCs
+* Custom Registration Shortcode for all licenses
+
+
+= Roadmap: =
+After a lot of bug fixing, thanks a lot for the feedback and 1000 tickets since 01/2021,
+we are going to redo the whole plugin. Making license system easier,
+give you all features in free version with limited registrations.
+New settings backend,
+redo evergreen and create live webinar out of this code, (that is why we not update live webinars), ...
+
+All to make WebinarIgnition so flexible, extendable and beautiful like for example WooCommerce Shop plugin.
+
+= Useful pages =
+[To get ideas, examples for your own webinars visit updated demo pages please](https://webinarignition.com/demo)
+[For more webinar success book your free 1:1 setup appointment now](https://webinarignition.com/?fluentcrm=1&route=smart_url&slug=zinal6)
+
+= 2.14.0 16.12.2022 =
+
+= In my eyes, MP4 files are the purest way to show video, no related videos or controls shown, just autoplaying video =
+
+https://www.youtube.com/watch?v=eZWiMOMQHvo
+
+* Added: MP4 video on registration page (default and done with Shortcodes)
+* Added: MP4 video on thank you page (default and done with Shortcodes)
+Benefits: Plugin try to play registration CTA video with sound, if fails autoplay muted and shows "unmute button"
+Sure in the webinar room we have the same nice MP4 player.
+Browser tested: Firefox, Chrome, Edge, Safari on Windows and Mac
+* Changed: Use latest "videojs" library
+* Todo: Remove: Picture in Picture (PiP) on hover in Firefox on registration page, thank you page and webinar room
+Comment on PIP in Firefox, we found an iFrame solution, but it would not load the video as nice as a before.
+We feel as FF is not taking care of video standards like Chrome ect. we keep it like that. Also the market share of FF is very less.
+[To get ideas, examples for your own webinars visit updated demo pages please](https://webinarignition.com/demo)
+
+= 2.13.1 13.12.2022 =
+
+= Auto webinar ended redirect delay to show CTA after video ended =
+
+You can keep CTA a) showing permanently, b) with redirect, c) NEW with a delayed redirect
+
+* New: Added "Ending Redirect Delay" for auto webinar
+Benefits: In combination with keep showing the last CTAs you can show the CTA for x seconds before redirect.
+Tip: Show the CTA that is longer than the video time set the CTA hide time longer than the video time.
+* Fix: Redirect (if set) after video ended (to be working with the keep CTA shown at the end of the video)
+* Fix: Pass preview parameter to skip mark watch procedure
+Benefits: In preview also redirects, CTA showing to the end of the video and delayed redirect.
+* Fix: Button text missing, because of missing style, for always show sidebar CTA
+* Fix: Always show overlay CTA stopped working
+* Fix: Always show overlay CTA over-sizing issue
+* Fix: CTA action button does not display nice when text is long
+* Fix: Modern webinar room CTAs on mobile:
+Overlay CTA and Sidebar CTA was showing above each other below the video.
+Now: Sidebar CTAs show below the video and the overlay video keep showing above the video.
+If you need to have overlay CTA show below the video, that could be the case if you shown an iframe or high height content,
+a) use the former webinar room design (design and shortcode tab), that will show overlay content below.
+b) wait for the fix in next version, where it is improved
+
+* Fix: Fatal error, missing function is_ajax
+* Fix: Remove "preview=true" from registration URL input
+Benefits: you can now copy and share the registration link without modifying
+* Fix: Test AR modal box "Done" button not visible on mobile small screens
+Fix: Test AR modal box buttons text color
+* Fix: PHP Error
+* Change: Make lead param optional in webinarignition_get_lead_status method (WI Grid compatibility change)
+Benefits: Prepare for the soon releasing webinar grid/archive to view all or a part of your webinars in different overview pages.
+
+Roadmap:
+After a lot of bug fixing, thanks a lot for the feedback and 1000 tickets since 01/2021,
+we are going to redo the whole plugin. Making license system easier,
+give you all features in free version with limited registrations.
+New settings backend, ...
+All to make WebinarIgnition so flexible, extendable and beautiful like for example WooCommerce Shop plugin.
+
+= 2.13.0 17.11.2022 =
+
+= Removed SMTP Settings completely! =
+= You need to take action after update! =
+
+* Benefits WebinarIgnition do not harm global WP mail sending, when not using WebinarIgnition SMTP settings. (Yes, this feature made more issues than doing good)
+What do you need to change after update, to get back the ability to alter sending email address, sender name and reply-to? [Follow the updated SMTP KB article](https://webinarignition.tawk.help/article/smtp-setup)
+* Fixed: Redirection to custom webinar page (Page build with shortcode)
+
+= 2.12.2 14.11.2022 =
+
+* Added: New Freemius version, for easier license handling (free, trial, paid versions)
+* Fixed: Sending user data on registration to service like MailChimp via HTML subscription code
+Other HTML subscription codes may work also better.
+[Updated KB article: Easier MailChimp integration](https://webinarignition.tawk.help/article/mailchimp-integration)
+* Fixed: AR test button loads the registration page and let you test the form (no redirect)
+(Please test registration in incognito browser mode and check if you get an confirmation email from the email marketing provider like MailChimp)
+
+* Please sent a note if your HTML code is working or not. If not provide the HTML code for testing please. [Add HTML Form in chat, the info if working and the URL to the provider used, here.](https://webinarignition.tawk.help/)
+[See articles for connecting with your email marketing provider like MailChimp](https://webinarignition.tawk.help/category/e-mail-marketing-services)
+
+= To redo/improve =
+
+* Support HTML subscription codes:
+	* with security scripts in it (try to add the script directly to the custom registration page, (adding via Extra tab / JS it is not working yet.)
+* Redirecting from registration page to custom webinar page, when logged in as admin...
+Issue: At the moment redirect to default webinar page. (Thanks for Ehtisham for giving detailed issue report)
+Sorry for that - Workaround could be: 
+* Setup the default modern webinar page with sidebar
+* Go to a version before 2.12.0 [PREVIOUS VERSIONS](https://wordpress.org/plugins/webinar-ignition/advanced/)
+
+= 2.12.1 10.11.2022 =
+
+* Fix: HTML subscription code, transferring again, was not during redo. sorry for that.
+To transfer missed contact: Please go to the "Live Console" and "Participants" and export the attendees list in CSV.
+The CSV you can import into your email marketing provider. Sorry again.
+* Fix: AR form checkbox not submitting 
+* Change: AR form code cleanup
+
+* Fix: After attending the webinar lead status keeps unchanged, when webinar has custom pages.
+
+* Updated: Translation of all 16 languages (84 new strings added. 25 obsolete strings removed)
+* Added: Hungarian, Turkish 
+
+
+= 2.12.0 31.10.2022 =
+
+First the most user experience the main focus of the release was the webinar room build inside your page builder and added functionality by WebinarIgnition shortcodes.
+Second the redirection system and "Single Lead User" (only one user per registration) was total updated, that's why the release took so long to built/test and also fixes where delayed.
+
+
+To be 100% sure it is working please test your webinars with the newest version and 
+[report issues here.)](https://webinarignition.tawk.help/)
+
+* Redone: Redirect system from one page to an other
+* Redone: Preview functionality, now you can preview every shortcode customised page with your page builder
+* Redone: "Webinar is over" functionality, to view the evergreen webinar (including
+replay) only once to the user.
+Improvement: Redo "Single Lead" feature for EG webinars 
+Change: Set lead status to "attending" when in the webinar 
+Change: Display already watching somewhere else message, when same lead opened in other browser window, and has attending status 
+Change: Unset attending status when browser/tab gets closed without finishing the webinar
+[See article for all "Webinar is over" cases)](https://webinarignition.tawk.help/article/webinar-is-over-is-viewed-on-evergreen-webinar)
+
+= Beautiful custom (Shortcodes) webinar room CTAs with transparency, max-wight and keep showing at the end of the webinar =
+
+* Added: most of the default webinar room to the webinar page could now be created by shortcodes
+* Added: Call-to-Action (CTA) in video overlay (not side bar shortcode yet, write us if you need it)
+* Added: Multiple CTA stay when video is ended (and no redirection URL is set)
+So attendee has the chance to successfully use your CTA.
+* NEEDED?: Also you can delay the redirect for x seconds.
+[Please respond if you need this feature)](https://webinarignition.tawk.help/article/webinar-is-over-is-viewed-on-evergreen-webinar)
+
+New: Added lead_status column to live webinar leads table
+* Fixed: admin email notifications on new registrations on instant webinars.
+Missed contacts please get via the CSV export "live console" / "participants" / "CSV Export"
+* Fixed: Former webinar room design, shows double black video when video is not auto playing
+* Fix: Default registration page not loading all necessary files
+* Fix: PHP error for missing CTAs
+* Fix: Register and load countdown scripts on shortcodes early
+* Fix: ty_countdown shortcode timer
+
+Idea:
+Use the success tracking pixel from the "live console" / "participants" / "goal tracking" to track successful CTA execution and sent via webhook to your CRM ect.
+
+= 2.11.0 05.09.2022 =
+
+= Usability fixes =
+
+* Fixed: Improvement: Retrieve Webinar ID from page meta
+* Change: on all pages, Hide outdated "Link to WebinarIgnition" metabox (dropdown to select the registration page)
+Background: Was used when only the former registration code was used. 
+this registration code we not changed with this update.
+* Fix: Added links to admin dashboard, for easier navigation to MASS edit Webinars 
+Benefits: Now you can STRG(WIn) or CMD(Mac) + click to open webinar in new tabs
+* Fix: Truncate text with "..." 
+Benefits: more clean when have long webinar titles on admin dashboard that shows the list of webinars
+* Changed: Sort pages Shortcode dropdowns by name, added page ID for easier selection
+Benefits: quicker connect pages with shortcodes to replace the default pages.
+Hint: Type in the ID to quickly find your page
+* Fix: Sync Custom Reg page selection from webinar dashboard and design/Shortcodes tab
+
+= 2.10.9 01.09.2022 =
+
+* Fixed: Console CSV export
+Now all custom fields are exported
+no data is lost as it was saved in DB and we now just call it different.
+
+Please consider the webhooks option to transfer data instantly anywhere
+[See article for webhook details)](https://webinarignition.tawk.help/article/outgoing-webhooks-sending-attendees-data-anywhere)
+
+
+= 2.10.8 26.08.2022 =
+
+* Improved: License holder before 01/2021 can now easy switch to Ultimate
+
+All details can be seen inside the plugin when click on the buttons:
+"See why upgrading is essential before version 3" 
+"Success Boost & Trial 30 days & Save 100$ NOW!"
+To see the buttons activate license, bought before 01/2021is, in plugin
+
+Best switch before upcoming version 3.x to have a smooth webinar success.
+
+= 2.10.7 18.08.2022 =
+
+= Custom Registration Shortcode = 
+
+* Improved: Now you can select the custom registration page directly in the dashboard
+Benefits: Fallback page on wrong url/access, to late accessed webinar will be the custom reg. page. Also the preview show the right URL.
+
+= If you use custom registration shortcode please select custom registration page = 
+
+Sure only one registration shortcode per custom registration page ;-)
+
+* Improved: Now on saving settings page will reload so you see the changes immediately.
+Example: You changed/selected the custom registration page and after reloading it shows the right URL ;-)
+
+* Change: Remove "Watched Replay" from webinar console and webhook
+Benefits: Keep it simple and how if watched the webinar or not. 
+Question: Do you need watched replay for live webinars: 
+If they attended for live or watched the replay/recorded webinar*
+
+* Fix: Unable to set webinar status to "Attended" for non-logged-in users
+Now you see attended counting again in console, dashboard
+
+= Start the free ultimate boost (01-2022) =
+
+https://www.youtube.com/watch?v=-pt6nTJ_8cM
+
+= Quick start evergreen webinar the WordPress way (08-2022) =
+
+https://www.youtube.com/watch?v=4xDuq-pJBkY
+
+[Click to see video](https://wordpress.org/plugins/webinar-ignition/#developers)
+[Click to see knowledge base article ](https://webinarignition.tawk.help/article/quick-start-your-evergreen-webinar)
+
+= 2.10.6 14.08.2022 =
+
+Please sent in all bug you find so we can hunt and fix them ;-)
+
+* Improve: Remove any user with the same email address on re-register and keeping only the latest
+* Fix: Former license users see twice the boost image
+* Updated: Evergreen text when using Iframes instead of the recommended MP4
+* Change: On create new Webinar, make Evergreen option default, move Clone to top, display options in group
+
+
+= 2.10.5 10.08.2022 =
+
+= It completely changes the feeling when you test =
+
+* Added: Delete user when reregister for the same webinar
+Benefits: When (you/user) register again for the same webinar the old user is deleted in the console and a new user is created. All notifications will be starting again from the beginning. (Before when reregister old registration date&time was still active).
+Especially for you as Admin, you needed to change email address on every registration, to have the selected/new date & time shown in the thank you page and in emails.
+* Improved: Replace "security" JS variable, with less common variable name using plugin prefix
+Benefits: You have less issues with other plugins and maybe registration date selection dropdown working better.
+
+= 2.10.4 07.08.2022 =
+
+* Fix: "Instant Access" does not show when single week day has multiple times selected.
+* Change: Disable signup email for instant webinar registrations
+* Fix: License class fatal error on Ron´s website Ticket #761
+
+= 100$ Promo for license holder before 01/2021 continued =
+
+* If you have 25 licenses you can save 25 times 100$.
+* Limited time only.
+* You can get discount when install WebinarIgnition and activate your license inside the plugin. 
+[Click to see details about the license activation](https://webinarignition.tawk.help/article/how-can-i-activate-my-license)
+
+= 2.10.3 02.08.2022 =
+
+= Evergreen Webinar Schedule Type "Customized" improvements release =
+Thanks to Victor to bring improvements to us.
+He setup 26 evergreen webinars in 8 languages and 2 different time formats...
+
+* Fixed: 24h time format issues fixed in black list dates, countdown timer, calendar reminders, time zone (user specific/fixed)
+* Improved: Overall registration date/time fields code improvement
+Benefits: You can have webinars in any language and date & time format (PM/AM, 24h)
+* Improved: Disable replay is only working when added "00" in the settings field. Text updated and tested. 
+Benefits you can now disable Replay webinars and attendees can not access the webinar after it is finished.
+* Fix: "Show Day" (long/short) checkbox and output like "Tue August 2, 2022" not appearing for cloned webinars. (Settings are in "extra settings" "date & time")
+
+Hints:
+
+* Evergreen Type: "Fixed", "Delayed" not yet redone, please use "Customized"
+* If you need to have a webinar on a specific date, only black list the dates around this date.
+This can also in some cases let us use the well maintained evergreen webinars instead of live webinars feature. 
+
+= other fixes = 
+
+* Fix: Custom label for checkbox fields does not show after saving AR form
+* Fix: Required checked checkbox not showing checked after saving in AR form 
+* Fix: Mark required fields with asterisk *, and highlight them if missing on submission
+* Change: Disable replay emails, sms, and webhooks for instant leads
+* Change: Scroll to new webhook condition row, when adding new
+
+
+Roadmap: 
+
+* We focus on improving evergreen webinars, 
+* simplify the license system, 
+* redo the plugin completely, 
+* create live webinar feature out of the evergreen code. 
+* After that we will be able to add more features in faster speed. 
+* Features like webinar grid (overview of all webinars)
+* And some more features as surprise 
+* And some more content as surprise,  
+Benefits: all will help you getting more success with WebinarIgnition
+
+
+= 2.10.2 23.07.2022 =
+
+= Shortcodes & Webhooks improvements release =
+
+* New: Registration shortcode on live webinar dashboard (all licenses)
+licenseholder before 01/2021: Please replace [wi_webinar id="171"] shortcode with free ultimate [wi_webinar_block id="171" block="reg_optin_section"] shortcode.
+Both shortcodes are enabled, the old one has issues with the versions after 01/2021 of WebinarIgnition! [Click to see details](https://webinarignition.tawk.help/article/shortcode-sign-up-widget-wi_webinar-id105-outdated) 
+Please replace with the new one. [Click to see details](https://webinarignition.tawk.help/article/create-your-own-designed-webinar-landing-pages_webinar-registration-pages)
+
+https://www.youtube.com/watch?v=pDLm_3_FLyM
+
+[Click to see video](https://wordpress.org/plugins/webinar-ignition/#developers)
+
+* Added: Registration shortcode for evergreen in ultimate free shown in dashboard
+For nice redirection please add the page of the registration in the design/shortcode tab
+
+* Added: OptimizePress3 builder compatibility with all shortcodes
+Reminder to get the shortcodes working: 
+Only one shortcode ID per page. Don´t add two registrations shortcodes to one page.
+Only kind of shortcode per page. Don´t do the same shortcode on the same page more than once. (on page and in popup is already to much ;-))
+Select your custom page in design/shortcodes tab so WebinarIgnition can use it and redirect to the page. 
+
+* Fix: Live webinar date issue
+
+= Calendar/reminder icons on the thank you page =  
+
+* Improved: Hide calendar/sms reminder output when attendee selected instant webinars 
+(if you selected disable "Skip Thank you page for Instant Access webinars").
+Benefits you can show your thank you page CTA, then user click and enter webinar distraction free.
+
+* Fix: Calendar reminder shortcodes
+* Fix: Fatal errors in date functions, on thank you page shortcodes
+
+= Webhooks improved =
+
+Fix: Webhook: Webinar fields did not mapped properly in webhook conditions 
+New: On webhook add/edit screen back to list button 
+New: Implement webhook delete
+New: Webhook saved/deleted successful messages
+
+https://www.youtube.com/watch?v=o3C-2apPxpA
+
+[Click to see new webhooks video](https://wordpress.org/plugins/webinar-ignition/#developers)
+
+
+= 2.10.1 14.07.2022 =
+
+* Fixed: Invalid thank you redirect URL when custom registration page selected, on page reload
+* Secure payment gateway WooCommerce tested and improved
+* Other payment gateway working too
+
+
+= 2.10.0 09.07.2022 =
+
+= The biggest update for evergreen webinars we ever did =
+
+All user benefit from this update, so all update please.
+
+= NEW: Autologin of attendees during registration (all licenses free/paid) =
+
+* Autologin of attendees during registration (enabled by default, evergreen only)
+* Benefits you can now use all the WordPress features of logged in user.
+All plugins, that use logged in user data, will fill user name and email automatically.
+* Example: If user Benny register and you added a group chat to the webinar room then Benny´s name is shown in the online user panel and when he writes a comment Benny is shown near the comment.
+* Good to know:
+1) User are registered and get the rule subscriber.
+2) If you are logged in as an admin your are not logged-in during registration.
+3) You can test auto login log-in in browser incognito window.
+* What can be done: Name and email address is filled out in plugins used on custom pages or in Call-to-Actions (CTAs). CTAs like survey, polls, group/1:1 chat, shop, appointment, ...
+
+See Screencast video for details:
+
+https://www.youtube.com/watch?v=vOJvvaNQSVY
+
+[Click to see video](https://wordpress.org/plugins/webinar-ignition/#developers)
+
+[See knowledge base article about auto login of attendees during registration)](https://webinarignition.tawk.help/article/autologin-of-attendees-during-registration)
+
+= Evergreen webinars Call-to-Action (CTA) Fix/Redone/ADDED Features (all licenses free/paid) =
+
+Brought by user Sandra, then Idrees the developer redone the CTA code and together with the ideas of owner Tobias. It took us one months of developing and testing.
+
+If you have issues with wrong numbered CTAs Title (should be 1,2,3-x, not 1,4,2) or "click here" named tabs in webinar room than please delete the not working CTAs, copy all content and tab names to a text file as backup. Sorry for the extra work, i did the same on the [demo](https://webinarignition.com/demo/)
+
+* Added: Nice transition to show the sidebar with CTA and remove the white space.
+* Improved: CTA in sidebar and overlay now triggered by video time instead of cookie which is more stable
+* Added: Possible to setup CTAs in sidebar and in overlay (over the video) at the same time
+* Added: Multiple CTA can now be viewed in the sidebar at the same time
+Benefits: When have the same time, all tabs will be shown in sidebar.
+If you only want one tab at a time, set the time not overlaping like
+00:00 - 00:15 and 00:16 - 00:22
+* Updated: "Show CTAs based on time in Video" is now default, on new webinars (before default was "Allways show CTA"), which hidden the multiple CTA feature
+* Added: In Preview admins can no jump to any time also when video overlay CTA is shown.
+* Updated: Disable CTA button by leaving the button field empty instead of writing "off" in the field
+* Added: Thanks Ruddy for bringing up that webinar video can be full width and show a CTA on time. [See Article with video for details)](https://webinarignition.tawk.help/article/full-width-evergreen-webinar-video-with-timed-overlay-and-sidebar-call-to-actions)
+
+https://www.youtube.com/watch?v=d7E5LEJMXvQ
+
+[Click to see video](https://wordpress.org/plugins/webinar-ignition/#developers)
+
+
+= Added: Webhooks "beta" (Ultimate Trial/Paid only at the moment) =
+
+you can find settings under global webinar /settings/webhooks  (in final webhooks version you can test transfer in any version)
+Working nice already.
+[See article for webhook details (Will be continuously updated )](https://webinarignition.tawk.help/article/outgoing-webhooks-sending-attendees-data-anywhere)
+Roadmap: Update video, to answer more of your questions, templates for mapping and comparing values will be added aproxm. this months and then it is no beta anymore.
+
+See Screencast video for details:
+
+https://www.youtube.com/watch?v=BKbgSjv5rVw
+
+[Click to see video](https://wordpress.org/plugins/webinar-ignition/#developers)
+
+= More live chat and group chat plugins are ready for you to integrate (all licenses free/paid) =
+
+[See articles for live/group chat details](https://webinarignition.tawk.help/category/chat)
+
+= Updated DEMO =
+
+[See demo automated webinar with real gifts](https://webinarignition.com/demo/)
+
+= other changes =
+
+* Added: WP 6.0 Compatible
+* Fixed: Licenses system for licenses before 01/2021
+* Added: new logo, icon and powerful red color shows new owner (since 01/2021) and new ultimate license level on top. Licenses bought before 01/2021 still working, supported and can update to the latest version to get a more stable webinar.
+
+We would love to hear what is not working, whats needed, so we can improve. [Please write us in Support Chat](https://webinarignition.tawk.help/)
+
+Thank you Melva, Dirk, Viktor, and all users for patients, constantly testing and giving valuable input. We could grow so far only together with you. Thank you.
+
+= Last Milestones =
+
+= Paid webinars with WooCommerce payments (Live&evergreen webinars) =
+
+https://www.youtube.com/watch?v=d7XC4LRv1p8
+
+[Click to see video](https://wordpress.org/plugins/webinar-ignition/#developers)
+
+[See article and video for details ](https://webinarignition.tawk.help/article/creating-paid-webinars)
+
+= Multi language and flexible date&time format (Live&evergreen webinars) =
+Create webinar in your language/date&time format when creating a new webinar.
+
+[Maybe you want to add language before create a new webinar: See article and video for details ](https://webinarignition.tawk.help/article/add-language-to-webinarignition)
+
+If you have issues with 2.10.0. deinstall all WebinarIgnition plugins free/premium.
+Than you can download and downgrade to 2.9.1.2. by uploading the the fallback version via add "new plugin" and click downgrade.
+[Download 2.9.1.2](https://downloads.wordpress.org/plugin/webinar-ignition.2.9.1.2.zip)
+Please report your needed improvements via the chat at the bottom right [Support Chat](https://webinarignition.tawk.help)
+
+= 2.9.1.2 16.05.2022 =
+
+Fixes brought by user Juan, using elementor Popup
+
+* Fix: "the_content" error message when registration shortcodes added to elementor Popup (on edit popup screen)
+* Fix: JS error when registration shortcodes added to elementor Popup
+* Fix: GET index PHP warning for ar_utm_source field
+
+Now Elementor page builder & Popup is working stable.
+
+= 2.9.1.1 28.04.2022 =
+
+Fixes brought by users
+
+* Fix: Missing param notice
+* Fix: Invalid JS time format value (Thanks Mark for bringing that to us)
+* Fix: wp_readonly method not found (Thanks Umangi for bringing that to us)
+
+= Last Milestones =
+
+= Paid webinars with WooCommerce payments (Live&evergreen webinars) =
+
+[See article and video for details](https://webinarignition.tawk.help/article/creating-paid-webinars)
+
+= Multi language and flexible date&time format (Live&evergreen webinars) =
+Create webinar in your language/date&time format when creating a new webinar.
+
+[Maybe you want to add language before create a new webinar: See article and video for details](https://webinarignition.tawk.help/article/add-language-to-webinarignition)
+
+
+= 2.9.1.0 26.04.2022 =
+
+= Paid webinars (fixed, + WooCommerce payments) & languages & fixes =
+
+= WooCommerce Payments v 1.0 =
+(Ultimate paid, trial, free after opt-in (only evergreen))
+
+Access the WooCommerce payments tab in
+webinar settings/registration page/paid webinar/enable paid webinar
+
+* Added: Get user details from WC order details and add to registration page
+Working for logged-in and guest users
+* User data used by priority: Billing > profile email address and shipping > billing name
+checkout page
+* Added: Make name and email fields readonly for paid EG webinars
+* Added: Make the URL not shareable/changeable
+Benefits: Secured paid webinars
+
+[See article and video for details](https://webinarignition.tawk.help/article/creating-paid-webinars)
+
+Other changes:
+
+* Added: Autofill WP logged in user details (all licenses)
+Benefits: When user is logged in, automatically name and e-mail is filled in the registration form
+* Fixed: PayPal, Stripe payments
+for evergreen webinars, no date&time dropdown was shown and thrown an error.
+* Fixed: Some translations on paid webinar registration pages where not in webinar language
+Fix: Form builder dropdown field value unavailable on form submit
+Benefits: Now you can transfer dropdown value into a text field
+Fix: Some text translation not working on paid webinars registration page
+Fix: HR language breaking webinar dashboard
+Fix: Error on registration form for improper PHP ending
+Fix: Google Util library curly bracket issue
+Fix: Console URL Fix: Seconds precision notices on WIAjax class
+Fix: Redirection to countdown page from email link for live webinars Fix: Fallback/wrong URL if custom registration page is set
+Fix: "reg_optin_form_compact" shortcode to WC secure link condition
+Fix: "already watching this webinar" notice translation Fix: "already watching this webinar" custom registration page redirection
+Fix: JS error when date dropdown loaded on custom registration page
+Fix: Fatal error on page edit screen when "countdown_counter" shortcode is used
+Fix: "webinarignition_get_lead_info" function
+Fix: Email link does not redirect to thankyou countdown page
+Fix: Change email "Join the webinar!" link as it displayed in Design/Shortcode tab
+Fix: Registration dropdown does not load when "reg_optin_dates" shortcode used
+
+= Updated languages list =
+(Ultimate paid, trial, free after opt-in (only evergreen))
+
+* Made languages more stable by updating/double checked parameter handling.
+
+Machine translated (DeepL):
+LTR
+* es_ES, 	Spanish (Spain)
+* es_MX, 	Spanish (Mexico)
+* fr_FR, 	French (France)
+* hi_IN,	Hindi (India) NEW
+* HR,		Croatian (Croatia) NEW
+* it_IT, 	Italian (Italy)
+* JA   , 	Japanese (Japan)
+* nl_NL, 	Dutch (Netherland)
+* pt_BR, 	Portuguese (Brazil)
+* ru_RU, 	Russian (Russia)
+* UK   , 	Ukrainian (Ukraine)
+* zh_CN, 	Chinese (China)
+
+RTL
+* UR   , 	Urdu (Pakistan and India) (!) site needs to be english
+* More translations for free on request via chat
+
+Hand translated:
+
+* us_US, English (default)
+* de_DE, German informal (NOT SIE) (used for all german speaking countries)
+
+(!): Webinar settings in this language NOT working yet.
+Please use english as site language, to have the settings in english and the Urdu webinar working.
+On create webinar set Urdu and "Use webinar language in webinar settings?" to "No".
+
+= Social translation - win win win =
+
+As we all can not speak all languages please help the community to hand translate the deepL pre translated languages.
+I went through all german strings and found only some not matching and updated them.
+You can do the same with free loco translate plugin.
+Please move the language to the custom loco folder to be save when updating plugin.
+[See article and video for details](https://webinarignition.tawk.help/article/add-language-to-webinarignition)
+
+= Add new language =
+
+Any language available in loco translate, we can pre translate with deepL.
+And it can be used inside an individual webinar.
+Benefits: All example content and emails ect. is in your language and you can 100% target your audience in your language.
+PS: The date & time formats for your language will be automatically downloaded from wp.org on create a new webinar.
+[See article and video for details](https://webinarignition.tawk.help/article/add-language-to-webinarignition)
+
+
+= 2.9.0.0 07.04.2022 =
+
+= Language is important and culture. =
+Now you can bring your culture inside the webinar.
+Attendees feel more home in your webinars...
+
+Language/Internationalisation Milestone release!
+100% target your audience in your country.
+Language and date&time format per webinar
+A lot of bugfixes solved - All please update
+
+= Video shows some possibilities =
+
+https://www.youtube.com/watch?v=ZgN_OpVnK0k
+
+Some cases
+
+* language per webinar independent from the site language
+	english site with german, french, chinese webinar
+	chinese site with german, french, english webinar
+* date & time format per webinar independent from the site date & time format
+	german, spanish, chinese, add week days names, comas, flexible order ect.
+	Also in evergreen you can have weekdays name again like "Tue 5. April 2022"
+* Language date & time format on registration, reminder emails, webinar settings,...
+* Working on on default pages and landing pages with shortcodes
+
+* Site language will be used as default backend settings language as you are used to.
+Or you can enable to use webinar language for settings on create the webinar.
+
+= How you get all Ultimate features for free? =
+
+* Download the Wordpress.org version inside your WP backend/add new plugins,
+* opt-in (click "allow and continue"),
+* confirmed email address and
+* start the 30 days free trial with reminder before trial ending.
+
+<strong>The license system is designed that you can start earning money before pay for a license.
+Your success is our success.</strong>
+
+License requirements for language per webinar feature:
+
+* In free version for evergreen webinars (50 registrations/months, after opt-in/confirm email address)
+* Ultimate trial for 30 days: unlimited live and 500 evergreen webinar registrations
+* Ultimate paid for unlimited live and evergreen webinars
+* Not working with non ultimate plans like basic, premium, enterprise, developer.
+
+License requirements for date&time format per webinar:
+
+* Free in all versions
+Access on create new webinars and extra settings tab "date & time"
+
+= languages =
+
+Machine translated (DeepL):
+LTR
+* es_ES, 	Spanish (Spain)
+* es_MX, 	Spanish (Mexico)
+* fr_FR, 	French (France)
+* hi_IN,	Hindi (India)
+* HR,		Croatian (Croatia)
+* it_IT, 	Italian (Italy)
+* JA   , 	Japanese (Japan)
+* nl_NL, 	Dutch (Netherland)
+* pt_BR, 	Portuguese (Brazil)
+* ru_RU, 	Russian (Russia)
+* UK   , 	Ukrainian (Ukraine)
+* zh_CN, 	Chinese (China)
+
+RTL
+* UR   , 	Urdu (Pakistan and India) (!) site needs to be english
+* More translations for free on request via chat
+
+Hand translated:
+
+* us_US, English (default)
+* de_DE, German informal (NOT SIE) (used for all german speaking countries)
+
+(!): Webinar settings in this language NOT working yet.
+Please use english as site language, to have the settings in english and the Urdu webinar working.
+On create webinar set Urdu and "Use webinar language in webinar settings?" to "No".
+
+= Social translation - win win win =
+
+As we all can not speak all languages please help the community to hand translate the deepL pre translated languages.
+I went through all german strings and found only some not matching and updated them.
+You can do the same with free loco translate plugin.
+Please move the language to the custom loco folder to be save when updating plugin.
+[See article and video for details](https://webinarignition.tawk.help/article/add-language-to-webinarignition)
+
+= Add new languages =
+
+Any language available in loco translate, we can pre translate with deepL.
+And it can be used inside an individual webinar.
+Benefits: All example content and emails ect. is in your language and you can 100% target your audience in your language.
+PS: The date & time formats for your language will be automatically downloaded from wp.org on create a new webinar.
+[See article and video for details](https://webinarignition.tawk.help/article/add-language-to-webinarignition)
+
+= Warning =
+
+To avoid mixed languages inside one webinar we define the site language as webinar language to all current webinars.
+What you can do: Change the site language to the default language of your webinars.
+[See article for details ](https://webinarignition.tawk.help/article/auto-set-webinar-language-for-webinars-created-before-version-290)
+
+Bugfix:
+
+* Change: Fix missing DB columns issue when moving from old version to 2.9
+* Fix: hash_ID error on fresh WP install
+* Fix: Missing webinar_permalink error when create a new webinar, and visit "View Thank You Page"
+* fixed bug causing incorrect link for imported webinars
+* remove "UTC" by default
+* fixed webinar import & clone functionality
+* refactored code to fix undefined properties
+* fixed uncaught Twilio exception
+* fixed issue with registration page js caused by strings with backslashes
+* fixed date language in evergreen registration-page date drop-down
+* fixed date display for previuosly existing webinars
+* and many more code related fixes
+
+Next time we will release bugfixs independently to the milestone.
+Benefits: You get the bugfix quicker.
+
+PS: The testing platform had PHP 8.1.3 installed and plugin is working well. 
+
+PPS: Whats next? 
+
+* WooCommerce integration
+* Webinar grid, show all your webinars in a grid
+* Webhooks incoming and outgoing
+* What you desperately need? Tell us in chat.
+
+= 2.8.12 2022.02.24 =
+
+* Security fix: In one of our used libraries 
+All update please!
+
+= You still on plugin version 1.x ? update NOW =
+
+* Version 1.x provide only simple live webinars 
+* and is unmaintained, maybe contains security issues ect.
+* With the latest version, when you opt-in (agree on popup)
+* you have non ultimate well maintained live webinar features.
+* You get 50 registrations on evergreen webinars for free
+* and every months again and 
+* with all ultimate features 
+* like shortcodes to add webinar features to your design, 
+* beautiful webinar room and email reminders.
+* Different languages like english, german
+* Unlimited & flexible evergreen dates & times
+* We offer a 30 days free trial 
+* to also test all ultimate LIVE features
+
+In sum you get more webinar success when updating.
+
+= 2.8.11 2022.02.04 =
+
+* As no issues with freemius v. 2.5 RC-1 reported, for us it is now stable and we remove the RC
+* Added: Support for multiple currencies in stripe
+
+Forecast: We will soon release:
+
+* Language per webinar, independent to the site language
+* Date & time format per webinar, independent to the site date & time format
+Benefits: You can now have a your webinars matching countries language and date & time format. User feel more home with this feature.
+
+= 2.8.10-rc.4 2022.01.26 =
+
+* Fixed: First and lastname fields not validating when required
+
+= 2.8.10-rc.3 2022.01.25 =
+
+* Small fix for old license users
+* Fixed: Bug causing incorrect webinar_start_time
+
+= 2.8.10-rc.2 2022.01.23 =
+
+* Small fix for old license users
+
+= 2.8.10-rc.1 2022.01.21 =
+
+New Freemius version with 
+
+* Site Clone Resolution, 
+* Deactivation Feedback UX Enhancements, 
+* Assets Mix-Up, 
+* and More
+
+Benefits for you: It makes handling easier with 
+
+* plugin license switching to different user, 
+* cloned sites, 
+* no feedback on deactivating on each freemius powered plugin, ...
+
+Why do RC (Release Candidate) instead of a full release? Because freemius declared it as RC.
+
+In my opinion it is smooth enough and i also translated german. Still some strings are untranslated by freemius.
+
+[All details about the freemius update here](https://freemius.com/blog/wordpress-sdk-250-clone-resolution-deactivation-feedback-ux-enhancement-2/)
+
+PS: Ultimate trial version is now also showing completed translated webinars.
+PPS: I found out we missed the free version showing the full translated webinar.
+We will add the free version also to show all stings translated on the next update.
+
+= 2.8.9 2022.01.16 =
+
+Thank you for a nice 2021. We appreciate all your trust in us. 
+We proud to run WebinarIgnition as the new owner since 01.2021.
+
+**Localisation:**
+Notice: Please make sure you have an ultimate level (free & opt-in, trial, paid) to create new webinars in your language.
+ 
+* Added: Evergreen dates depend on WP settings for example DE is now: 10. Januar 2022
+Notice: For evergreen webinars this removes the weekday in dropdown. You can get it back by globally set date format to l, j. F Y. We provide a default solution to bring it back.
+* Updated: Date formatting for non-English display in calendar icon to "9."
+* Updated: More strings for translation & updated all languages
+* Added: 'hours' translation on countdown page
+Conclusion: You can now with a german, spanish, french site have complete webinars in your language. From notification email, to text examples or webinar settings.
+
+Please still stay with one site language and expect the same language inside the webinar. We working on having a language per webinar.
+
+**Available languages:**
+
+* German, english is hand translated 
+* Spanish, french, Portuguese (Brazil) is machine translated.
+* For other languages we can provide DeepL pre translation. 
+We can show you how to improve translation and share it with all user. 
+Sure with your site URL mentioned if you like. 
+Chat with us about your language needs.
+
+**Update the german language via the global WP Update at the bottom.**
+
+**Global page footer:**
+
+* Added: Global footer to webinar page template and moved settings from email template to global settings.
+Benefits: Now all pages and the email have the same nice footer.
+On next update the footer by default will be: "{privacy_policy} | {imprint} | © Copyright {year} {site_title}" and "imprint" will be translatable.
+
+**E-mail signature:**
+
+* Added: e-mail signature in settings / email template tab
+Benefits: You like and need to add more in email footer than on the webinar page footer? Then the e-mail signature is the right place for it.
+Signature will be moved to the grey area after the mail content and before the footer in next update. 
+
+**Other changes:**
+
+* Updated: 1-click text string with an KlickTipp and MailChimp example
+* Added: made time-selection field more flexible, you can now select in 15 minutes steps
+* Fixed: Lead ID to calendar links for live webinars
+Benefits: User can also access webinar via the link in calendar after the fix below.
+* Fixed: Bug causing ?live link without Lead ID to be lead to live webinar page
+Benefits: Without an Lead ID nobody can access webinar anymore and will be redirected to registration page.
+
+= Please see video: "Best free WordPress webinar start with all ultimate features" =
+
+https://www.youtube.com/watch?v=MM0q2bcQo-A
+
+[Click to see video](https://wordpress.org/plugins/webinar-ignition/#developers)
+
+
+**Enabled by default, when ultimate trial/paid is active and you create a new webinar:**
+
+Live & Evergreen:
+
+* Modern webinar room with flexible sidebar
+* Shortcodes to create you own CI webinar experience. 
+Just add the webinar functionality with shortcodes to your self designed pages.
+* You can have different languages
+* Elementor, Oxygen Builder Templates
+* White Label the Webinar Console
+* Lock-out later comers
+
+Live: 
+
+* 2-way Q&A chat system: multi staff, hosts
+
+Evergreen:
+
+* 500 registrations
+* Unlimited & flexible evergreen dates & times
+* Sales boost via Multiple CallToActions INSIDE the webinar room
+
+= 2.8.8 2021.12.30 =
+
+Improved: Date translation functions in 
+
+* evergreen webinars
+* Thank you page
+* webinar settings page
+
+= 2.8.7 2021.12.24 =
+
+Fixed: Some SQL Injection Vulnerabilties (Thanks Lucio)
+Added: Date translation functions
+
+= 2.8.6 2021.12.22 =
+
+= Webinar in your own language =
+
+* Webinar in your own language started (we made content in fields translateable)
+Benefits: If your site is in german and you create a new webinar the webinar examples will be in german and most of the date formats too.
+Still some strings left to translate and some time format to take from WP settings...
+Do not mix languages e.g. not change site language and create new webinar.
+We will improve this.
+Best working if you stay with one language like DE or ES or EN.
+* Weekdays- and months names in calendar icon, ... now automatically taken from WP settings.
+* Status of translation:
+At the moment german language is fully hand translated and checked.
+DeepL machine translated: French (France), Spanish (Mexico), Portuguese (Brazil), Spanish (Spain)
+
+Roadmap: Spanish (Spain) translation will be hand checked by Stephanie beginning of next year.
+You can hand check a pre DeepL translated language (We do it for you) and earn a 720 $ lifetime license for your efforts.
+
+* Fixed: Show branding image when selected
+* Fixed: Uncaught TypeError: property_exists(): Argument #1 ($object_or_class) must be of type object|string
+
+
+= 2.8.1 - 2.8.5 (29.11.2021) changes + 2.9.0 Roadmap see below =
+
+= 2.8.0 2021.10.16 =
+
+= Global email templates - Added after 2 months development =
+Benefits: Beautiful and high converting webinar notification emails
+If you create a new webinar in french, spanish (mexican) or german your emails are already translated.
+
+= See first 2 screencast videos for details before updating  = 
+
+1) Setup email template when new live or evergreen webinar created
+
+https://www.youtube.com/watch?v=d7HLKnObnEU
+
+2) On current webinars, how to switch to the best notification emails and delete old footer and enable new footer:
+
+https://www.youtube.com/watch?v=gLttbNghNeI
+
+= Be aware ! =
+
+* Current email content will be used inside the new template
+* Test how you emails are look like after the update
+On each mail you can click the preview button and sent preview
+Also you can preview and setup email template under "Settings" in the main left WP menu
+* See video how to delete old footer and enable new footer on current notifications.
+
+Deutsche Emails bei neu erstellten Webinaren so einfach geht es ;-) 
+
+https://www.youtube.com/watch?v=6vrXjblhLt4
+
+[Complete KB article](https://webinarignition.tawk.help/article/beautiful-and-high-converting-webinar-notification-emails)
+
+* Mobile responsive mails
+* Translated emails by us
+* Default languages: german, english (both hand translated), Spanish (Mexican), French (Both machine DeepL pre translated, you can check translation and get a 200$ discount on your next lifetime license). We can pre translate other languages as well and you improve them for a 200 $ coupon too. ;-)
+* Translatable emails via Loco translate
+Benefits: When site is e.g. german during creating new webinar emails will be forever in german
+* Updated notification emails content
+* One beautiful styled template for all emails
+* Custom logo and colors, default free logo included
+* Define email preview text for best receiver experience and high open rates
+they see: Sender name, subject, preview text before they open the email.
+* Added, updated: Webinar requirements to hour-before and live email notification
+* Added: Clean global footer below the mail content
+* Removed: Default WebinarIgnition footer
+* Added: One auto generated footer with imprint, privacy links and website name...
+You can still customize the footer individually.
+
+= More in version 2.8.0 =
+
+* Added: Dropdown registration fields
+Benefits: Let user only select predefined options
+[Complete KB article](https://webinarignition.tawk.help/article/dropdown-fields-in-webinar-registration)
+* Added: update notification times when live event time is updated
+* Renamed: Second "WebinarIgnition" menu item to "Webinars"
+* Fixed: Day-before notification bug for evergreen webinars progress on new email template
+
+= 2.8.5 2021.11.29 =
+
+* Added/updated: Default from_email and from_name for email notifications
+Benefits: By default and if fields are empty, instead of sending from the logged in admin email address with name "WordPress" sending from:
+Sender email: Site URL with leading "webinar@" 
+Example: https://dummy.santegra-international.com
+-email address will be>
+webinar@dummy.santegra-international.com
+Sender name: Will be "Site Title" from your sites "General Settings"
+* Updated: German Translation to fix better and translated new SMTP settings, notification email strings (Will only be used on new created webinars).
+* Updated: French, Spanish (Spain) Translation
+* Added: Spanish (Mexico), Portuguese (Brazil)
+(All four machine are DeepL pre translated, you can check translation and get a 200$ discount on your next lifetime license). We can pre translate other languages as well and you improve them for a 200 $ coupon too. ;-)
+
+https://www.youtube.com/watch?v=Xg1UsyrJeRE
+
+* Fixed: Bugs found during support (Thank you Amir)
+* Fixed: Issue of undefined variables in auto-webinar settings page
+* Fixed: Issue with undefined index in weekdays selection function
+* Fixed: Issue with undefined variable "$setTime" in webinar creation function
+
+= 2.8.4 2021.11.18 =
+
+Lost of bug hunting (Found by Amirs Awesome Customer Support) and more beautiful Email sender, email address, ... Roadmap
+
+Tip: If some new features seem not to be working please do a shift + page refresh 
+That cleans some browser cache and for example the sender address and name are used in mails.
+If you like to test emails sender ect. use the Spammyness test and add your email address.
+
+* Added: Added option to Auto Clean Log Database
+Benefits: In Main settings you can clean up 14 days and older log files, to save DB space.
+* Added: Email Sender Name default(if empty field): Site title from WP Settings
+* Added: Separated Email Sender settings from SMTP settings
+Benefits: When not added SMTP settings (to not run into the SMTP limit) you are able to change sender name, email and reply to address.
+* Added: CSV export questions with answers
+
+* Fixed: Resolved issue of chat Q&A not displaying.
+* Fixed: WebinarIgnition_Logs::getLogs() refactored code
+Benefits: Email- and TXT-, Notification not gets logged
+When duplicating, exporting webinar new webinar does not contains any logs.
+* Fixed: webinarignition_get_lead_auto_callback()
+* Fixed: Redirect to internal support page, Quick start, after activation
+* Fixed: PHP Deprecated: Invalid characters passed for attempted conversion generated in webinarignition_get_text_color_from_bg_color()
+* Fixed undefined property footer_copy bug
+* Fixed: Invalid date for replay notification when webinar date is changed
+* Fixed: Fixed: Undefined index: cloneID
+
+= 2.8.3 2021.10.27 =
+
+* Fixed: Set mail status to "queued" when on live webinars start date & time changed.
+Benefits: You do not have to turn on each notification one by one.
+Also on cloned webinars the notifications starting again when date changed.
+(Thanks Mark T. for brining this up)
+
+= 2.8.2 2021.10.26 =
+
+* Fixed: Fix conflicts when merged code on our side
+Now all commits are included and version is more stable
+* Fixed: Bug preventing video from loading on webinar page
+* Added: Optimization for live webinars
+Now you can run live webinars with more attendees with less server usage.
+More Optimization to come and also we will recommend a server setup that is auto scaling and paid by hours.
+* Fixed: Default email header & footer text colors
+* Fixed: Autoregistering for support staff
+* Added: Live webinar status switch to console
+* Added: Hide smtp settings if "Use WebinarIgnition SMTP Settings?" is "No"
+* Fixed: Bug preventing video from loading on webinar page
+* Added: Default values on new created webinars: Enabled modern template on evergreen and on live webinars when (last only when ultimate license is activated), enabled 2 way chat, disabled sms reminder
+
+Please remember the 2 way chat in live webinars is an ultimate feature.
+
+My suggestion is to trial the ultimate version to make sure you tested all features mentioned here.
+
+= 2.8.1 2021.10.14 =
+
+If you are updating from a version below 2.8 please look at the video below, version 2.8.0 release notes, before updating.
+
+* Fixed: autoresponder iframe sending fix
+Benefits: Now any autoresponder like mail chimp, get response is receiving data without using Iframe, which causes errors during transferring e.g. with get response. Transferring now work again, please test it with two new email address to be sure transferring. 
+Tip: Not transferred contacts you can export in the live console. 
+Access the console in each webinar Dashboard page and click "Show Live Console". 
+In Console click "Manage Registrants" tab and export CSV and import into your AR Autoresponder.
+ 
+[Article how to connect your AR](https://webinarignition.tawk.help/article/ar-setup-connecting-your-auto-responder-service
+)
+
+= Roadmap for next version 2.9.0: =
+
+Whole text translate able
+Benefits: When your site is in german not only the emails are in german also the example texts are in german or other languages (done via our support or loco translate)
+
+[Hand in your ideas here: ](https://webinarignition.com/vote-4-features-webinar-software/)
+
+= 2.7.1 2021.09.26 =
+
+* Added: Multisite support (First MS release, please report issues ASAP)
+
+* Added: Chat Q&A in live webinars (Ultimate version only, trial to use it)
+
+https://www.youtube.com/watch?v=WO-i8ZozjTI
+
+To activate open live webinar settings, to to live webinar tab, Questions / Answer Area and switch to "Chat Q&A"
+Benefits: 
+
+* Directly answer questions in console and attendee see answer immediately
+* Optional sent answer via email
+* Add staff members to answer questions only
+* Add extra hosts to manage webinar live console
+
+* Black / White list for event email domain for attendees
+Enter the Domains that you DO NOT/DO want to have access to the event.
+* Added footer for console: 
+Setup under: Extra settings / Live Console / Footer Area Content
+Benefits: White Label console completely e.g. when accessed by staff or extra hosts
+* Updated: Live Viewers On Webinar to update every 10 seconds
+
+* Added: PHP 7.2.5 minimum requirements, WP requires minimum 7.4.x 
+Requirement was there before but not shown officially.
+Benefits: If you are above 7.2.5 you can be sure plugin is activating.
+
+* Updated: German language, other languages on next update.
+* Fixed: webinar page background color bug
+
+= 2.6.7.2 2021.09.05 =
+
+* Fix of the fix: 1 day before live emails from being sent, sorry.
+
+= 2.6.7.1 2021.09.05 =
+
+* Fix of the fix: 1 day before live emails from being sent, sorry.
+
+= 2.6.7 2021.09.05 =
+
+* Fixed: 1 day before live emails from being sent
+WARNING! BEFORE you update! Set the "Status Of Email" to "Email Has Been Sent" to avoid sending the reminder when the webinar is already closer than one day or done.
+Only do for the "1 day before live emails"
+Thanks Doris and Jorge T. for reporting the bug.
+* Fixed: fixed syntax error in Q&A (Thanks Amir)
+
+= 2.6.6 2021.09.03 =
+
+Thanks Mark for the nice Q&A improvement ideas you ordered
+
+* Added: Autoregister support staff URLs
+* Added: Autologin for additional hosts URLs
+* Added: Security features to multiple host and support
+Benefit: Register new Webinar hosts and staff members without access WordPress
+Better they can register them self via a secure link. see video
+
+https://www.youtube.com/watch?v=H7r45CQ0ctw
+
+Roadmap for version 2.7.0: 2 Way chat, released in the next week
+
+* Fixed: Console icon CSS issue
+* Fixed: Console Improve live viewers counter
+* Fixed: Default registration page issue on mobile caused by autoptomize plugin css code optimization
+
+
+= 2.6.5 2021.08.28 =
+
+* Fixed: In evergreen webinar when used MP4 source not showing CTA (Thanks Juli for your patience, for bringing this issue up and that we could check, test the success directly on your site. Thanks Developer Vlad and Amir for the work late time and on weekend)
+
+= 2.6.3 + 2.6.4 2021.08.25 =
+
+* Fixed: Issue with not updating Q&A list in console
+
+Under "Extra Settings" tab / "Live Console"
+
+* Added: Section to add custom code to Console footer (Live & Evergreen)
+Benefit: [You can add group chat with admin rights inside the console](https://webinarignition.tawk.help/article/group-chat-in-ctas_permanetly-in-sidebar) and you can add the gtranslate plugin and translate all messages you receive instantly. [Any Shortcodes, iframe ect should be working.](https://webinarignition.tawk.help/article/do-you-also-have-only-one-action-in-webinar)
+* Added: Feature to change logo in console (Live & Evergreen)
+* Added: Set any URL and button text in live console on Button 'Go to Youtube Live' (Only Live)
+
+
+* Ongoing: CTA in Live only showing up, again after reload page, when change content (add space) and save CTA.
+[See screencast for details and why we implemented this behavior:](http://somup.com/crjToIriF5)
+Goal after finished development: Show CTA when activated constantly. Amir is working on it.
+
+= 2.6.2 2021.08.03 =
+
+* Fixed: CTA in overlay issue
+Solves showing only a white line in rare cases and not the CTA
+
+= 2.6.1 2021.07.26 =
+
+Evergreen webinars got a big update (Included in the free version, before 2021 license holder read below #1)
+Benefits: Boost your conversions with these unlimited CTA (Call-to-Action) features
+
+= See New CTA =
+
+In promo video with how to setup CTAs part:
+
+https://www.youtube.com/watch?v=sXl3H_R4fHw
+
+
+<a href="https://webinarignition.com/demo" target="_blank">In evergreen webinar demo: (right click and open in new browser tab please)</a>
+
+* Added: CTAs (Call-to-Actions) in sidebar
+Benefit: You can now have CTAs in video overlay, sidebar and both at the same time.
+* Improved: Evergreen connect CTAs to video time on pause, reload
+* Added: Admin can now jump to a CTA when use the video controls
+Benefit: Easy CTA testing
+* Added: Show CTA below video on small screens.
+Benefit: CTA is instead of video height, full height and better to use on mobile
+* Added: Option to remove CTA border on desktop or mobile.
+* Added: Set max width per CTA
+Benefit: When you have a form or something which does not look like good when show full width then reduce the width for this CTA and show only the form with left and right transparent.
+
+* Added: Changelog inside the plugin, with a (1) to notify you on changes
+Benefit: Get new about the latest features inside the plugin
+* Added: Knowledge Base, Chat inside the plugin
+Benefit: You can chat and read, search for solutions and tutorials directly inside the plugin
+
+* Fixed: Add media now working with the default WP media selector. (Version 2.6.1+)
+
+* New tutorial how to [add Wise group chat to webinar](https://webinarignition.tawk.help/article/do-you-also-have-only-one-action-in-webinar)
+
+* Updated tutorial how to [any action (content) inside your webinar room ](https://webinarignition.tawk.help/article/do-you-also-have-only-one-action-in-webinar)
+
+= Roadmap =
+
+in august
+
+* Add a global email footer and disable the webinarignition promo footer by default
+* make plugin completely in your language possible
+Benefits: You open the Plugin and your language is shown. Also for email texts and example content.
+How to: We will DeepL translate the plugin in your language and you just have a look to make translation smooth.
+
+#1 New webinar design and multiple CTAs are only available in Ultimate license level (free, trial, paid), please use the promotion below to get your webinar conversions boosted.
+
+= Ongoing Promotion =
+
+License holder before 2021 can save 252 $ when upgrade to a ultimate lifetime license. They save also on monthly and yearly payments. The promotion is shown directly in the WebinarIgnition dashboard, when license before 2021 is active.
+
+https://www.youtube.com/watch?v=8bpx33A_Bw4
+
+= 2.5.5 2021.07.19 =
+
+* Promotion: License holder before 2021 can save 252 $ when upgrade to a ultimate lifetime license. They save also on monthly and yearly payments. The promotion is shown directly in the WebinarIgnition dashboard, when license before 2021 is active.
+
+https://www.youtube.com/watch?v=8bpx33A_Bw4
+
+* Added: Included redirect to KB on first plugin activation
+* Added: KB via Iframe inside the plugin
+Benefit: Easy search for solutions and chat with the support inside the plugin
+* Removed: Contact us: Please use new support page inside plugin
+* New new ultimate webinar room style
+
+https://www.youtube.com/watch?v=YeDJ6-5mpMo
+
+[Have a look at the new modern webinar room (added 2.5.4) with call to actions in video overlay and live chat in sidebar visit our updated demo:](https://webinarignition.com/demo)
+
+= 2.5.4 2021.07.02 =
+
+* Fixed: In some situations webinar video and call to actions not play (overall browser).
+Background information: This behavior occurs to any mp4 videos and players and is not connected to the plugin. To solve this behavior webinarignition now shows a "Join Webinar" button and webinar starts on click.
+More often video not auto play when you reload a page (Webinar page) with an mp4 video.
+Also to use YouTube video instead of mp4 files does not solve behavior. So stay with mp4 which also supports to resume evergreen webinars on reload or rejoin the webinar.
+
+* Fixed: A lot issue brought to us by our nice users (this users can update too, the fixes you got in your instant quick fix versions are included)
+* New new ultimate webinar room style
+
+https://www.youtube.com/watch?v=YeDJ6-5mpMo
+
+* New Q & A system
+* Refactored Live console (PHP instead of reactJS)
+
+Test all on evergreen webinars in free version or in live when activate/trial an ultimate license.
+More informations and tutorials when release new features officially in version 2.6.0 next days.
+
+[Have a look at the new modern webinar room with call to actions in video overlay and live chat in sidebar visit our updated demo:](https://webinarignition.com/demo)
+
+
+= 2.5.3 2021.06.06 =
+
+Multiple Call-to-Actions (CTAs) with Shortcodes in evergreen webinars
+Can be tested for free after opt-in to Freemius.
+[See DEMO with offer here](https://webinarignition.com/demo)
+[Read article and see video](https://webinarignition.tawk.help/article/do-you-also-have-only-one-action-in-webinar)
+
+* Added: Two or more shortcodes in one CTA
+Benefit: You can use countdown, group chat, WooCommerce shop ect. together
+* Added: [Make free hurrytimer work](https://wordpress.org/plugins/hurrytimer/)
+Benefit: You have now one countdowns per CTA, to show how long the offer last
+
+* Improved: Improve zoom integration
+Benefit: Name from registration will be taken and filled inside the zoom form.
+Benefit: Also Browser and connections details are hidden and this results in a more mobile friendly registration
+
+* Fixed: 1-click registration not working when AR form has more than one hidden field
+Benefit: You can register user with a click of a link to a webinar.
+* Fixed: Script isuue inside time tag tracking pixel field (Please test on your page and report if it is working for you too)
+Benefit: You can add any script for tracking at any time.
+* Fixed: JS to use aspect ratio only for video iframes
+
+Please test all features in free ultimate version after opt-in to freemius.
+
+= 2.5.2 2021.05.17 =
+
+* Added: Required registration fields functionality
+Benefit: All fields can be made required and required fields are marked with "*"
+
+* Added: CTA Integration with simple ajax chat
+Benefit: Name is taken from registration field and added to the chat
+Now you can show group chat with name in an CTA
+
+[See article what you can add to CTAs:
+Use any CTA content to trigger actions in webinar](https://webinarignition.tawk.help/article/use-any-cta-content-to-trigger-actions-in-webinar)
+
+* Fixed: Undefined index issues fixed broken registration shortcode form
+Benefit: "Shortcode Sign Up Widget" like [wi_webinar id='2'] working again.
+
+* Fixed: Fixed error 500 when shortcode registration form is submitted
+* Fixed: Fix console errors, time tags, ...
+Benefit: Registration shortcode e.g. in Elementor Pro working now better
+
+Admins please test webinars always also in browser incognito mode. Especially in evergreen webinars with CTAs time connected to the mp4 video. In browser incognito mode, cookies get cleaned and you see the whole working webinar like your attendees see it.
+
+= 2.5.1 2021.05.06 =
+
+* fixed: Elementor Pro now loading registration shortcode in modal
+Benefit: Now it does in any case. (Thank you Devonn, jamesneedshelppls for bringing this up and for beeing patient)
+* Hint: If you are on non Pro Elementor use this free plugin to get a modal popup with webinar registration:
+[Elementor Addons Elements ](https://wordpress.org/plugins/addon-elements-for-elementor-page-builder/)
+
+= 2.5.0 2021.04.28 =
+
+Shortcodes in CTAs #1
+
+* Added: Use shortcodes in CTAs
+* Added: Transparency CTA background, Overlay CTA above the video
+Benefit: Interact unlimited by add group chat, 1:1 chat, sell tickets, sell products, do a poll, survey, … and you can integrate any of the free 57.000 WP.org plugins.
+
+Timed Tags #1
+
+* Added: Sent tags to KlickTipp when user stayed at a specific time
+* Added: Working also without sending tags and by only adding tracking pixel.
+Benefit: Track user behavior when you need to know the user seen a part of the webinar.
+
+Other changes (all versions)
+
+* Added: Confirmation page skip on instant webinars and when webinar is online.
+Benefit: Separated options to tweak the default settings.
+Find settings in "Thank you page" tab in toggle "Thank you page actions"
+
+* Fixed: Change shortcode registration button according to settings.
+* Added: Button font automatically changes to the button color.
+Benefit: Now you can setup the color like in the default template.
+
+* Fixed: Add to calendar
+Benefit: Working again
+
+* Fixed: Instant Webinar only and no other dates selected
+Benefit: Working again
+
+Upcoming - in development
+
+* new Webinar templates #1
+* Q&A System with moderation, ... answer and sent messages directly in Plugin. #1
+
+(#1) (show up in free version in evergreen webinars and ultimate incl. trial.)
+Trial ultimate version now to supercharge your webinar!
+
+= 2.4.3 2021.04.17 =
+
+Critical fix! All with version 2.3 or higher please update ASAP
+Issue was only on new created webinars.
+* Fixed: Wrong redirection from countdown page to webinar in protected webinars
+Benefit: Now redirecting right.
+
+* Fixed: Facebook share script
+
+Thank you Vlad vor bringing this fix on saturday.
+
+= 2.4.2 2021.04.15 =
+
+* Added: Check if custom webinar URL is filled
+Benefit: Empty URL could lead to wrong redirection
+
+* Fixed: Show Share link section on Evergreen and Live Webinars (Replace live webinar link which is not working since version 2.3.0)
+Benefit: Link now redirects to the registration page
+
+General: Since Version 2.3.0 on new created webinars, plugin add security to the webinar.
+You could disable it in extra settings tab.
+
+* Some have issues to be redirected to homepage when directly access webinar, thank you page in browser incognito mode by any URL without a token.
+The token user get on normal webinar flow: Register, redirected to thank you page and then to webinar page. All links, also inside mails, are protected.
+
+If you copy your preview link without a token, paste in an incognito browser window it will redirect you to homepage. This is to secure your webinar otherwise all others can use your preview link to access webinar without registration or payment.
+
+* Tip: Enable security also in current webinars. (Go to "Extra settings" tab)
+
+User workflow security (Changelog part from version 2.3.0)
+
+* Added: Check that one attendee can not enter the webinar twice
+* Added: In webinar, thank you page, ... URL replace webinar ID & user ID with token
+* Added: New Webinar get "protected" by default
+* Added: Replace all links in emails, txt (sms) messages with protected
+* Added: Settings for protected data (extra settings tab): Protected webinar ID, lead ID, Single Lead only
+* Added: Redirection Page URL, redirect when user want to access without permission (Default: home)
+* Added: Possibility to change current webinars (live/evergreen) to "protected" webinars
+Benefit: Best when you have paid webinars, incognito meetings and to ensure get the mail address in return for the webinar
+
+= 2.4.0 + 2.4.1 2021.04.13 =
+
+New Features:
+
+* Added: To late lock out. Stop joining attendees after x minutes and redirect them. #1
+Benefit: Give the to late user the chance to watch fully, by redirect to registration page. Keep, build up the selling tension.
+* Added: Unlimited, flexible evergreen webinar times #1
+Benefit: You want to start automated webinar on saturday and sunday 2 hours later, now you can.
+
+[Soon you can watch videos about all the new features integrated and linked in the pricing table](https://webinarignition.com/#pricing).
+
+* Added: Show shortcodes description
+Benefit: See the output of the shortcodes
+* Added: UX improvements
+Overlay setting more clear
+If you can upload only small Video size we added a hint for you, in auto webinar video settings, how to upload 2 TB without changing server settings.
+Easy upload mp4 files via button, no upload to media and copy paste link
+If you have only Instant Access enabled in evergreen webinars, plugin hides select dates in default templates
+* Added: Translatable default QA text
+Benefit: Now you can translate it
+
+* Fixed: Sending time triggered sms issue, removed html from sms webinar link
+Benefit: Use sms/txt reminder to notify on webinar start
+
+(#1) (show up in free version in evergreen webinars and ultimate incl. trial.)
+Trial ultimate version now to supercharge your webinar!
+
+= 2.3.0 2021.04.03 =
+
+Very big stability improving update, some webinar usability, more read below
+Plus improved webinar user workflow security, more read below
+... and more, read below
+Please read the Warning at the end! #2
+
+User workflow security:
+
+* Added: Check that one attendee can not enter the webinar twice
+* Added: In webinar, thank you page, ... URL replace webinar ID & user ID with token
+* Added: New Webinar get "protected" by default
+* Added: Replace all links in emails, txt (sms) messages with protected
+* Added: Settings for protected data (extra settings tab): Protected webinar ID, lead ID, Single Lead only
+* Added: Redirection Page URL, redirect when user want to access without permission (Default: home)
+* Added: Possibility to change current webinars (live/evergreen) to "protected" webinars
+Benefit: Best when you have paid webinars, incognito meetings and to ensure get the mail address in return for the webinar
+
+Webinar public accessibility:
+
+* Added: Webinar_status icon css
+Benefit: See if webinar is published or draft in webinars overview
+* Added: added webinar_status toggle published/draft
+* Added: Only show drafts to admin; redirect if not admin
+* Added: made webinars in draft mode by default
+Benefit: Test webinars before anybody can see it, hide old webinars
+
+Webinar creating and using:
+
+* Added: On new webinars timezone is now current site settings by default
+* Added: Take the host name from logged-in user
+Benefit: Save you time
+* Added: Made date of webinar field required and always in the future
+Benefit: This will fix the past-date/countdown issue
+
+Webinar design:
+
+* Added: More shortcodes like name and email e.g. to welcome better in any place #1
+* Added: Load shortcodes on oxygen,... builder (countdown was not preview) #1
+Benefit: Completely design your own webinar from registration, confirmation, countdown, webinar, replay page in your favorite page builder.
+* Added: Redirect from preview pages if not logged in #1
+Benefit: Funnel your audience
+
+Webinar reminder and overall stability:
+
+* Added: Newest version of Twilio SDK to be compatible with PHP8 and working smooth #2
+* Added: Compatibility with PHP8 and jQuery 3.5
+Benefit: Working with latest WP and PHP #2
+
+Webinar attendees flow improved:
+
+* Added: Q&A section: Choose if visitor can change name or email
+Benefit: Disallow update name and email
+* Added: Q&A section: Fill name and email from registration details
+Benefit: Only show message area and submit button for high conversion and convenience
+
+Usability improvements:
+
+* Added: Option: Skip thank you page on auto registration (live webinar "one click registration"")
+Benefit: Direct access from email via link with name & email to the webinar room
+* Added: License strings "License bought after 01/2021" (Freemius), "License bought before 01/2021" pay kickstarter/build in license system
+Benefit: You can know better where to enter/handle your license.
+
+Fixed and improved:
+
+* Fixed: Live console CSV export
+* Fixed: Social share thank you gift
+* Fixed: Mobile responsiveness of the footer and some other parts
+Benefit: Especially if you are using Avada theme pages are more mobile responsive.
+* Fixed: Replaced more depreciated code and removed unused scripts
+Benefit: Get rid of the dust since 2013
+
+* Fixed: Translated of month string not showing in Thank You page calendar "icon".
+Benefit: Now auto show the right weekday name
+* Fixed: Preview links to show instead of the default design the custom designed pages
+Benefit: You do not have to visit the design page to preview custom designed pages
+* Fixed: AR Autoresponder test (Add your HTML registration code from any provider like MailChimp)
+Benefit: Test subscribe directly insite the settings page and see the confirmation page
+
+* Fixed: CTA trigger on some sites was not showing
+* Fixed: live webinars: CTA delay after saving on-Air CTA message
+Benefit: Now showing/hiding/updating nearly instant after saving.
+
+* Fixed: Twilio timezone value
+* Updated: German translation
+
+(#1) (show up in free version in evergreen webinars and ultimate incl. trial.)
+Trial ultimate version now to supercharge your webinar!
+
+(#2) We tested WebinarIgnition 2.3.0+ compatible working with PHP 8.
+Still do not use PHP 8 yet!
+Because at the moment pure PHP 8 code not allowed to be uploaded to wp.org yet.
+This makes it difficult for developers to be PHP 8 compatible.
+WordPress wrote:
+Currently, code checked into the plugin repository must be PHP 7.4 compatible. PHP 8 only code is not yet allowed for plugins.
+Conclusion: To ensure a stable site wait until PHP 8 is settled.
+
+= 2.2.15 2021.03.16 =
+
+* Added: Copy/paste shortcodes
+Test shortcodes in free version in evergreen/automated webinars and in the free trial
+Why added? I (Tobias) was testing the shortcodes by copy and paste them all at once into the visual editor and the stile was not perfect <em> was around the shortcodes and i raised a ticket to my dev and he told me: You did it again! Me: This could happen to everybody so please find a solution and here it is:)
+Keep in mind, only one set is working on a page at the same time so far:
+separated:
+[wi_webinar_block id="7" block="reg_optin_dates"]
+[wi_webinar_block id="7" block="reg_optin_form"]
+OR one Section:
+[wi_webinar_block id="7" block="reg_optin_section"]
+
+* Added: Headers to registration notification email
+
+= 2.2.14 2021.03.14 =
+
+* Shortcode widget error (Thank you Amir to bring up the error during creating an nice Multiple CTA Video)
+
+= 2.2.13 2021.03.12 =
+
+* Please all update
+* 1 bugs fixed. Thank you Felix to bring the bug to us through a lot of testing.
+* License usability improvement
+
+= 2.2.12 2021.03.11 =
+
+* 2 bugs fixed. Thank you Marina and Peter to bring the bugs and when they occur, through a lot of testing, to us.
+* 2 license system usability improved. The 2 systems are now clearly separated and described.
+* hide license upgrades details on settings page, now only show on webinar overview page
+* Thanks for so much features ideas...
+
+= 2.2.11 2021.03.09 =
+
+* SMTP sending settings
+Check imported credentials and use only working ones
+check if wi-smtp settings valid when email sent. show global notice if invalid.
+show global smtp message until dismissed
+fixed {YEAR}
+
+= 2.2.9/10 2021.03.07 =
+
+* CallToAction
+on page reload video and time based CTAs continue at the time left (Sync CTA for MP4)
+CTA descriptive in title: Start:End time and action button title
+duplicate CTAs
+Scroll to cloned cta,
+added video cta combined shortcode
+CTAs showing now directly in video size,
+so 100% seen on new fullscreen webinar view, via shortcodes
+* Remove phpmailer
+added translation to smtp settings UI
+added reply-to email to smtp settings
+spelling errors and translation fixes
+added spammyness test added tabs to Webinarignition settings page
+fixed fatal phpmailer error
+styling improvements
+added protocol selection logic
+completed smtp migration logic (we take your per webinar settings and use them)
+added tutorial links in SMTP settings
+hide smtp password
+allowing for enable/disable smtp settings
+added smtp migration notification
+translation
+* License system
+Update license system for old (before 01/2021) keys
+Now you can move/change license by deactivating them
+
+= 2.2.8 2021.02.28 =
+
+* NEW Tutorial for [Jitsi Meet Integration](https://webinarignition.tawk.help/article/jitsi-integration)
+* NEW Tutorial for [Zoom Meeting, Call and Webinars Integration](https://webinarignition.tawk.help/article/zoom-integration)
+* Updated german translation (Thank you Melanie)
+* Fixed video-not-playing-bug for evergreen Webinar (Thank you Heiko)
+* Removed PHPMailer now using WP included version
+* Removed old SMTP settings per webinar and code cleanup
+* Added new global settings menu item with SMTP settings and a SMTP testing on save.
+* Discount! For user of the old license system. To get discount activate the license and update to the newest version. Only valid until the 15th of march 2021.
+* 1.x Free Version user please upgrade and optin to get new code and some free evergreen webinar registrations with the new multiple Call-to-Actions to boost sales and the Shortcodes to design and layout your own webinars.
+
+= 2.2.7 2021.02.22 =
+
+* A lot of code improvements under the hood (Thank you Amir)
+For more stability and security
+* Deactivate overlay when using Zoom shortcode, ... (https://webinarignition.tawk.help/article/zoom-integration) (Thank you Amir)
+* Question-answer option bug fix (Thank you Amir)
+Now Q&A system is working fully again
+* Latest freemius 2.4.2 SDK
+For better license usability
+
+= 2.2.6 2021.02.12 =
+
+* fixed: logo error
+* fixed: 500 error countdown shortcode
+* fixed: 1 day before email
+* improved: Usability to upgrade from old license system to new freemius.
+Added nice messages (Thank you Sylvie)
+
+= 2.2.5 2021.02.10 =
+
+* WOW a lot got fixed by rewriting it
+* Image adding redone e.g. for banners, backgrounds. Current links still working.
+* The broken 3. design template now working
+* Some design improvements
+* On live webinars the calendar icon. Month, date and weekday are filled automatically from settings and you overwrite the icon content and the text nearby easily.
+* You can now easily, join our affiliation program. Add your affiliate link in the footer section and earn 40% of the sales. To add the link see the extra settings tab on the right. Also the Powered by link is optional for all new webinars, to be with WP.org rules.
+* Best version ever, all update now!
+You can do better and faster with the latest version.
+Your license for 1.x, 2.x will still work with the latest plugin.
+
+= 2.2.2.x - 2.2.4 2021.02.08 =
+
+* make all available versions upgrade 1.0.x, 1.8.x, 2.x
+* new payment provider freemius with affiliation
+* shortcodes for styling
+* multiple CTAs to boost sales
+* bugfixes
+
+= 2.2.2.x 2021.02.05 =
+
+Following features are in ultimate license, free version (50 registrations), trial mode (500 registrations)
+
+* Shortcodes for all frontend content (webinar user seen parts)
+from registration page, thank you page, to countdown page, to webinar page, to replay page
+Benefits: The webinar user flow can be styled with you CI and layout, by any page builder that support shortcodes.
+* Multiple CTAs Call-to-Actions
+added in live and evergreen/automatic webinars
+Benefits:
+Live: Have a prepared set of CTAs one click away from showing to the webinar audience
+Auto: View and hide CTAs by secondes the video is played.
+
+= 2.2.1 2021.01.22 =
+* Freemius license system
+
+= 2.1.2 =
+* Changed Support Area url
+
+= 2.1.1 =
+* Tested with Wordpress up to 5.6
+
+= 2.1.0 =
+* Changed update repository url
+* All update please to get further updates.
+
+= 2.0.89 =
+* Fixed AR Integration with Activecampaign
+* Fixed broken expiry date form field on paid webinar registration form
+
+= 2.0.88 =
+* Fixed AR Test
+* Added more strings for translation
+
+= 2.0.87 =
+* Allowed for custome timezone suffix
+* Added more strings for translation
+
+= 2.0.86 =
+* Added more strings for translation
+
+= 2.0.85 =
+* Fixed bug caused by translation string
+* Added more strings for translation
+
+= 2.0.84 =
+* Added more strings for translation
+
+= 2.0.83 =
+* Fixed bug in webinarignition_get_questions functions causing live console not to show
+
+= 2.0.82 =
+* Added prospectpowerpro integration
+
+= 2.0.81 =
+* Fixed "insert image into post" functionality
+
+= 2.0.80 =
+* Added more strings for translation
+
+= 2.0.79 =
+* Fixed bug causing duplicate reminder emails
+* Fixed bug showing email recipient list
+
+= 2.0.78 =
+* Fixed FB registration
+
+= 2.0.77 =
+* Increased timeout for email cron.
+
+= 2.0.76 =
+* Added support for {TITLE} in notification emails
+
+= 2.0.75 =
+* Added support for hidden fields in AR Registration Form
+* Added more translatable strings
+
+= 2.0.74 =
+* Fixed error with incorrect email sending logs
+
+= 2.0.73 =
+* Replaced {FIRSTNAME} in replay email
+* Added more strings for translation
+
+= 2.0.72 =
+* Allow for webinar {Title} tag in sign-up email subject
+
+= 2.0.71 =
+* Included overlay functionality for replay webinars
+
+= 2.0.70 =
+* Added new translatable strings
+
+= 2.0.69 =
+* Fixed translation bug
+
+= 2.0.68 =
+* Fixed conflict with Webinarfly plugin
+
+= 2.0.67 =
+* Created German translation file
+
+= 2.0.66 =
+* Updated to use PHPMailer from new wp directory
+
+= 2.0.65 =
+* Fixed PHPMailer error
+
+= 2.0.64 =
+* Fixed PHPMailer bug
+
+= 2.0.63 =
+* Using PHPMailer to send new registration notification
+
+= 2.0.62 =
+* Fixed issue with misaligned countdown widget
+
+= 2.0.61 =
+* Fixed issue with include fbaccess.php
+
+= 2.0.60 =
+* Fixed issue with include fbaccess.php
+
+= 2.0.59 =
+* Fixed facebook registration issues
+
+= 2.0.59 =
+* Updated to allow for use of {FIRSTNAME} in notification emails
+
+= 2.0.57 =
+* Updated Shortcode Sign Up Widget to include GDPR field if required
+* Updated Shortcode Sign Up Widget with form validation
+
+= 2.0.56 =
+* Updated to allow for unlimited number of replay availaility days
+
+= 2.0.55 =
+* Fixed bug preventing order button text to be updated
+
+= 2.0.54 =
+* Updated new-registration notice email subject
+
+= 2.0.53 =
+* Fixed issue with custom css on Thank You page
+
+= 2.0.52 =
+* Fixed bug causing Stripe s to break when footer/header integration enabled
+
+= 2.0.51 =
+* Added more custom registration fields
+
+
+= 2.0.50 =
+* Fixed issue with disappearing custom GDPR
+* Fixed issue with $ undefined on replay page
+
+= 2.0.49 =
+* Added UTM_Source variable tracking
+* Added version indicator to registration templates
+* Fixed bug causing missing custom registration fields
+
+= 2.0.47 =
+* Removed include ('fbaccess.php') from templates
+
+= 2.0.46 =
+* Fixed googlecalendar issue
+
+= 2.0.45 =
+* Fixed theme conflict
+
+= 2.0.44 =
+* Fixed bug causing site search to fail.
+
+= 2.0.43 =
+* Fixed issue with missing questions on live console.
+
+= 2.0.42 =
+* Fixed auto_translate_subheadline
+* Fixed CTA timeout bug ($ undefined)
+
+= 2.0.41 =
+* Fixed character encoding issue in emails
+
+= 2.0.40 =
+* Fixed Stripe error
+
+= 2.0.39 =
+* Fixed coundown transition to live bug
+
+= 2.0.38 =
+* Fixed Activation issues
+
+= 2.0.37 =
+* Fixed activation errors
+
+= 2.0.36 =
+* Fixed issue with undefined variable "input_get"
+
+= 2.0.35 =
+* Fixed Notifications error caused by missing semi-colon
+
+= 2.0.34 =
+* Added new translation strings
+
+= 2.0.33 =
+* Fixed Facebook registration
+
+= 2.0.32 =
+* Fixed double-submission of AR form for evergreens
+
+= 2.0.31 =
+* Updated uodate-checker to latest; now works with bitbucket
+
+= 2.0.30 =
+* Fixed issue causing multiple email & txt reminders.
+
+= 2.0.29 =
+* Added translation files
+
+= 2.0.28 =
+* Fixed issue with CTA Button not turning off
+
+= 2.0.27 =
+
+* Fixed conflict with CF7
+
+= 2.0.26 =
+* Fixed $ undefined on Webinar page error
+
+= 2.0.25 =
+* fixed questions table_name error in console
+
+= 2.0.24 =
+* Fixed custom registration form fields bug
+
+= 2.0.23 =
+* Added custom fields for reg form
+
+= 2.0.22 =
+* Updated PhpMailer to version 6.1.4
+
+= 2.0.21 =
+* Fixed Logs pagination
+* Added delete-logs functionality
+
+= 2.0.20 =
+* fixed smtp issues
+
+= 2.0.19 =
+* New feature: host can receive email notifications whenever someone registers
+
+= 2.0.18 =
+* Made phone field in registration form optional
+
+= 2.0.17 =
+* Fixed issue with Evergreen Loading times not showing
+
+= 2.0.16 =
+* fixed cloning feature
+
+= 2.0.15 =
+* Fixed shortcode widget
+
+= 2.0.14 =
+* Fixed live questions error
+
+= 2.0.13 =
+ * Fixed on-air message bug
+
+= 2.0.12 =
+* fixed preview link for live webinars -- fixed ar integration
+
+= 2.0.11 =
+* fixed error showing actual Thank You page rather than preview page
+
+= 2.0.10 =
+* CSS Fixes
+
+= 2.0.9 =
+* Fixed issue causing blank white page (Fix II)
+
+= 2.0.8 =
+* Fixed issue causing blank white page
+
+= 2.0.7 =
+* Fixed issue with video_js undefined
+
+= 2.0.6 =
+ * fixed issue with Undefined index: QUERY_STRING in webinarignition_check_admin function
+
+= 2.0.5 =
+ * fixed issue with filter_input($_SERVER) not showing some css fixes for font-awesome.
+
+= 2.0.4 =
+
+* Fixed unknown column bug when live webinar users register
+
+= 2.0.3 =
+* Fixed loading times bug for evergreens Minor css fixes * Cleaned up file location structure
+* Improved email validation
+
+= 2.0.0 =
+* Bug fixes & code refactoring
+* Removed references to external images/file
+* Fixed "Trying to get property 'switch' of non-object" bug
+* Enhanced security with nonces
+* Updated bootstrap css
+* Added from_name in notification emails
+* Send emails using wp_mail; phpmailer still present only fot smtp testing
+* Concatenated and minified admin css and javascript
+
+1.9.188 (20 August 2019)
+
+Added customer email to Stripe Purchase data
+
+
+
+1.9.187 (24 May 2019)
+Fixed bug causing tomorrow-emails being sent on the day for Evergreen webinars
+
+1.9.186 (24 May 2019)
+security fix: filter $_POST
+Removed manual cron set up option. Native automatic WP-cron from now on.
+
+1.9.184 (21 May 2019)
+Allowed for instant replay without showing other dates in auto-webinar dates drop-down on Registration page
+
+1.9.183 (20 May 2019)
+Added wp-cron functionality
+
+1.9.182 (14 May 2019)
+Fixed centering of img on registration page
+
+1.9.181 (08 may 2019)
+New email notification template
+
+1.9.180 (30 April 2019)
+Fixed Paykickstart activation bug
+
+1.9.179 (24 April 2019)
+Removed Google-plus share
+
+1.9.178 (19 April 2019)
+Modified the code to update lead info if registering with same email address for same webinar
+
+1.9.177 (17 April 2019)
+Minor fix to webinar-create code
+
+1.9.176 (12 April 2019)
+Added GDPR functionality for Auto-responder/Registration forms
+
+1.9.175 (12 April 2019)
+updated Auto-responder integration to detect checkboxes in AR form for mapping
+
+1.9.174 (08 April 2019)
+Updated activation code
+
+1.9.173 (08 April 2019)
+Redesigned the Registration Page Stripe Form
+
+1.9.172 (08 April 2019)
+Fixed bug causing main headline of duplicated webinars to be replaced
+
+1.9.171 (08 April 2019)
+Added image to social share functionality
+
+1.9.170 (06 April 2019)
+Fixed image upload functionality for Webinar Host Info on Registration page
+
+1.9.169 (19 March 2019)
+Updated registration dates to show day of week
+
+1.9.168 (18 March 2019)
+Changed Live-console search to search by name AND email
+
+1.9.167 (13 March 2019)
+Changed Live-console search to search by name
+
+1.9.166 (11 March 2019)
+Fixed wrong title on cloned webinar bug
+
+1.9.165 (08 March 2019)
+Fixed url redirection on paid webinar bug
+
+1.9.164 (07 March 2019)
+Added video shortcode functionality
+
+1.9.163 (03 March 2019)
+Fixed Evergreen webinar background color bug
+
+1.9.162 (28 Jan 2019)
+Miscellaneous bugfix.
+
+1.9.161 (23 Jan 2019)
+Added delay and limit settings to evergreen custom schedule.
+
+1.9.160 (18 Jan 2019)
+Updated support urls.
+
+1.9.160
+Force redirect after Facebook signup
+
+1.9.157 and 1.9.158
+Moved update server.
+
+1.9.156
+Bug fix: fix registration form for IE11.
+
+1.9.155
+Bug fix: Unmute video when muted autoplay fails, so that there is sound when the user presses the play button.
+
+1.9.154
+Bug fix: Add gdpr column to leads tables.
+Also implemented muted autoplay for mp4 video playback.
+
+1.9.153
+Added fixed timezone for custom schedule.
+
+1.9.152
+Changed implementation detail (delete webinar was posting to plain php file causing issues with some WP installs).
+
+1.9.151
+General maintenance.
+
+1.9.150
+Added a email address field to the Stripe payment form. Registrants will now receive a payment receipt from Stripe.
+
+1.9.149
+Added "privacy policy", "terms and conditions" and "mailing list" fields to the AR integration section so that members can make their registration forms GDPR compliant.
+
+1.9.148
+Fixed: Disappearing blacklisted dates in delayed schedule.
+
+1.9.147
+Updated the Facebook PHP SDK and added it as a composer dependency so that it is easier to keep up to date.
+
+1.9.146
+Fixed: attach phone number to lead when user asks to receive a txt reminder on the thank you page (after registering for webinar). This issue only affected live webinars.
+
+1.9.145
+Fixed issue that affected some un authenticated visitors from making payments via Stripe.
+
+1.9.144
+Fixed blank csv when exporting evergreen leads.
+
+1.9.143
+Handle Chrome's new autoplay policy gracefully (If autoplay fails, display play button).
+
+https://developers.google.com/web/updates/2017/09/autoplay-policy-changes
+
+1.9.142
+Fixed: Play button text was not being removed after play button is clicked (replay page mobile).
+
+1.9.141
+Fixed replay status in lead listing.
+
+Fix: Updated stripe/stripe-php to version 6.6.0 (force tls 1.2).
+
+1.9.140
+Added "Join Webinar" text above play button when autoplay is disabled (only works with linked video option, not iframe/Youtube).
+
+1.9.139
+Bug fixes.
+
+1.9.138
+Fixed blacklisted dates for delayed schedule.
+
+1.9.137
+Fixed the position of the Facebook like button on the webinar and replay pages.
+
+1.9.136
+Fix: Prevent live console from running out of memory when large number of leads are listed.
+
+1.9.135
+Fixed ending redirect for evergreen webinars using iframe video embed.
+
+1.9.134
+Fixed issue with live replay page (no replay video was being displayed).
+
+1.9.133
+Fixed issue with 12 hour format on evergreen registration page.
+
+1.9.132
+Fix: Disabling evergreen replay, did not really disable replay (in some cases).
+
+Fix: In some cases videojs would continue playing sound in background after replay ended.
+
+1.9.129
+Fix: Improve custom js fields to better handle different formats.
+
+Fix: Issue with webinar length (evergreen ).
+
+1.9.128
+Added option to change CTA button colour for live webinars.
+
+1.9.127
+Added option to enable video controls for mp4 and webm videos (for evergreen webinars only).
+
+1.9.126
+Fix: Use a default date format for evergreen registration page when WordPress installation has a blank custom date format specified.
+
+1.9.125
+By default MacOS does not allow web browsers to autoplay video anymore. Added a play button for MacOS users to initiate webinar playback.
+
+1.9.124
+Added option to change evergreen CTA button colour.
+
+1.9.123
+Added loading animation for default webinar registration button.
+
+Fixed text reminder on evergreen thank you page.
+
+1.9.122
+Fixed live console questions csv export  button.
+
+1.9.121
+Added Facebook Open Graph description meta tag to all registration page templates.
+
+1.9.120
+bug fix: strip out script and noscript tags from "custom js" fields in the "Extra Settings" section.
+
+1.9.119
+Added option to specify date format in AR integration setup.
+
+1.9.118
+bug fix: Fix Auto Responder form submission on template 2 and 3.
+
+1.9.117
+Add custom thank you url field for evergreen webinars.
+
+1.9.116
+bug fix: prevent redundant entries in logs table when email notifications are disabled.
+
+1.9.114
+fix videojs playback offset on mobile
+
+1.9.113
+fix issue with < php5.6
+
+1.9.112
+fix proportions for large videos (videojs)
+
+1.9.111
+fix webinar page banner image
+
+1.9.110
+custom schedule fix: don't show todays date if all times are already past
+
+1.9.109
+Added option to skip thank you page, after registration they are redirected directly to webinar.
+
+1.9.108
+Fix: apply check to prevent duplicate fields to be added to registration and ar forms.
+
+1.9.107
+Fixed ar submission in Firefox
+
+1.9.106
+Fix: increase z-index on video overlay
+
+1.9.105
+Added additional for fields in AR integration section.
+
+Added option to disable signup email.
+
+Added option to specify webinar duration when iframe video option is chosen on evergreen webinars.
+
+1.9.104
+Fix: disable video controls for desktop browsers.
+
+1.9.103
+Fix: mp4 and webm playback in new mobile browsers.
+
+1.9.99
+Fix: miscellaneous bug fixes.
+
+1.9.98
+Fix: Url for live webinar on the "Webinar is in progress" button (it had no lid lead id).
+
+1.9.97
+Fixed issues for WP 4.8.2.
+
+1.9.96
+Fix: sound still played when webinar is over (evergreen using mp4 video file).
+
+1.9.93
+
+Fix bug with countdown timer on webinar replay page
+
+1.9.92
+
+Miscellaneous bug fixes.
+
+1.9.91
+
+Miscellaneous bug fixes.
+
+1.9.90
+
+Miscellaneous bug fixes.
+
+1.9.89
+
+Miscellaneous bug fixes.
+
+1.9.88
+
+Fix: form validation rule for mobile field on registration form
+
+1.9.86
+
+Miscellaneous bug fixes.
+
+1.9.84
+
+Miscellaneous bug fixes.
+
+1.9.83
+
+Miscellaneous bug fixes.
+
+1.9.79
+
+Paid Webinars: Separate Paypal and Stripe settings.
+
+1.9.78
+
+Auto save the url in Youtube embed codes as https.
+
+1.9.77
+
+Improved Stripe payment option.
+
+1.9.76
+
+Paykickstart integration.
+
+1.9.72
+
+Fixed hide "Add to Calendar option".
+
+Fixed responsive layout on "Thank you" page (evergreen webinars).
+
+1.9.71
+
+Fixed one click registration.
+
+1.9.70
+
+Fixed Stripe payment option.
+
+1.9.69
+
+Fixed replay webinar "timed action order button".
+
+1.9.68
+
+Improved viewer tracking.
+
+1.9.67
+
+Fixed problem importing same leads into different live webinars.
+
+1.9.64
+
+Fix: Cloned webinars would still display original webinar notification logs.
+
+1.9.60
+
+Fix issue where evergreen replay shows (Webinar is over) when countdown expiry is set to "Disabled". Disabling replay expiry will now allow evergreen replay to run forever.
+
+1.9.59
+
+Fix issue with name placeholder in questions section on webinar page .
+
+1.9.57
+
+Fix date formatting for evergreen registration pages.
+
+1.9.56
+
+Improve responsiveness for webinar page.
+
+1.9.55
+
+Registration page date will now be updated when webinar date is changed in dashboard.
+
+1.9.54
+
+Allow video player to load over https and http
+
+1.9.53
+
+Fixed responsive layout
+
+1.9.51
+
+Changed date format for Evergreen Fixed Webinars
+
+1.9.43
+
+Removed Stripe info from Registration page when admin chooses Paypal for payment method
+
+1.9.42
+
+Created php mail() fallback for when SMTP and Sendmail are not available
+
+1.9.41
+
+Edited Stripe integration to include all templates
+
+1.9.40
+
+Fixed bug making video sound play on Thank You page.
+
+1.9.39
+
+Added Stripe payment integration
+
+1.9.38
+
+Made Sendmail fallback when SMTP connection is not available
+
+1.9.35
+
+Fixed issue where past webinar times were selectable on Registration page
+
+1.9.34
+
+Fixed bug causing repeated emails for Live webinars
+
+1.9.33
+
+Fixed bug preventing Registration page from showing
+
+1.9.32
+
+Updated Facebook SDK to Version 5, allowing retrieval of email addresses from Facebook registrations
+
+1.9.31
+
+Fixed Thank You page countdown timer
+
+1.9.30
+
+Fixed the Add To Calendar Date/Timezone bug
+
+1.9.25
+
+Fixed ajax function to send lead ID for cookie tracking
+
+1.9.24
+
+Fixed Aweber form submission
+
+1.9.23
+
+Fixed video timer script
+
+1.9.22
+
+Fixed issue with the Call To Action showing continuously on Auto-Webinar page.
+
+1.9.21
+
+Bug fixes to CRON wrapper
+
+1.9.20
+
+Improved responsiveness of video embed on registration page
+Improved PHP version check
+
+1.9.19
+
+Improved CRON (aborts on SMTP connect failed)
+Improved CRON Notification Log for Live Webinars
+
+1.9.18
+
+Adjust PHP version check
+Fix Email Notifications
+Add Video Overlay Option
+Fix Console UI layout errors
+
+1.9.16
+
+misc fixes
+
+1.9.15
+
+misc fixes
+
+1.9.14
+
+misc fixes
+
+1.9.13
+
+Fixed `preview security`, `lid in email`, `double function name bug`, `saving issues`, `iframe video settings`, & misc fixes
+
+1.9.12
+
+Dependency check & css include fixes
+
+1.9.11
+
+Date & Time fixes, AR integration test, evergreen video time of arrival sync.
+
+1.9.10
+
+Fix: prevent throw on blank SMTP settings
+
+1.9.9
+
+Fixed: permalinks, SMTP, CRON, Date format, & misc changes
+
+1.9.8
+
+Calendar icon fix on `thank you` page
+
+1.9.7
+
+Thank You CP Template Changes:
+- Use Lead Timezone if Evergreen Webinar
+- Remove quotes in queries when value is integer
+- Simplify / optimise function in wi_get_time_tz to determine timezone offset (also clears error output)
+
+1.9.6
+
+Fixed bug during license registration
+Fixed whitespace output before session_start
+
+1.9.5
+
+Fixed issue with import leads in Live Console
+
+1.9.4
+
+Fixed issue with bad timezone in Evergeen webinar replay and countdown pages.
+
+1.9.3
+
+Fixed issue with multiple primary keys from WI Logs table.
+
+1.9.2[*] Fixed countdown issue with last major update.
+
+1.9.1[ * ]  Fixed issue with Google Calender and Outlook on Live Webinar Thank You Page
+
+1.9
+
+Added Notifications Log view to webinar notifications tab
+Removed additional ')' and '12 hour' string from end of date in emails.
+
+1.8.62
+
+Commonized Date/Time translation
+Added full PHP timezone list support
+Added email event logging
+Various bug fixes
+
+1.8.61[ * ] Created WI_logs file[ * ] Removed "Your Local Time" from Thank You page[ * ] Fixed Webinar clone date and time display issue on frontend[ * ] Fixed translation issue on Thank You page[ * ] Fixed Txt notification Enable/Disable issue
+
+1.8.60[ * ] Responsive templates added.
+
+1.8.59[ * ] Changed WI widget so that shortcode can be pasted anywhere on page and widget will appear where pasted
+
+1.8.58[ * ] Changed Facebook classes to avoid clashed with other plugins.
+
+1.8.57[ * ] Added "Your Local Time" to display next to date of Webinar on Thank You Page
+
+1.8.56[ * ] Fixed issue with SMTP integration[ * ] Allow for custom WordPress date formatting on various pages
+
+1.8.55[ * ] Shortcode usage enabled on Registration page.[ * ] Resolved Facebook privacy issue with Facebook App approval.[ * ] Added note for Iframe timed CTA issue in Webinar Auto Video Settings.[ * ] Enabled custom WordPress date settings in Registration page for Auto Webinar.
+
+1.8.54[ * ] First recipient's email address hidden when sending email notifications
+
+1.8.53[ + ] Registration is closed if webinar switch is set to closed.
+
+1.8.52[ + ] Email notifications add timezone identifier to date and time
+
+1.8.51[ * ] Added to wat to change "YOUR TIMEZONE" string for delayed webinars[ * ] Fixed social share buttons showing on replay page, when they are turned off
+
+1.8.50[ * ] Changed all resources to use schemeless URIs
+
+1.8.49[ + ] Added footer code field for thank you pages only
+
+1.8.48[ + ] Added way to add custom order button to paid webinars
+
+1.8.47[ * ] Added way to switch between 12/24 hour format
+
+1.8.46[ * ] Fixed issue with totals of registrants
+
+1.8.45[ * ] Fixed header width
+
+1.8.44[ * ] Added webinar URL to description in VCARD, because Outlook does not recognize the standalone URL property
+
+1.8.43[ * ] Fixed console link when SSL is enabled for admin panel
+
+1.8.42[ * ] Fixed plugin dependency
+
+1.8.41[ * ] Added possibility to hide social share links on webinar page
+
+1.8.40[ * ] Fixed time and timezone inconsistency for evergreen webinar type
+
+1.8.39[ * ] Fixed bug in JS library
+
+1.8.38
+
+* Cosmetic fix
+
+1.8.37
+
+* Added SSL support in the SMTP settings
+
+1.8.36
+
+* Removed alert box with error when previewing webinar pages (happens occasionally).
+
+1.8.35
+
+* Fixed bug with evergreen webinar after update
+
+1.8.34
+
+* Added delayed evergreen webinars. You can now choose to delay when a user can view your webinar
+
+1.8.33
+
+* Updated "Add to calendar" feature to be compliant with VCALENDAR v2.0
+* Updated updater class
+
+1.8.32
+
+* Fixed custom time not appearing with 3rd design
+
+1.8.31
+
+* Widget cosmetic changes
+* Added support for fixed date and time scheduling for evergreen webinar type
+* Updated several libraries
+
+1.8.30
+
+* Added option to disable the replay for evergreen webinar types
+
+1.8.29
+
+* Fixed tracking code. Now tracking properly
+
+1.8.28
+
+* Added log out button on console page
+
+1.8.27
+
+* Added new option to hide the registration button on the countdown page
+
+1.8.26
+
+* Fix for previous update
+
+1.8.25
+
+* Changed Google Hangouts integration. No need to provide your Youtube username.
+* Added possibility to set the privacy status of your Youtube broadcast video (public/unlisted)
+
+1.8.24
+
+* Added shortcode for easier integration with your theme. Only works for Live Webinars
+
+1.8.23
+
+* Added date and time, timezone information to the console for the auto webinar type
+* Added possibility to add custom embed for the video source for auto webinar types
+* Fixed optin form integration (with custom design)
+
+1.8.22
+
+*Fixed charset encoding
+
+1.8.21
+
+* Updated several javascript libraries
+
+1.8.20
+
+* Fixed several links with double trailing slashes at the end
+
+1.8.19
+
+* Added option for adding custom code at the end of the body tag. Useful to add tracking codes, or other scripts.
+
+1.8.18
+
+* Added support for paid webinars for the evergreen type
+
+1.8.17
+
+* Fix optin integration for the evergreen webinar type
+
+1.8.16
+
+* Fixed one click registration redirection to custom thank you page
+
+1.8.15
+
+* Added custom texts for Q/A name and email fields placeholders
+
+1.8.14
+
+* Reverted visibility of ticket info block
+
+1.8.13
+
+* Fixed footer copy date
+
+1.8.12
+
+* Do not load livecounter.php when live stats are disabled
+
+1.8.11
+
+*  Added possibility to turn off live stats to improve performance
+
+1.8.10
+
+* Fixed javascript error on console page, when campaign was never saved before
+
+1.8.9
+
+* Change include method of console files
+
+1.8.8
+
+* Removed spinning loader on webinar pages, to fix incompatibility on iPads
+
+1.8.7
+
+*  Added webinar time 8:30AM
+
+1.8.6
+
+* Fixed bug with past dates in auto webinars
+
+1.8.5
+
+* Can use shortcodes in video embed fields
+* Only future dates will be selectable for auto webinars on registration page
+
+1.8.4
+
+* Added custom thank you url to redirect users after opting in
+
+1.8.3
+
+* Added Google Hangouts Integration
+* Fixed bug with Auto Registration not working with same info for different webinars
+
+1.8.2
+
+* Added replay headline back for auto webinars
+
+1.8.1
+
+* Paid Webinars added
+* Replay - can now choose an exact time (24h format)
+* CSV import - copy and paste CSV into leads
+* 1 Click Optin registration
+* Import / Export WebinarIgnition campaigns
+* Cosmetic changes
+*  Fixed page router
+
+v.1.8
+
+* Paid Webinars added
+* Replay - can now choose an exact time (24h format)
+* CSV import - copy and paste CSV into leads
+* Click Optin registration
+* Import / Export WebinarIgnition campaigns
+* Cosmetic changes
+
+v.1.7.35
+
+* Added language copy for "OR" near facebook connect
+* Changed alert box to prompt box for easier copying on get order code
+* Code improvements and bug fixes
+
+v.1.7.34
+
+* Fixed issue with time for instant webinars
+
+v.1.7.33
+
+*Fixed video playback on mobile devices (auto webinars)
+
+v.1.7.32
+
+* Auto webinars for the same day
+* Fixed bug with AR integration hidden fields
+* Code optimizations for performance
+
+v.1.7.31
+
+* Fixed "Create Webinar" links
+
+v.1.7.30
+
+* Fixed CSV download URL
+
+v.1.7.29
+
+* Duplicate emails are check upon same campaign, not globally
+
+v.1.7.28
+
+* Fixed calendar output format [ * ] Fixed controls on webinar page for auto webinars
+
+v.1.7.27
+
+* Fixed issue with deleting registrants from Console page, from page 2 and up
+
+v.1.7.26
+
+* Added country code selector to phone number fields
+
+v.1.7.25
+
+* Added Google Plus share to thank you page
+
+v.1.7.24
+
+* Prevent browsers from caching the console page
+
+v.1.7.23
+
+* Updated countdown script
+* Updated Twilio API library
+* Fixed formatting issues with CSVs
+* Deleting a campaigns, also deletes the corresponding pages in WordPress
+* Added Twilio SMS test feature
+
+v.1.7.22
+
+* Fixed issue with "Last Name" field not repopulating in optin form settings
+
+v.1.7.21
+
+* Don't send notification for auto webinars if they are disabled from dashboard
+* Fixed alignment issue of images on landing page
+* Code improvements
+
+v.1.7.20
+
+* Fixed issue with duplicate registration emails.
+
+v.1.7.19
+
+* Minor cosmetic changes
+
+v.1.7.18
+
+* Small fixes and code improvements
+
+v.1.7.17
+
+* Fixed issue with video size on replay page
+
+v.1.7.16
+
+* Added translation to compact labels for the mini countdown on the thank you page
+
+v.1.7.14
+
+* Enabled UTF-8 for email notifications
+
+v.1.7.13
+
+* Fixed Q/A hiding
+
+v.1.7.12
+
+* Some browsers in several circumstances will redirect automatically to thank you page from register page. Made sure this does not happen unless several criteria are met
+
+v.1.7.11
+
+* Fixed some wrong file paths
+* Changed webinar link to anchor link implicitly for registration emails
+
+v.1.7.10
+
+* Fixed bottom scrollbar when choosing a date
+* Fixed datepicker on notifications settings
+* Made webinar links implicitly in the notification emails
+
+v.1.7.9
+
+* Fixed PHPMailer issue
+
+v.1.7.8
+
+* Removed Sendreach Integration
+* Added back the Facebook 'or' text on registration pages
+
+v.1.7.7
+
+* Fixed Js Error causing video on webinar page to look smaller
+
+v.1.7.6
+
+* Fixed jquery issues
+
+v.1.7.5
+
+* Adjusted width of footer to avoid having a horizontal scrollbar
+* Fixed the SMS block. Now it should appear correctly
+* Adjusted width of social share icons on thank you page
+
+v.1.7.4
+
+* Removed controls from webinar replay videos
+
+v.1.7.3
+
+* Improved Sendreach Integration
+
+v.1.7.2
+
+* Removed all console calls to avoid errors in browser that do not support console
+
+v.1.7.1
+
+* Updated PHPMailer classes
+
+v.1.7.0
+
+* Changed AR integration
+* Optin form settings can be ordered
+* Removed skype field
+* After registration, user will always be redirected to WebinarIgnition thank you page, and not the page defiend in the AR service
+
+v.1.6.7
+
+* Fixed method of sending batch emails
+
+v.1.6.6
+
+* Fixed submitting AR form
+
+v.1.6.5
+
+* Changed datepicker script
+
+v.1.6.4
+
+*Changed declaration of datepicker
+
+v.1.6.3
+
+* Added Google Plus share button to live webinar page
+
+v.1.6.2
+
+* Fixed live air bug
+
+v.1.6.1
+
+* Fixed issue when submitting AR forms containing an input with name "submit" it broke the submit() method of jQuery
+
+v.1.6
+
+* Fixed datepicker conflict with jquery-ui
+
+v1.5.10
+
+* Fixed Custom Date on registration page and thank you page
+
+v1.5.8
+
+* Compatibility fix for PHP
+
+v1.5.7
+
+* AR better service integration
+
+v1.5.6
+
+* Updated date-picker library
+
+v1.5.5
+
+* Fixed default timezone for Evergreen webinars
+
+v1.5.4
+
+* Improved security
+
+v1.5.2
+
+Improved visual appearance of test SMTP button
+
+v1.1
+
+* Fixed cron script to send status 200 OK implicitly
+* Little cosmetic changes
+* Some text changes for better understanding
++ Added SMTP test feature
+
+v1.0 2013/2014
+
+initial release

@@ -1,0 +1,60 @@
+[2025-08-28 01:47:29] Webhook ID: teste-de-compra-via-webhook
+{"event":"venda_aprovada","payment_method":"Pix","data":{"first_name":"Raul","last_name":"Julio da Cruz","cpf":"05347957905","telefone":"(55) 61991094026","payer_email":"rauldacruz@gmail.com","product_name":"Supermembros 2.0","product_price":"1.00","product_sku":"","product_quantity":1,"product_category":"","delivery_link":"https:\/\/comunidade.ndspro.com.br","produtos_adicionais":[]}}
+[2025-08-28 01:47:29] MAPEAMENTO: Iniciando mapeamento automático para webhook teste-de-compra-via-webhook
+[2025-08-28 01:47:29] MAPEAMENTO: Plataforma detectada: generic
+[2025-08-28 01:47:29] MAPEAMENTO: Dados mapeados: Array
+(
+    [first_name] => Raul
+    [last_name] => Julio da Cruz
+    [cpf] => 05347957905
+    [telefone] => (55) 61991094026
+    [payer_email] => rauldacruz@gmail.com
+    [product_name] => Supermembros 2.0
+    [product_price] => 1.00
+    [product_sku] => 
+    [product_quantity] => 1
+    [product_category] => 
+    [delivery_link] => https://comunidade.ndspro.com.br
+    [produtos_adicionais] => Array
+        (
+        )
+
+)
+
+[2025-08-28 01:47:29] VENDA PROCESSADA: ID 0 - Cliente: rauldacruz@gmail.com - Produto: Supermembros 2.0
+[2025-08-28 01:47:29] DEBUG: Iniciando processamento de order bumps para usuário 25
+[2025-08-28 01:47:29] DEBUG: Dados de produtos adicionais: Array
+(
+)
+
+[2025-08-28 01:47:29] DEBUG: Nenhum produto adicional encontrado
+[2025-08-28 01:50:10] Webhook ID: teste-de-compra-via-webhook
+{"event":"venda_aprovada","payment_method":"Pix","data":{"first_name":"Raul","last_name":"Julio da Cruz","cpf":"05347957905","telefone":"(55) 61991094026","payer_email":"rauldacruz@gmail.com","product_name":"Supermembros 2.0","product_price":"1.00","product_sku":"","product_quantity":1,"product_category":"","delivery_link":"https:\/\/comunidade.ndspro.com.br","produtos_adicionais":[]}}
+[2025-08-28 01:50:10] MAPEAMENTO: Iniciando mapeamento automático para webhook teste-de-compra-via-webhook
+[2025-08-28 01:50:10] MAPEAMENTO: Plataforma detectada: generic
+[2025-08-28 01:50:10] MAPEAMENTO: Dados mapeados: Array
+(
+    [first_name] => Raul
+    [last_name] => Julio da Cruz
+    [cpf] => 05347957905
+    [telefone] => (55) 61991094026
+    [payer_email] => rauldacruz@gmail.com
+    [product_name] => Supermembros 2.0
+    [product_price] => 1.00
+    [product_sku] => 
+    [product_quantity] => 1
+    [product_category] => 
+    [delivery_link] => https://comunidade.ndspro.com.br
+    [produtos_adicionais] => Array
+        (
+        )
+
+)
+
+[2025-08-28 01:50:10] VENDA PROCESSADA: ID 0 - Cliente: rauldacruz@gmail.com - Produto: Supermembros 2.0
+[2025-08-28 01:50:11] DEBUG: Iniciando processamento de order bumps para usuário 26
+[2025-08-28 01:50:11] DEBUG: Dados de produtos adicionais: Array
+(
+)
+
+[2025-08-28 01:50:11] DEBUG: Nenhum produto adicional encontrado

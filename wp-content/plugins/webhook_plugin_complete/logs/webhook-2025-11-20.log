@@ -1,0 +1,23 @@
+[2025-11-20 21:28:35] Dados do webhook salvos para ID: aprovado-lash-power
+[2025-11-20 21:28:35] Webhook ID: aprovado-lash-power
+{"evento":"teste_matricula","timestamp":"2025-11-20 18:28:35","produto_teste":{"id":468,"nome":"Master Lash Power"},"pedido":{"id":99999,"numero":"TESTE-COMPLETED-1763674115","total":99.99},"cliente":{"email":"teste@exemplo.com","nome":"Cliente Teste"}}
+[2025-11-20 21:28:35] VENDA PROCESSADA: ID 0 - Cliente: teste@exemplo.com - Produto: Master Lash Power
+[2025-11-20 21:28:35] MATRÍCULA: Usuário 38 matriculado no curso Teste
+[2025-11-20 21:28:35] DEBUG: Iniciando processamento de order bumps para usuário 38
+[2025-11-20 21:28:35] DEBUG: Dados de produtos adicionais: Array
+(
+)
+
+[2025-11-20 21:28:35] DEBUG: Nenhum produto adicional encontrado
+[2025-11-20 21:33:03] Dados do webhook salvos para ID: reembolso-master-lash-power
+[2025-11-20 21:33:03] Webhook ID: reembolso-master-lash-power
+{"evento":"teste_desmatricula","timestamp":"2025-11-20 18:33:03","produto_teste":{"id":468,"nome":"Master Lash Power"},"pedido":{"id":99999,"numero":"TESTE-REFUNDED-1763674383","total":99.99},"cliente":{"email":"teste@exemplo.com","nome":"Cliente Teste"}}
+[2025-11-20 21:33:03] VENDA PROCESSADA: ID 0 - Cliente: teste@exemplo.com - Produto: Master Lash Power
+[2025-11-20 21:33:03] DESMATRÍCULA: Iniciando para usuário 38 - Email: teste@exemplo.com
+[2025-11-20 21:33:03] DESMATRÍCULA: Usuário 38 desmatriculado do curso Teste (Enrollment ID: 3894)
+[2025-11-20 21:33:03] DEBUG: Iniciando processamento de desmatrícula de order bumps para usuário 38
+[2025-11-20 21:33:03] DEBUG: Dados de produtos adicionais: Array
+(
+)
+
+[2025-11-20 21:33:03] DEBUG: Nenhum produto adicional encontrado para desmatrícula

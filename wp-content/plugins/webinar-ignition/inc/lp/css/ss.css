@@ -1,0 +1,256 @@
+.registration-tpl-02 .cpWrapper,
+.registration-tpl-03 .cpWrapper{
+
+	/*border: 1px solid rgba(0, 0, 0, .25);*/
+
+	/*background-color: #FFF;*/
+	background-color: white;
+	background-image: url(../images/noise.png);
+
+	margin-right: auto;
+	margin-left: auto;
+
+	/* -webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px; */
+
+	/*padding: 20px;*/
+
+	/* -webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.18); */
+	/* -moz-box-shadow: 0 1px 4px rgba(0,0,0,0.18); */
+	/* box-shadow: 0 1px 4px rgba(0,0,0,0.18); */
+
+	margin-top: -100px;
+	border: 1px solid rgba(0,0,0,0.1);
+}
+
+.registration-tpl-03 .cpWrapper{
+		padding: 35px;
+		margin-top: -80px;
+}
+
+.registration-tpl-02 .mainWrapper,
+.registration-tpl-03 .mainWrapper{
+	padding-top: 0px;
+	padding-bottom: 30px;
+}
+
+.registration-tpl-02 .headlineArea,
+.registration-tpl-02 .headlineArea{
+	background-color: #363538;
+	border-top: 3px solid rgba(0, 0, 0, .25);
+}
+
+.registration-tpl-02 .headlineArea,
+.registration-tpl-03 .headlineArea{
+			color: #FFF !important;
+}
+
+.registration-tpl-02 .headlineArea,
+.registration-tpl-03 .headlineArea{
+	width: 100%;
+	padding-top: 40px;
+	padding-bottom: 100px;
+	/*margin-top: -3px;*/
+	border-bottom: 3px solid rgba(0, 0, 0, .25);
+}
+
+.registration-tpl-02 .headlineArea {
+	padding-bottom: 120px;
+}
+
+
+
+.registration-tpl-02 .mainWrapper,
+.registration-tpl-03 .mainWrapper{
+	background-color: #ECECEC;
+}
+
+.registration-tpl-02 .subheader,
+.registration-tpl-03 .subheader{
+	/*color: rgba(255, 255, 255, .75);*/
+}
+
+.registration-tpl-02 .ssHeadline,
+.registration-tpl-03 .ssHeadline{
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.registration-tpl-02 .ssHeadline h1, .registration-tpl-02 .ssHeadline h2, .registration-tpl-02 .ssHeadline h3, .registration-tpl-02 .ssHeadline h4,
+.registration-tpl-03 .ssHeadline h1, .registration-tpl-03 .ssHeadline h2, .registration-tpl-03 .ssHeadline h3, .registration-tpl-03 .ssHeadline h4{
+	color: #FFF;
+}
+
+
+.registration-tpl-03 .cpLeftSide {
+	padding-right: 35px;
+}
+
+.registration-tpl-02 .cpRightSide,
+.registration-tpl-03 .cpRightSide{
+	/*border-left: 3px solid rgba(0, 0, 0, 0.4);*/
+	/*background-color: #000;*/
+	/*background-color: #eeeeee;*/
+}
+
+.registration-tpl-02 .videoBlock,
+.registration-tpl-03 .videoBlock{
+	margin: 0px;
+}
+
+.registration-tpl-02 .innerHeadline,
+.registration-tpl-03 .innerHeadline{
+	margin: 0px;
+}
+
+.registration-tpl-02 .ssSalesArea p:last-child,
+.registration-tpl-03 .ssSalesArea p:last-child{
+	margin-bottom: 0px;
+}
+
+.registration-tpl-02 .ssSalesArea,
+.registration-tpl-03 .ssSalesArea{
+	/* background-color: #FFF;
+	padding: 30px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	-webkit-border-bottom-left-radius: 6px;
+	-moz-border-radius-bottomleft: 6px;
+	border-bottom-left-radius: 6px; */
+	font-size: 0.875rem;
+  	text-align: center;
+}
+
+.registration-tpl-02 .ssRight,
+.registration-tpl-03 .ssRight{
+		background-color: #FFF;
+		margin: 20px 15px;
+  		padding: 40px 25px;
+		border: 1px solid rgba(0, 0, 0, 0.08);
+		/* border-radius: 6px; */
+}
+
+.registration-tpl-02 .ssRight2,
+.registration-tpl-03 .ssRight2{
+	/*background-color: #FFF;*/
+	margin: 20px;
+	padding: 15px;
+	/*-webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+	-moz-box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+	box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+	border: 1px solid rgba(0, 0, 0, .25);
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;*/
+}
+
+.registration-tpl-02 #optinBTN,
+.registration-tpl-03 #optinBTN{
+	width: 100%;
+	/*background-image: none;*/
+	font-size: 16px;
+}
+
+.registration-tpl-02 #optName,
+.registration-tpl-03 #optName{
+	background-position: 275px;
+}
+.registration-tpl-02 #optEmail,
+.registration-tpl-03 #optEmail{
+	background-position: 275px;
+}
+
+.registration-tpl-02 .hostInfoBlock,
+.registration-tpl-03 .hostInfoBlock{
+	margin: 0px;
+	margin-top: 0px;
+	position: initial;
+	display: flex;
+	justify-content: left;
+}
+
+.registration-tpl-02 .webinarURLWrapper{
+	margin: 0px;
+}
+
+.registration-tpl-02 .innerCopy,
+.registration-tpl-03 .innerCopy{
+	border-top: none;
+	margin-bottom: 0px;
+}
+
+.registration-tpl-02 .shareBlock,
+.registration-tpl-03 .shareBlock{
+	margin: 0px;
+}
+
+.registration-tpl-02 .ticketCDAreaBTN,
+.registration-tpl-03 .ticketCDAreaBTN{
+	width: 100%;
+}
+
+.registration-tpl-02 .ticketWrapper,
+.registration-tpl-03 .ticketWrapper{
+	/*margin: 0px;*/
+	background-color: #FFF;
+	border: 2px dashed #DDD;
+	color: #191919;
+}
+
+.registration-tpl-02 .ticketSection,
+.registration-tpl-03 .ticketSection{
+	color: #191919;
+}
+
+.registration-tpl-02 .ticketHeadline,
+.registration-tpl-03 .ticketHeadline{
+	background-color: #2f2f2f;
+}
+
+.registration-tpl-02 .disabled,
+.registration-tpl-03 .disabled{
+	background-color: #bfbfbf !important;
+	border: 1px solid #5d5d5d !important;
+	color: #000 !important;;
+}
+
+.registration-tpl-02 .wi-host-info-wrap{
+	padding: 10px 0px 5px 0;
+}
+
+.registration-tpl-02 .ssSalesArea p{
+	color: rgba(0,0,0,0.6);
+}
+
+.registration-tpl-02  .cpLeftSide{
+	padding: 22px 10px 25px 25px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.registration-tpl-02 .hostInfoBlock.hostInfoBlock-2{
+	border-radius: 0;
+}
+
+@media (min-width: 768px){
+	.registration-tpl-02 .cpWrapper > .row,
+	.registration-tpl-03 .cpWrapper > .row{
+        margin: 0;
+    }
+	.registration-tpl-02 .cpWrapper > .row > div[class^='col-'], .registration-tpl-02 .cpWrapper > .row > div[class*='col-'],
+	.registration-tpl-03 .cpWrapper > .row > div[class^='col-'], .registration-tpl-02 .cpWrapper > .row > div[class*='col-']{
+        padding: 0;
+    }
+
+}
+
+
+@media (max-width: 768px){
+	.registration-tpl-03 .cpLeftSide {
+		padding-right: 0px;
+	}
+	.registration-tpl-03 .hostInfoBlock{
+		flex-direction: column;
+		margin-bottom: 20px;
+	}
+}

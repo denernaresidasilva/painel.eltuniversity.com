@@ -1,0 +1,33 @@
+[2026-03-31 17:31:43] Webhook ID: nova-era-dos-c-lios-eduzz
+{"id":"ilqwoa0pf5inoencu8ifzupn0","event":"myeduzz.invoice_paid","data":{"id":"98430380","status":"paid","buyer":{"id":"23511701","name":"Taise Carvalho da Silveira","document":"13124756762","email":"tcs_2008@hotmail.com","phone":null,"phone2":null,"cellphone":"+5521976229805","address":{"street":null,"number":null,"neighborhood":null,"complement":null,"city":null,"state":null,"country":null,"zipCode":""}},"producer":{"id":"87174157","name":"ERIKA FABIANA SOARES DE MORAES SANTOS GUEDES 32293044890","email":"erikamoraesacademy@gmail.com"},"offer":{"name":null},"utm":null,"createdAt":"2026-03-31T14:31:32.000Z","dueDate":"2026-04-02T14:31:32.000Z","price":{"currency":"BRL","value":397,"paid":{"currency":"BRL","value":446.88}},"orderBump":{"has":false,"isMainSale":false,"mainSaleId":null},"installments":6,"items":[{"productId":"2669374","name":"MASTER LASH PRO","parentId":null,"refundPeriod":{"durationType":"days","value":7},"price":{"currency":"BRL","value":397,"coupon":null},"coupon":null,"partnerId":null,"billingType":"single","skuReference":null}],"totalItems":1,"billetUrl":"https://sun.eduzz.com/c_7d78419fa03f4c5294eeec3b935e139d","checkoutUrl":"https://sun.eduzz.com/801E3AVRW7","bankslipUrl":null,"barcode":null,"paymentMethod":"creditCard","contract":null,"payment":{"method":"creditCard","details":"mastercardCreditCard"},"paid":{"currency":"BRL","value":446.88},"affiliate":null,"paidAt":"2026-03-31T14:31:38.000Z","transaction":{"id":"148123192","key":"7d78419fa03f4c5294eeec3b935e139d"},"student":{"id":"22909687","name":"Taise Carvalho da Silveira","document":"13124756762","email":"tcs_2008@hotmail.com","phone":null,"phone2":null,"cellphone":"+5521976229805"}},"sentDate":"2026-03-31T17:31:42.443Z"}
+[2026-03-31 17:31:43] MAPEAMENTO: Iniciando mapeamento automático para webhook nova-era-dos-c-lios-eduzz
+[2026-03-31 17:31:43] MAPEAMENTO: Plataforma detectada: generic
+[2026-03-31 17:31:43] MAPEAMENTO: Dados mapeados: Array
+(
+    [payer_email] => tcs_2008@hotmail.com
+    [first_name] => Taise
+    [last_name] => Carvalho da Silveira
+    [cpf] => 13124756762
+    [telefone] => 
+    [product_name] => Taise Carvalho da Silveira
+    [product_id] => ilqwoa0pf5inoencu8ifzupn0
+    [product_sku] => ilqwoa0pf5inoencu8ifzupn0
+    [product_price] => 1
+    [product_quantity] => 1
+    [product_category] => digital
+    [payment_method] => unknown
+    [parcelas] => 6
+    [produtos_adicionais] => Array
+        (
+        )
+
+    [delivery_link] => 
+)
+
+[2026-03-31 17:31:43] VENDA PROCESSADA: ID 0 - Cliente: tcs_2008@hotmail.com - Produto: Taise Carvalho da Silveira
+[2026-03-31 17:31:43] DEBUG: Iniciando processamento de order bumps para usuário 86
+[2026-03-31 17:31:43] DEBUG: Dados de produtos adicionais: Array
+(
+)
+
+[2026-03-31 17:31:43] DEBUG: Nenhum produto adicional encontrado

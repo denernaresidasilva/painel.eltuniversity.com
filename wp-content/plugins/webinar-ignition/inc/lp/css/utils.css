@@ -1,0 +1,101 @@
+
+/* wi modals */
+/* -------------------------------------------------------- */
+   .wi_mdl_ovl
+   {
+      position:fixed !important;
+      z-index:9999 !important;
+      top:0px !important;
+      left:0px !important;
+      width:100% !important;
+      height:100% !important;
+      background:rgba(0,0,0,0.85) !important;
+      text-align:center;
+      vertical-align:middle;
+   }
+
+   .wi_mdl_box
+   {
+      width:60%;
+      min-width:400px;
+      margin:auto;
+      position:relative;
+      display:inline-block;
+      margin-top:10%;
+      background:#FFFFFF;
+      border:1px solid #FFF;
+      border-radius:5px;
+      box-shadow:0px 0px 10px #000;
+   }
+
+   .wi_mdl_head
+   {
+      border-top-radius:5px;
+      padding:20px;
+      background:#EEEEEE;
+      font-size:16px;
+      font-weight:bold;
+      text-align:left;
+   }
+
+   .wi_mdl_body
+   {
+      text-align:left;
+      background:#FFFFFF;
+      border-top:1px solid #DDD;
+      border-bottom:1px solid #DDD;
+   }
+
+   .wi_mdl_foot
+   {
+      border-bottom-radius:5px;
+      padding:20px;
+      text-align:right;
+      background:#EEEEEE;
+   }
+
+   .wi_mdl_btn_auto
+   {
+      display:inline-block;
+      padding:5px;
+      padding-left:10px;
+      padding-right:10px;
+      background:#FFFFFF;
+      background-image:linear-gradient(0deg, hsla(0,0%,95%,1), hsla(0,0%,100%,1));
+      font-size:16px;
+      font-weight:bold;
+      text-align:center;
+      border:1px solid #AAA;
+      border-radius:3px;
+      cursor:pointer;
+      box-shadow:0px 0px 5px rgba(0,0,0,0.1);
+      margin-left:16px;
+   }
+
+   .wi_mdl_btn_auto, .wi_mdl_btn_auto:hover, .wi_mdl_btn_auto:focus {
+      color: #333;
+   }
+/* -------------------------------------------------------- */
+
+
+/* hide */
+/* -------------------------------------------------------- */
+   .wi_hidden
+   {
+      display:none !important;
+   }
+/* -------------------------------------------------------- */
+
+
+/* frames */
+/* -------------------------------------------------------- */
+   .wi_frame
+   {
+      display:block !important;
+      margin:0;
+      border:none;
+      width:100%;
+      height:100%;
+      min-height:290px;
+   }
+/* -------------------------------------------------------- */

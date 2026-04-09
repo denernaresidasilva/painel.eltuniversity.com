@@ -1,0 +1,133 @@
+[2025-10-03 20:08:49] Dados do webhook salvos para ID: teste-pro-checkout-matricula
+[2025-10-03 20:08:49] Webhook ID: teste-pro-checkout-matricula
+{"evento":"teste_produto_webhook","timestamp":"2025-10-03 17:08:49","produto_teste":{"id":438,"nome":"FUNIL"},"pedido":{"id":99999,"numero":"TESTE-PRODUTO-438-1759522129","total":99.99}}
+[2025-10-03 20:12:23] Webhook ID: teste-pro-checkout-matricula
+{"evento":"pedido_concluido","timestamp":"2025-10-03 17:12:22","pedido":{"id":440,"numero":"440","status":"completed","data_criacao":"2025-10-03 20:11:40","data_conclusao":"2025-10-03 20:12:21","total_pedido_completo":0,"total_produtos_webhook":0,"total_impostos_produtos":0,"moeda":"BRL","metodo_pagamento":"","metodo_pagamento_titulo":""},"cliente":{"id":1,"email":"admin@ndspro.com.br","nome":"Teste ","telefone":""},"endereco_cobranca":{"nome":"Teste","sobrenome":"","empresa":"","endereco_1":"","endereco_2":"","cidade":"","estado":"","cep":"","pais":""},"endereco_entrega":{"nome":"","sobrenome":"","empresa":"","endereco_1":"","endereco_2":"","cidade":"","estado":"","cep":"","pais":""},"itens":[{"id":0,"produto_id":438,"variacao_id":0,"nome":"FUNIL","sku":"","quantidade":1,"preco_unitario":0,"total":0,"total_impostos":0,"webhook_configurado":true}],"frete":[],"cupons":[],"webhook_info":{"tipo":"product_specific","produtos_incluidos":1}}
+[2025-10-03 20:12:23] VENDA PROCESSADA: ID 0 - Cliente: admin@ndspro.com.br - Produto: Teste 
+[2025-10-03 20:12:23] MATRÍCULA: Usuário 33 matriculado no curso Curso
+[2025-10-03 20:12:23] DEBUG: Iniciando processamento de order bumps para usuário 33
+[2025-10-03 20:12:23] DEBUG: Dados de produtos adicionais: Array
+(
+)
+
+[2025-10-03 20:12:23] DEBUG: Nenhum produto adicional encontrado
+[2025-10-03 20:16:07] Dados do webhook salvos para ID: teste-pro-checkout-desmatricula
+[2025-10-03 20:16:07] Webhook ID: teste-pro-checkout-desmatricula
+{"evento":"teste_produto_webhook","timestamp":"2025-10-03 17:16:07","produto_teste":{"id":438,"nome":"FUNIL"},"pedido":{"id":99999,"numero":"TESTE-PRODUTO-438-1759522567","total":99.99}}
+[2025-10-03 20:17:06] Webhook ID: teste-pro-checkout-desmatricula
+{"evento":"pedido_concluido","timestamp":"2025-10-03 17:17:06","pedido":{"id":440,"numero":"440","status":"completed","data_criacao":"2025-10-03 20:11:40","data_conclusao":"2025-10-03 20:17:06","total_pedido_completo":0,"total_produtos_webhook":0,"total_impostos_produtos":0,"moeda":"BRL","metodo_pagamento":"","metodo_pagamento_titulo":""},"cliente":{"id":1,"email":"admin@ndspro.com.br","nome":"Teste ","telefone":""},"endereco_cobranca":{"nome":"Teste","sobrenome":"","empresa":"","endereco_1":"","endereco_2":"","cidade":"","estado":"","cep":"","pais":""},"endereco_entrega":{"nome":"","sobrenome":"","empresa":"","endereco_1":"","endereco_2":"","cidade":"","estado":"","cep":"","pais":""},"itens":[{"id":0,"produto_id":438,"variacao_id":0,"nome":"FUNIL","sku":"","quantidade":1,"preco_unitario":0,"total":0,"total_impostos":0,"webhook_configurado":true}],"frete":[],"cupons":[],"webhook_info":{"tipo":"product_specific","produtos_incluidos":1}}
+[2025-10-03 20:17:06] VENDA PROCESSADA: ID 0 - Cliente: admin@ndspro.com.br - Produto: Teste 
+[2025-10-03 20:17:06] DESMATRÍCULA: Iniciando para usuário 33 - Email: admin@ndspro.com.br
+[2025-10-03 20:17:06] DESMATRÍCULA: Usuário 33 desmatriculado do curso Curso (Enrollment ID: 3744)
+[2025-10-03 20:17:06] DEBUG: Iniciando processamento de desmatrícula de order bumps para usuário 33
+[2025-10-03 20:17:06] DEBUG: Dados de produtos adicionais: Array
+(
+)
+
+[2025-10-03 20:17:06] DEBUG: Nenhum produto adicional encontrado para desmatrícula
+[2025-10-03 20:26:47] Webhook ID: teste-pro-checkout-desmatricula
+{"evento":"teste_produto_webhook","timestamp":"2025-10-03 17:26:47","produto_teste":{"id":438,"nome":"FUNIL"},"pedido":{"id":99999,"numero":"TESTE-PRODUTO-438-1759523207","total":99.99}}
+[2025-10-03 21:59:09] Dados do webhook salvos para ID: matricula
+[2025-10-03 21:59:09] Webhook ID: matricula
+{"evento":"teste_matricula","timestamp":"2025-10-03 18:59:09","produto_teste":{"id":438,"nome":"FUNIL"},"pedido":{"id":99999,"numero":"TESTE-COMPLETED-1759528749","total":99.99},"cliente":{"email":"teste@exemplo.com","nome":"Cliente Teste"}}
+[2025-10-03 21:59:09] VENDA PROCESSADA: ID 0 - Cliente: teste@exemplo.com - Produto: FUNIL
+[2025-10-03 21:59:09] MATRÍCULA: Usuário 34 matriculado no curso Curso
+[2025-10-03 21:59:09] DEBUG: Iniciando processamento de order bumps para usuário 34
+[2025-10-03 21:59:09] DEBUG: Dados de produtos adicionais: Array
+(
+)
+
+[2025-10-03 21:59:09] DEBUG: Nenhum produto adicional encontrado
+[2025-10-03 21:59:25] Webhook ID: matricula
+{"evento":"teste_matricula","timestamp":"2025-10-03 18:59:25","produto_teste":{"id":438,"nome":"FUNIL"},"pedido":{"id":99999,"numero":"TESTE-COMPLETED-1759528765","total":99.99},"cliente":{"email":"teste@exemplo.com","nome":"Cliente Teste"}}
+[2025-10-03 21:59:25] VENDA PROCESSADA: ID 0 - Cliente: teste@exemplo.com - Produto: FUNIL
+[2025-10-03 21:59:25] MATRÍCULA: Usuário 34 matriculado no curso Curso
+[2025-10-03 21:59:25] DEBUG: Iniciando processamento de order bumps para usuário 34
+[2025-10-03 21:59:25] DEBUG: Dados de produtos adicionais: Array
+(
+)
+
+[2025-10-03 21:59:25] DEBUG: Nenhum produto adicional encontrado
+[2025-10-03 22:04:41] Dados do webhook salvos para ID: desmatricula
+[2025-10-03 22:04:41] Webhook ID: desmatricula
+{"evento":"teste_matricula","timestamp":"2025-10-03 19:04:41","produto_teste":{"id":438,"nome":"FUNIL"},"pedido":{"id":99999,"numero":"TESTE-COMPLETED-1759529081","total":99.99},"cliente":{"email":"teste@exemplo.com","nome":"Cliente Teste"}}
+[2025-10-03 22:04:41] VENDA PROCESSADA: ID 0 - Cliente: teste@exemplo.com - Produto: FUNIL
+[2025-10-03 22:04:41] DESMATRÍCULA: Iniciando para usuário 34 - Email: teste@exemplo.com
+[2025-10-03 22:04:41] DESMATRÍCULA: Usuário 34 desmatriculado do curso Curso (Enrollment ID: 3745)
+[2025-10-03 22:04:41] DEBUG: Iniciando processamento de desmatrícula de order bumps para usuário 34
+[2025-10-03 22:04:41] DEBUG: Dados de produtos adicionais: Array
+(
+)
+
+[2025-10-03 22:04:41] DEBUG: Nenhum produto adicional encontrado para desmatrícula
+[2025-10-03 22:06:10] Dados do webhook salvos para ID: teste-matricula
+[2025-10-03 22:06:10] Webhook ID: teste-matricula
+{"evento":"teste_matricula","timestamp":"2025-10-03 19:06:10","produto_teste":{"id":438,"nome":"FUNIL"},"pedido":{"id":99999,"numero":"TESTE-COMPLETED-1759529170","total":99.99},"cliente":{"email":"teste@exemplo.com","nome":"Cliente Teste"}}
+[2025-10-03 22:06:10] VENDA PROCESSADA: ID 0 - Cliente: teste@exemplo.com - Produto: FUNIL
+[2025-10-03 22:06:10] MATRÍCULA: Usuário 34 matriculado no curso Curso
+[2025-10-03 22:06:10] DEBUG: Iniciando processamento de order bumps para usuário 34
+[2025-10-03 22:06:10] DEBUG: Dados de produtos adicionais: Array
+(
+)
+
+[2025-10-03 22:06:10] DEBUG: Nenhum produto adicional encontrado
+[2025-10-03 22:06:49] Dados do webhook salvos para ID: teste-desmatricula
+[2025-10-03 22:06:49] Webhook ID: teste-desmatricula
+{"evento":"teste_matricula","timestamp":"2025-10-03 19:06:49","produto_teste":{"id":438,"nome":"FUNIL"},"pedido":{"id":99999,"numero":"TESTE-COMPLETED-1759529209","total":99.99},"cliente":{"email":"teste@exemplo.com","nome":"Cliente Teste"}}
+[2025-10-03 22:06:49] VENDA PROCESSADA: ID 0 - Cliente: teste@exemplo.com - Produto: FUNIL
+[2025-10-03 22:06:49] DESMATRÍCULA: Iniciando para usuário 34 - Email: teste@exemplo.com
+[2025-10-03 22:06:49] DESMATRÍCULA: Usuário 34 desmatriculado do curso Curso (Enrollment ID: 3746)
+[2025-10-03 22:06:49] DEBUG: Iniciando processamento de desmatrícula de order bumps para usuário 34
+[2025-10-03 22:06:49] DEBUG: Dados de produtos adicionais: Array
+(
+)
+
+[2025-10-03 22:06:49] DEBUG: Nenhum produto adicional encontrado para desmatrícula
+[2025-10-03 22:07:57] Webhook ID: teste-desmatricula
+{"evento":"pedido_concluido","timestamp":"2025-10-03 19:07:57","pedido":{"id":440,"numero":"440","status":"completed","total":0},"cliente":{"id":1,"email":"admin@ndspro.com.br","nome":"Teste "},"itens":[{"produto_id":438,"variacao_id":0,"nome":"FUNIL","sku":"","quantidade":1,"total":0}]}
+[2025-10-03 22:07:57] VENDA PROCESSADA: ID 0 - Cliente: admin@ndspro.com.br - Produto: Teste 
+[2025-10-03 22:07:57] DESMATRÍCULA: Usuário não encontrado - Email: admin@ndspro.com.br
+[2025-10-03 22:10:41] Webhook ID: teste-matricula
+{"evento":"pedido_concluido","timestamp":"2025-10-03 19:10:41","pedido":{"id":440,"numero":"440","status":"completed","total":0},"cliente":{"id":1,"email":"admin@ndspro.com.br","nome":"Teste "},"itens":[{"produto_id":438,"variacao_id":0,"nome":"FUNIL","sku":"","quantidade":1,"total":0}]}
+[2025-10-03 22:10:41] VENDA PROCESSADA: ID 0 - Cliente: admin@ndspro.com.br - Produto: Teste 
+[2025-10-03 22:10:42] MATRÍCULA: Usuário 35 matriculado no curso Curso
+[2025-10-03 22:10:42] DEBUG: Iniciando processamento de order bumps para usuário 35
+[2025-10-03 22:10:42] DEBUG: Dados de produtos adicionais: Array
+(
+)
+
+[2025-10-03 22:10:42] DEBUG: Nenhum produto adicional encontrado
+[2025-10-03 22:11:22] Webhook ID: teste-desmatricula
+{"evento":"pedido_reembolsado","timestamp":"2025-10-03 19:11:22","pedido":{"id":440,"numero":"440","status":"refunded","total":0},"cliente":{"id":1,"email":"admin@ndspro.com.br","nome":"Teste "},"itens":[{"produto_id":438,"variacao_id":0,"nome":"FUNIL","sku":"","quantidade":1,"total":0}]}
+[2025-10-03 22:11:22] VENDA PROCESSADA: ID 0 - Cliente: admin@ndspro.com.br - Produto: Teste 
+[2025-10-03 22:11:22] DESMATRÍCULA: Iniciando para usuário 35 - Email: admin@ndspro.com.br
+[2025-10-03 22:11:22] DESMATRÍCULA: Usuário 35 desmatriculado do curso Curso (Enrollment ID: 3747)
+[2025-10-03 22:11:22] DEBUG: Iniciando processamento de desmatrícula de order bumps para usuário 35
+[2025-10-03 22:11:22] DEBUG: Dados de produtos adicionais: Array
+(
+)
+
+[2025-10-03 22:11:22] DEBUG: Nenhum produto adicional encontrado para desmatrícula
+[2025-10-03 23:06:43] Dados do webhook salvos para ID: matricula
+[2025-10-03 23:06:43] Webhook ID: matricula
+{"evento":"teste_matricula","timestamp":"2025-10-03 20:06:42","produto_teste":{"id":438,"nome":"FUNIL"},"pedido":{"id":99999,"numero":"TESTE-COMPLETED-1759532802","total":99.99},"cliente":{"email":"teste@exemplo.com","nome":"Cliente Teste"}}
+[2025-10-03 23:06:43] VENDA PROCESSADA: ID 0 - Cliente: teste@exemplo.com - Produto: FUNIL
+[2025-10-03 23:06:43] MATRÍCULA: Usuário 36 matriculado no curso Curso
+[2025-10-03 23:06:43] DEBUG: Iniciando processamento de order bumps para usuário 36
+[2025-10-03 23:06:43] DEBUG: Dados de produtos adicionais: Array
+(
+)
+
+[2025-10-03 23:06:43] DEBUG: Nenhum produto adicional encontrado
+[2025-10-03 23:06:54] Dados do webhook salvos para ID: desmatricula
+[2025-10-03 23:06:54] Webhook ID: desmatricula
+{"evento":"teste_desmatricula","timestamp":"2025-10-03 20:06:54","produto_teste":{"id":438,"nome":"FUNIL"},"pedido":{"id":99999,"numero":"TESTE-REFUNDED-1759532814","total":99.99},"cliente":{"email":"teste@exemplo.com","nome":"Cliente Teste"}}
+[2025-10-03 23:06:54] VENDA PROCESSADA: ID 0 - Cliente: teste@exemplo.com - Produto: FUNIL
+[2025-10-03 23:06:54] DESMATRÍCULA: Iniciando para usuário 36 - Email: teste@exemplo.com
+[2025-10-03 23:06:54] DESMATRÍCULA: Usuário 36 desmatriculado do curso Curso (Enrollment ID: 3748)
+[2025-10-03 23:06:54] DEBUG: Iniciando processamento de desmatrícula de order bumps para usuário 36
+[2025-10-03 23:06:54] DEBUG: Dados de produtos adicionais: Array
+(
+)
+
+[2025-10-03 23:06:54] DEBUG: Nenhum produto adicional encontrado para desmatrícula

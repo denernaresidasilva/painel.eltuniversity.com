@@ -1,0 +1,18 @@
+{
+  "require": {
+    "stripe/stripe-php": "14.10"
+  },
+  "replace": {
+    "symfony/polyfill-php80": "*"
+  },
+  "scripts": {
+    "format": "phpcbf",
+    "lint": "phpcs",
+    "test": "vendor/bin/phpunit"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  }
+}

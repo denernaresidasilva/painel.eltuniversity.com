@@ -1,0 +1,226 @@
+#chatQA {
+    padding: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#chatQAMessages {
+    height: 350px;
+    overflow-y: auto;
+}
+
+#chatQAMessages .wi_msg_container {
+    margin: 5px 0;
+}
+
+#chatQAMessages .wi_msg_container:first-child {
+    margin-top: 0;
+}
+
+#chatQAMessages .wi_msg_container:last-child {
+    margin-bottom: 0;
+}
+
+#chatQAMessages .wi_msg_container .wi_msg {
+    padding: 8px 10px;
+    min-width: 180px;
+    max-width: 85%;
+    background-color: #eee;
+    font-size: 14px!important;
+}
+
+#chatQAMessages .wi_msg_container .wi_msg h1,
+#chatQAMessages .wi_msg_container .wi_msg h2,
+#chatQAMessages .wi_msg_container .wi_msg h3,
+#chatQAMessages .wi_msg_container .wi_msg h4,
+#chatQAMessages .wi_msg_container .wi_msg h5,
+#chatQAMessages .wi_msg_container .wi_msg h6 {
+    font-weight: bold!important;
+}
+
+#chatQAMessages .wi_msg_container .wi_msg h1 {
+    font-size: 22px!important;
+}
+
+#chatQAMessages .wi_msg_container .wi_msg h2 {
+    font-size: 19px!important;
+}
+
+#chatQAMessages .wi_msg_container .wi_msg h3 {
+    font-size: 16px!important;
+}
+
+#chatQAMessages .wi_msg_container .wi_msg h4 {
+    font-size: 14px!important;
+}
+
+#chatQAMessages .wi_msg_container .wi_msg h5 {
+    font-size: 13px!important;
+}
+
+#chatQAMessages .wi_msg_container .wi_msg h6 {
+    font-size: 12px!important;
+}
+
+#chatQAMessages .wi_msg_container .wi_msg p:first-child {
+    margin-top: 0!important;
+}
+
+#chatQAMessages .wi_msg_container .wi_msg p:last-child {
+    margin-bottom: 0!important;
+}
+
+#chatQAMessages .wi_msg_container .wi_msg_clear,
+#chatQAMessages .wi_msg_container:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+    clear: both;
+}
+
+#chatQAMessages .wi_msg_incoming .wi_msg {
+    float: left;
+    padding-left: 10px;
+
+    -webkit-border-top-right-radius: 10px;
+    -moz-border-radius-topright: 10px;
+    border-top-right-radius: 10px;
+
+    -webkit-border-top-left-radius: 10px;
+    -moz-border-radius-topleft: 10px;
+    border-top-left-radius: 10px;
+
+    -webkit-border-bottom-right-radius: 10px;
+    -moz-border-radius-bottomright: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+#chatQAMessages .wi_msg_outgoing .wi_msg {
+    float: right;
+    padding-left: 10px;
+
+    -webkit-border-top-right-radius: 10px;
+    -moz-border-radius-topright: 10px;
+    border-top-right-radius: 10px;
+
+    -webkit-border-top-left-radius: 10px;
+    -moz-border-radius-topleft: 10px;
+    border-top-left-radius: 10px;
+
+    -webkit-border-bottom-left-radius: 10px;
+    -moz-border-radius-bottomleft: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+#chatQAMessages .wi_msg_author {
+    font-size: 13px!important;
+    padding-bottom: 8px;
+    font-weight: bold;
+}
+
+#chatQAMessages .wi_msg_meta {
+    padding-bottom: 15px;
+}
+
+#chatQAMessages .wi_msg_meta > div {
+    font-size: 12px!important;
+    padding-top: 5px;
+}
+
+#chatQAMessages .wi_msg_incoming .wi_msg_meta > div {
+    padding-left: 10px;
+}
+
+#chatQAMessages .wi_msg_outgoing .wi_msg_meta > div {
+    text-align: right;
+    padding-right: 10px;
+}
+#chatQuestion {
+    margin: 0!important;
+}
+
+/* Set appropriate z-index for each element */
+#vidOvl { /* Disable controls overlay */
+    position:absolute;
+    top:0;
+    width:100%;
+    height:100%;
+    background-color:rgba(0,0,0,0);
+    z-index: 99;
+}
+.timedUnderAreaOverlay { /* Overlay CTA */
+    z-index: 100;
+    position: relative;
+}
+.vjs-control-bar { /* VideoJS control bar */
+    z-index:101;
+}
+
+/**
+ * WordPress image align CSS
+ * Ref: https://codex.wordpress.org/Styling_Images_in_Posts_and_Pages
+*/
+img.alignright {float:right; margin:0 0 1em 1em}
+img.alignleft {float:left; margin:0 1em 1em 0}
+img.aligncenter {display: block; margin-left: auto; margin-right: auto}
+a img.alignright {float:right; margin:0 0 1em 1em}
+a img.alignleft {float:left; margin:0 1em 1em 0}
+a img.aligncenter {display: block; margin-left: auto; margin-right: auto}
+
+/* Countdown */
+.wi_base-timer {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+.wi_base-timer__svg {
+    transform: scaleX(-1); /* Flip to make the animation run clockwise */
+    width: 100%;
+    height: 100%;
+}
+
+.wi_base-timer__circle {
+    fill: none;
+    stroke: none;
+}
+
+.wi_base-timer__path-elapsed {
+    stroke-width: 7px;
+    stroke: #eee; /* Grey background for the elapsed time */
+}
+
+.wi_base-timer__path-remaining {
+    stroke-width: 7px;
+    stroke-linecap: round;
+    transform: rotate(90deg);
+    transform-origin: center;
+    transition: 1s linear all; /* Smooth animation */
+    fill-rule: nonzero;
+}
+
+.wi_base-timer__label {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Colors based on remaining time */
+.wi_base-timer__path-remaining.green {
+    stroke: green;
+}
+
+.wi_base-timer__path-remaining.orange {
+    stroke: orange;
+}
+
+.wi_base-timer__path-remaining.red {
+    stroke: red;
+}

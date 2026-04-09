@@ -1,0 +1,140 @@
+@media screen and (max-width: 480px) {
+
+	.salesWrapper{
+		width: 320px;
+	}
+	.headlineArea{
+		width: 320px;
+	}
+	.ctaRight{
+		display: none !important;	
+	}
+
+	.tyMobileArea{
+		display: block;
+	}
+
+	.bannerTop{
+		width: 320px;
+	}
+
+	.bannerTop img{
+		width: 320px;
+	}
+
+	.ctaLeft{
+		width: 320px;
+	}
+
+	.ticketWrapper{
+		margin-top: 20px;
+	}
+
+	.ctaArea{
+		min-width: 0px;
+	}
+	
+	.videoBlock{
+		margin-bottom: 20px;
+		padding: 20px;
+	}
+
+	.addedArrow{
+		background-image: none;
+	}
+
+	.ctaLeft{
+		-webkit-border-top-left-radius: 6px !important;
+		-webkit-border-top-right-radius: 6px !important;
+		-moz-border-radius-topleft: 6px !important;
+		-moz-border-radius-topright: 6px !important;
+		border-top-left-radius: 6px !important;
+		border-top-right-radius: 6px !important;
+	}
+
+	.videoBlock{
+		-webkit-border-top-left-radius: 6px !important;
+		-webkit-border-top-right-radius: 6px !important;
+		-moz-border-radius-topleft: 6px !important;
+		-moz-border-radius-topright: 6px !important;
+		border-top-left-radius: 6px !important;
+		border-top-right-radius: 6px !important;
+	}
+
+	.mainWrapper{
+		padding-top: 20px;
+	}
+
+	.ctaRightMobile{
+		display: block !important;
+		margin-top: 15px;
+	}
+
+}
+
+@media (min-width: 490px) and (max-width: 800px) {
+
+	.tyMobileArea{
+		display: block;
+	}
+
+	.salesWrapper{
+		width: 768px;
+	}
+	.headlineArea{
+		width: 768px;
+	}
+	.ctaRight{
+		display: none !important;	
+	}
+
+	.bannerTop{
+		width: 768px;
+	}
+
+	.bannerTop img{
+		width: 768px;
+	}
+
+	.ctaRightMobile{
+		display: block !important;
+		margin-top: 15px;
+	}
+
+	#optName{
+		background-position: 454px;
+	}
+
+	#optEmail{
+		background-position: 454px;
+	}
+
+	#optinBTN{
+		width: 487px;
+		text-align: center;
+	}
+
+	.ctaLeft{
+		margin-left: 95px;
+		-webkit-border-top-left-radius: 6px !important;
+		-webkit-border-top-right-radius: 6px !important;
+		-moz-border-radius-topleft: 6px !important;
+		-moz-border-radius-topright: 6px !important;
+		border-top-left-radius: 6px !important;
+		border-top-right-radius: 6px !important;
+	}
+	
+	.videoBlock{
+		-webkit-border-top-left-radius: 6px !important;
+		-webkit-border-top-right-radius: 6px !important;
+		-moz-border-radius-topleft: 6px !important;
+		-moz-border-radius-topright: 6px !important;
+		border-top-left-radius: 6px !important;
+		border-top-right-radius: 6px !important;
+	}
+
+	.ticketWrapper{
+		margin-top: 20px;
+	}
+
+}
