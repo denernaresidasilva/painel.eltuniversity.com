@@ -34,6 +34,9 @@ final class Roket_CRM_Automation_Pro {
     /** @var self|null */
     private static $instance = null;
 
+    /** @var WPLA_Admin|null */
+    private $admin = null;
+
     /**
      * Get singleton instance.
      */
@@ -80,7 +83,7 @@ final class Roket_CRM_Automation_Pro {
         // Admin
         require_once WPLA_PLUGIN_DIR . 'admin/class-wpla-admin.php';
         if ( is_admin() ) {
-            new WPLA_Admin();
+            $this->admin = new WPLA_Admin();
         }
 
         // Elementor integration (conditional)
