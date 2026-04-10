@@ -58,22 +58,45 @@
      * Modal helpers
      * ─────────────────────────────────── */
     function initModals() {
+        // Close on overlay click or close button.
         document.addEventListener('click', function (e) {
             if (e.target.classList.contains('wpla-modal-overlay') || e.target.classList.contains('wpla-modal-close')) {
                 var modal = e.target.closest('.wpla-modal');
-                if (modal) modal.style.display = 'none';
+                if (modal) closeModal(modal);
+            }
+        });
+
+        // Close on ESC key.
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' || e.keyCode === 27) {
+                var openModals = document.querySelectorAll('.wpla-modal[style*="flex"]');
+                if (openModals.length) {
+                    closeModal(openModals[openModals.length - 1]);
+                }
             }
         });
     }
 
+    function closeModal(el) {
+        el.style.display = 'none';
+        // Release body scroll if no other modals are open.
+        var remaining = document.querySelectorAll('.wpla-modal[style*="flex"]');
+        if (!remaining.length) {
+            document.body.classList.remove('wpla-modal-open');
+        }
+    }
+
     WPLA.openModal = function (id) {
         var el = document.getElementById(id);
-        if (el) el.style.display = 'flex';
+        if (el) {
+            el.style.display = 'flex';
+            document.body.classList.add('wpla-modal-open');
+        }
     };
 
     WPLA.closeModal = function (id) {
         var el = document.getElementById(id);
-        if (el) el.style.display = 'none';
+        if (el) closeModal(el);
     };
 
     /* ───────────────────────────────────
