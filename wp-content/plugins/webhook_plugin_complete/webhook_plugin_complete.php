@@ -364,7 +364,7 @@ class Webhook_Receiver {
         // Obter os dados do corpo da requisição
         $body = $request->get_body();
 
-        // Eduzz "verificar URL" envia payload vazio; responder 200 sem processar.
+        // Eduzz "Verificar URL" envia payload vazio; responder 200 sem processar.
         if (trim((string) $body) === '') {
             return new WP_REST_Response(array(
                 'success' => true,
