@@ -1606,12 +1606,15 @@ class Webhook_Receiver {
      * ========================================
      */
     public function test_webhook_page() {
-        // Buscar todos os cursos disponíveis (publicados e futuros/rascunhos)
-        $courses = get_posts(array('post_type' => 'courses', 'numberposts' => -1, 'post_status' => array('publish', 'draft', 'future', 'pending')));
+        $fluentcrm_active = function_exists('FluentCrmApi');
+        if ($fluentcrm_active) {
+            $fcrm_lists = FluentCrmApi('lists')->all();
+            $fcrm_tags  = FluentCrmApi('tags')->all();
+        }
         ?>
         <div class="wrap webhook-test-page">
             <h1>🎓 ADD MANUAL</h1>
-            <p class="description">Preencha os dados abaixo para cadastrar e matricular um aluno diretamente no curso.</p>
+            <p class="description">Preencha os dados abaixo para cadastrar um lead e adicioná-lo às listas/etiquetas do FluentCRM.</p>
             
             <div class="webhook-test-card">
                 <form id="webhook-enroll-form" method="post">
@@ -1638,24 +1641,51 @@ class Webhook_Receiver {
                         </div>
                     </div>
                     
-                    <h2>📚 Selecionar Cursos</h2>
+                    <h2>📋 FluentCRM</h2>
                     
+                    <?php if ($fluentcrm_active) : ?>
                     <div class="form-group">
+                        <label><span class="icon">📧</span> Listas do FluentCRM</label>
                         <div class="courses-container">
-                            <?php if (!empty($courses)): ?>
-                                <?php foreach ($courses as $course): ?>
+                            <?php if (!empty($fcrm_lists)) : ?>
+                                <?php foreach ($fcrm_lists as $fcrm_list) : ?>
                                     <label class="course-checkbox">
-                                        <input type="checkbox" name="enroll_course_ids[]" value="<?php echo esc_attr($course->ID); ?>">
+                                        <input type="checkbox" name="manual_fluentcrm_list_ids[]" value="<?php echo esc_attr($fcrm_list->id); ?>">
                                         <span class="checkmark"></span>
-                                        <span class="course-title"><?php echo esc_html($course->post_title); ?></span>
+                                        <span class="course-title"><?php echo esc_html($fcrm_list->title); ?></span>
                                     </label>
                                 <?php endforeach; ?>
-                            <?php else: ?>
-                                <div class="empty-state"><span class="empty-icon">📚</span><p>Nenhum curso encontrado.</p></div>
+                            <?php else : ?>
+                                <div class="empty-state"><span class="empty-icon">📧</span><p>Nenhuma lista encontrada no FluentCRM.</p></div>
                             <?php endif; ?>
                         </div>
-                        <p class="form-description">Selecione um ou mais cursos para matricular o aluno.</p>
+                        <p class="form-description">Selecione as listas do FluentCRM para adicionar o contato.</p>
                     </div>
+                    
+                    <div class="form-group">
+                        <label><span class="icon">🏷️</span> Etiquetas (Tags) do FluentCRM</label>
+                        <div class="courses-container">
+                            <?php if (!empty($fcrm_tags)) : ?>
+                                <?php foreach ($fcrm_tags as $fcrm_tag) : ?>
+                                    <label class="course-checkbox">
+                                        <input type="checkbox" name="manual_fluentcrm_tag_ids[]" value="<?php echo esc_attr($fcrm_tag->id); ?>">
+                                        <span class="checkmark"></span>
+                                        <span class="course-title"><?php echo esc_html($fcrm_tag->title); ?></span>
+                                    </label>
+                                <?php endforeach; ?>
+                            <?php else : ?>
+                                <div class="empty-state"><span class="empty-icon">🏷️</span><p>Nenhuma etiqueta encontrada no FluentCRM.</p></div>
+                            <?php endif; ?>
+                        </div>
+                        <p class="form-description">Selecione as etiquetas do FluentCRM para marcar o contato.</p>
+                    </div>
+                    <?php else : ?>
+                    <div class="form-group">
+                        <div class="notice notice-warning inline" style="padding:10px 15px;border-radius:6px;">
+                            <p><strong>⚠️ FluentCRM não detectado.</strong> Instale e ative o plugin FluentCRM para habilitar a integração com listas e etiquetas.</p>
+                        </div>
+                    </div>
+                    <?php endif; ?>
                     
                     <div class="form-actions">
                         <button type="submit" class="button button-primary button-large">
@@ -1753,7 +1783,7 @@ class Webhook_Receiver {
                         if (response.success) {
                             $('#enroll-result').html(
                                 '<div class="notice notice-success is-dismissible">' +
-                                '<p><strong>✅ Matrícula realizada com sucesso!</strong></p>' +
+                                '<p><strong>✅ Lead cadastrado com sucesso!</strong></p>' +
                                 '<ul>' + response.data.details.map(function(d) { return '<li>' + d + '</li>'; }).join('') + '</ul>' +
                                 '</div>'
                             ).show();
@@ -2045,36 +2075,21 @@ class Webhook_Receiver {
                                         </span>
                                     </span>
                                 </label>
+                                <label class="enrollment-type-option">
+                                    <input type="radio" name="enrollment_type" value="recover">
+                                    <span class="option-content">
+                                        <span class="option-icon">🔄</span>
+                                        <span class="option-text">
+                                            <strong>Recuperação de Venda</strong>
+                                            <small>Recuperar venda e adicionar lead ao FluentCRM</small>
+                                        </span>
+                                    </span>
+                                </label>
                             </div>
-                            <p class="form-description">Escolha se este webhook irá matricular ou desmatricular usuários dos cursos.</p>
+                            <p class="form-description">Escolha o tipo deste webhook.</p>
                         </div>
                         
-                        <div class="form-group">
-                            <label class="form-label">
-                                <span class="icon">📚</span> Cursos Principais
-                            </label>
-                            <div class="courses-container">
-                                <?php
-                                $courses = get_posts(array('post_type' => 'courses', 'numberposts' => -1, 'post_status' => 'publish'));
-                                if (!empty($courses)) {
-                                    foreach ($courses as $course) {
-                                        echo '<label class="course-checkbox">';
-                                        echo '<input type="checkbox" name="course_ids[]" value="' . esc_attr($course->ID) . '">';
-                                        echo '<span class="checkmark"></span>';
-                                        echo '<span class="course-title">' . esc_html($course->post_title) . '</span>';
-                                        echo '</label>';
-                                    }
-                                } else {
-                                    echo '<div class="empty-state"><span class="empty-icon">📚</span><p>Nenhum curso encontrado.</p></div>';
-                                }
-                                ?>
-                            </div>
-                            <div class="course-actions">
-                                <button type="button" id="select-all-courses" class="webhook-btn secondary small">Selecionar Todos</button>
-                                <button type="button" id="deselect-all-courses" class="webhook-btn secondary small">Desmarcar Todos</button>
-                            </div>
-                            <p class="form-description">Selecione os cursos para matricular/desmatricular o usuário.</p>
-                        </div>
+                        <?php $courses = get_posts(array('post_type' => 'courses', 'numberposts' => -1, 'post_status' => 'publish')); ?>
                         
                         <?php
                         $fluentcrm_active = function_exists('FluentCrmApi');
@@ -2159,52 +2174,6 @@ class Webhook_Receiver {
                 <div class="card-content">
                     <div id="webhooks-list">
                         <?php $this->display_webhooks_list(); ?>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Modal para gerenciar cursos principais -->
-            <div id="main-courses-modal" class="webhook-modal">
-                <div class="modal-backdrop"></div>
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h2><span class="icon">📚</span> Gerenciar Cursos Principais - <span id="modal-main-webhook-name" class="highlight-text"></span></h2>
-                        <button type="button" class="close-modal-btn">✕</button>
-                    </div>
-                    <input type="hidden" id="modal-main-webhook-id" value="">
-                    
-                    <div class="modal-body">
-                        <div class="main-courses-form">
-                            <h3>Selecione os Cursos Principais</h3>
-                            <div class="courses-container modal-courses">
-                                <?php
-                                if (!empty($courses)) {
-                                    foreach ($courses as $course) {
-                                        echo '<label class="course-checkbox">';
-                                        echo '<input type="checkbox" class="main-course-checkbox" name="main_course_ids[]" value="' . esc_attr($course->ID) . '">';
-                                        echo '<span class="checkmark"></span>';
-                                        echo '<span class="course-title">' . esc_html($course->post_title) . '</span>';
-                                        echo '</label>';
-                                    }
-                                }
-                                ?>
-                            </div>
-                            <div class="course-actions">
-                                <button type="button" id="select-all-main-courses" class="webhook-btn secondary small">Selecionar Todos</button>
-                                <button type="button" id="deselect-all-main-courses" class="webhook-btn secondary small">Desmarcar Todos</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="modal-footer">
-                        <button type="button" id="save-main-courses" class="webhook-btn primary">
-                            <span class="btn-icon">💾</span> Salvar Cursos Principais
-                        </button>
-                        <div class="loading-spinner modal-spinner">
-                            <div class="spinner"></div>
-                            <span>Salvando...</span>
-                        </div>
-                        <button type="button" class="webhook-btn secondary close-modal">Cancelar</button>
                     </div>
                 </div>
             </div>
@@ -3444,9 +3413,19 @@ class Webhook_Receiver {
                 $has_webhook_data = !empty($webhook->webhook_data);
                 
                 $enrollment_type = isset($webhook->enrollment_type) ? $webhook->enrollment_type : 'enroll';
-                $enrollment_label = $enrollment_type === 'unenroll' ? 'Reembolso' : 'Aprovado';
-                $enrollment_icon = $enrollment_type === 'unenroll' ? '❌' : '✅';
-                $enrollment_class = $enrollment_type === 'unenroll' ? 'type-unenroll' : 'type-enroll';
+                if ($enrollment_type === 'unenroll') {
+                    $enrollment_label = 'Reembolso';
+                    $enrollment_icon = '❌';
+                    $enrollment_class = 'type-unenroll';
+                } elseif ($enrollment_type === 'recover') {
+                    $enrollment_label = 'Recuperação de Venda';
+                    $enrollment_icon = '🔄';
+                    $enrollment_class = 'type-recover';
+                } else {
+                    $enrollment_label = 'Aprovado';
+                    $enrollment_icon = '✅';
+                    $enrollment_class = 'type-enroll';
+                }
             ?>
                 <div class="webhook-item-card">
                     <div class="webhook-item-header">
@@ -3471,18 +3450,6 @@ class Webhook_Receiver {
                             <div class="info-section">
                                 <span class="info-label">ID do Webhook</span>
                                 <code class="webhook-id-display"><?php echo esc_html($webhook->webhook_id); ?></code>
-                            </div>
-                            
-                            <div class="info-section">
-                                <span class="info-label">Cursos Principais</span>
-                                <div class="courses-info">
-                                    <span class="courses-count"><?php echo $courses_count; ?> curso(s)</span>
-                                    <button type="button" class="manage-btn small manage-main-courses" 
-                                            data-webhook-id="<?php echo esc_attr($webhook->webhook_id); ?>"
-                                            data-webhook-name="<?php echo esc_attr($webhook->webhook_name); ?>">
-                                        <span class="btn-icon">⚙️</span> Gerenciar
-                                    </button>
-                                </div>
                             </div>
                             
                             <div class="info-section">
@@ -3604,6 +3571,11 @@ class Webhook_Receiver {
         .webhook-type-badge.type-unenroll {
             background: #fee2e2;
             color: #991b1b;
+        }
+
+        .webhook-type-badge.type-recover {
+            background: #dbeafe;
+            color: #1e40af;
         }
 
         .webhook-status {
@@ -3953,7 +3925,8 @@ class Webhook_Receiver {
         $name     = sanitize_text_field($_POST['enroll_name'] ?? '');
         $email    = sanitize_email($_POST['enroll_email'] ?? '');
         $phone    = sanitize_text_field($_POST['enroll_phone'] ?? '');
-        $course_ids = isset($_POST['enroll_course_ids']) ? array_map('intval', $_POST['enroll_course_ids']) : array();
+        $fluentcrm_list_ids = isset($_POST['manual_fluentcrm_list_ids']) ? array_map('intval', $_POST['manual_fluentcrm_list_ids']) : array();
+        $fluentcrm_tag_ids  = isset($_POST['manual_fluentcrm_tag_ids'])  ? array_map('intval', $_POST['manual_fluentcrm_tag_ids'])  : array();
         
         // Validações
         if (empty($name)) {
@@ -3964,9 +3937,6 @@ class Webhook_Receiver {
         }
         if (empty($phone)) {
             wp_send_json_error(array('message' => 'Telefone é obrigatório.'));
-        }
-        if (empty($course_ids)) {
-            wp_send_json_error(array('message' => 'Selecione ao menos um curso.'));
         }
         
         $details = array();
@@ -4010,24 +3980,36 @@ class Webhook_Receiver {
             $details[] = '📱 Telefone salvo: ' . $phone;
         }
         
-        // Matricular nos cursos selecionados
-        $this->enroll_user_in_courses($user_id, $course_ids);
-        
-        foreach ($course_ids as $course_id) {
-            $course = get_post($course_id);
-            if ($course) {
-                $details[] = '🎓 Matriculado no curso: ' . $course->post_title;
+        // Integração FluentCRM - adicionar às listas e tags selecionadas
+        if (function_exists('FluentCrmApi') && (!empty($fluentcrm_list_ids) || !empty($fluentcrm_tag_ids))) {
+            try {
+                $contactApi = FluentCrmApi('contacts');
+                $name_parts = explode(' ', trim($name), 2);
+                $contact_data = array(
+                    'email'      => $email,
+                    'first_name' => $name_parts[0],
+                    'last_name'  => isset($name_parts[1]) ? $name_parts[1] : '',
+                    'phone'      => $phone,
+                    'status'     => 'subscribed',
+                );
+                $contact = $contactApi->createOrUpdate($contact_data);
+                if ($contact && !is_wp_error($contact)) {
+                    if (!empty($fluentcrm_list_ids)) {
+                        $contact->attachLists($fluentcrm_list_ids);
+                        $details[] = '📧 Adicionado às listas do FluentCRM (' . implode(', ', $fluentcrm_list_ids) . ').';
+                    }
+                    if (!empty($fluentcrm_tag_ids)) {
+                        $contact->attachTags($fluentcrm_tag_ids);
+                        $details[] = '🏷️ Etiquetas aplicadas no FluentCRM (' . implode(', ', $fluentcrm_tag_ids) . ').';
+                    }
+                }
+            } catch (\Exception $e) {
+                $details[] = '⚠️ Erro FluentCRM: ' . $e->getMessage();
             }
         }
         
-        // Enviar e-mail de boas-vindas se configurado
-        if (get_option('webhook_receiver_notify_user', 'no') === 'yes') {
-            $this->send_user_credentials_email($user_id, $is_new_user ? $password : '(senha existente)', $course_ids);
-            $details[] = '📧 E-mail de boas-vindas enviado.';
-        }
-        
         wp_send_json_success(array(
-            'message' => 'Matrícula realizada com sucesso!',
+            'message' => 'Lead cadastrado com sucesso!',
             'details' => $details,
             'user_id' => $user_id,
         ));
@@ -4053,12 +4035,12 @@ class Webhook_Receiver {
         $fluentcrm_list_ids = isset($_POST['fluentcrm_list_ids']) ? array_map('intval', $_POST['fluentcrm_list_ids']) : array();
         $fluentcrm_tag_ids  = isset($_POST['fluentcrm_tag_ids'])  ? array_map('intval', $_POST['fluentcrm_tag_ids'])  : array();
         
-        if (empty($webhook_name) || empty($webhook_id) || empty($course_ids)) {
+        if (empty($webhook_name) || empty($webhook_id)) {
             wp_send_json_error(array('message' => 'Todos os campos obrigatórios devem ser preenchidos.'));
             return;
         }
         
-        if (!in_array($enrollment_type, array('enroll', 'unenroll'))) {
+        if (!in_array($enrollment_type, array('enroll', 'unenroll', 'recover'))) {
             $enrollment_type = 'enroll';
         }
         
@@ -4803,37 +4785,6 @@ class Webhook_Receiver {
             'webhook_receiver_general_section'
         );
         
-        add_settings_field(
-            'webhook_receiver_notify_user',
-            'Notificar Usuário',
-            array($this, 'notify_user_callback'),
-            'webhook_receiver_settings',
-            'webhook_receiver_general_section'
-        );
-        
-        add_settings_field(
-            'webhook_receiver_from_email',
-            'E-mail de Envio (From)',
-            array($this, 'from_email_callback'),
-            'webhook_receiver_settings',
-            'webhook_receiver_general_section'
-        );
-        
-        add_settings_field(
-            'webhook_receiver_user_email_subject',
-            'Assunto do E-mail ao Usuário',
-            array($this, 'user_email_subject_callback'),
-            'webhook_receiver_settings',
-            'webhook_receiver_general_section'
-        );
-        
-        add_settings_field(
-            'webhook_receiver_user_email_template',
-            'Template do E-mail ao Usuário',
-            array($this, 'user_email_template_callback'),
-            'webhook_receiver_settings',
-            'webhook_receiver_general_section'
-        );
     }
     
     public function general_section_callback() {
