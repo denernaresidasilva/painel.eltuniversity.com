@@ -1,76 +1,84 @@
 /**
  * LC CRM AUTOMATION — Admin CSS
- * Modern SaaS-style UI (Notion / HubSpot inspired)
+ * Modern SaaS-style UI — Orange/Black theme
  *
  * @package LC_CRM_Automation
  */
 
 /* ─────────────────────────────────────
-   CSS Variables — Light & Dark themes
+   CSS Variables — Orange/Black theme
    ───────────────────────────────────── */
 :root {
-    --wpla-primary: #6366f1;
-    --wpla-primary-hover: #4f46e5;
-    --wpla-primary-light: #eef2ff;
-    --wpla-primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-    --wpla-accent: #8b5cf6;
-    --wpla-success: #059669;
-    --wpla-success-light: #d1fae5;
-    --wpla-warning: #d97706;
-    --wpla-warning-light: #fef3c7;
-    --wpla-danger: #dc2626;
-    --wpla-danger-light: #fee2e2;
-    --wpla-info: #2563eb;
-    --wpla-info-light: #dbeafe;
+    /* Brand — Orange */
+    --wpla-primary: #f97316;
+    --wpla-primary-hover: #ea580c;
+    --wpla-primary-light: rgba(249, 115, 22, 0.15);
+    --wpla-primary-gradient: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+    --wpla-accent: #fb923c;
 
-    --wpla-bg: #f8fafc;
-    --wpla-bg-card: #ffffff;
-    --wpla-bg-sidebar: #1e1b4b;
-    --wpla-bg-sidebar-hover: #312e81;
-    --wpla-bg-input: #ffffff;
-    --wpla-bg-hover: #f1f5f9;
+    /* Status */
+    --wpla-success: #22c55e;
+    --wpla-success-light: rgba(34, 197, 94, 0.15);
+    --wpla-warning: #eab308;
+    --wpla-warning-light: rgba(234, 179, 8, 0.15);
+    --wpla-danger: #ef4444;
+    --wpla-danger-light: rgba(239, 68, 68, 0.15);
+    --wpla-info: #38bdf8;
+    --wpla-info-light: rgba(56, 189, 248, 0.15);
 
-    --wpla-text: #1e293b;
-    --wpla-text-secondary: #64748b;
-    --wpla-text-sidebar: #c7d2fe;
-    --wpla-text-sidebar-active: #ffffff;
+    /* Backgrounds — dark by default */
+    --wpla-bg: #111111;
+    --wpla-bg-card: #1c1c1e;
+    --wpla-bg-sidebar: #0a0a0a;
+    --wpla-bg-sidebar-hover: #1f1f1f;
+    --wpla-bg-input: #2a2a2a;
+    --wpla-bg-hover: #262626;
+    --wpla-surface: #1c1c1e;
 
-    --wpla-border: #e2e8f0;
-    --wpla-border-focus: #6366f1;
+    /* Text */
+    --wpla-text: #f5f5f5;
+    --wpla-text-secondary: #a3a3a3;
+    --wpla-text-sidebar: rgba(249, 115, 22, 0.75);
+    --wpla-text-sidebar-active: #f97316;
+    --wpla-muted: #737373;
 
-    --wpla-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
-    --wpla-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.08);
-    --wpla-shadow-modal: 0 25px 50px rgba(0, 0, 0, 0.2);
+    /* Borders */
+    --wpla-border: #2e2e2e;
+    --wpla-border-focus: #f97316;
 
+    /* Shadows */
+    --wpla-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
+    --wpla-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.6);
+    --wpla-shadow-modal: 0 25px 50px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(249, 115, 22, 0.08);
+
+    /* Layout */
     --wpla-radius: 10px;
     --wpla-radius-lg: 14px;
-    --wpla-topbar-height: 48px;
+    --wpla-topbar-height: 52px;
 
     --wpla-transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     --wpla-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
-/* Dark mode */
+/* Deep dark mode (toggle) */
 .wpla-dark {
-    --wpla-bg: #0f172a;
-    --wpla-bg-card: #1e293b;
-    --wpla-bg-sidebar: #0c0a1d;
-    --wpla-bg-sidebar-hover: #1e1b4b;
-    --wpla-bg-input: #334155;
-    --wpla-bg-hover: #334155;
+    --wpla-bg: #000000;
+    --wpla-bg-card: #111111;
+    --wpla-bg-sidebar: #000000;
+    --wpla-bg-sidebar-hover: #1a1a1a;
+    --wpla-bg-input: #1a1a1a;
+    --wpla-bg-hover: #1a1a1a;
+    --wpla-surface: #111111;
 
-    --wpla-text: #f1f5f9;
-    --wpla-text-secondary: #94a3b8;
+    --wpla-text: #ffffff;
+    --wpla-text-secondary: #8a8a8a;
+    --wpla-muted: #525252;
 
-    --wpla-border: #334155;
-    --wpla-border-focus: #818cf8;
-    --wpla-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    --wpla-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.4);
-
-    --wpla-success-light: rgba(5, 150, 105, 0.15);
-    --wpla-warning-light: rgba(217, 119, 6, 0.15);
-    --wpla-danger-light: rgba(220, 38, 38, 0.15);
-    --wpla-info-light: rgba(37, 99, 235, 0.15);
+    --wpla-border: #222222;
+    --wpla-border-focus: #fb923c;
+    --wpla-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+    --wpla-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.8);
+    --wpla-shadow-modal: 0 25px 50px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(249, 115, 22, 0.12);
 }
 
 /* ─────────────────────────────────────
@@ -86,6 +94,7 @@
 
 #wpla-app {
     display: flex;
+    width: 100%;
     min-height: calc(100vh - 32px);
     font-family: var(--wpla-font);
     color: var(--wpla-text);
@@ -93,9 +102,6 @@
     font-size: 13px;
     line-height: 1.5;
     position: relative;
-    margin-left: -20px;
-    margin-top: -10px;
-    max-width: calc(100vw - 160px);
     overflow-x: hidden;
 }
 
@@ -117,7 +123,7 @@
 .wpla-topbar {
     height: var(--wpla-topbar-height);
     background: var(--wpla-bg-card);
-    border-bottom: 1px solid var(--wpla-border);
+    border-bottom: 2px solid var(--wpla-primary);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -138,7 +144,7 @@
 .wpla-page-title {
     font-size: 15px;
     font-weight: 700;
-    color: var(--wpla-text);
+    color: var(--wpla-primary);
 }
 
 .wpla-theme-toggle {
@@ -191,7 +197,7 @@
     top: 3px;
     left: 3px;
     transition: transform var(--wpla-transition);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 6px rgba(249, 115, 22, 0.4);
 }
 
 .wpla-dark .wpla-theme-toggle-thumb {
@@ -277,7 +283,7 @@
 }
 
 .wpla-dark .wpla-stat-icon {
-    background: rgba(99, 102, 241, 0.15);
+    background: rgba(249, 115, 22, 0.15);
 }
 
 .wpla-stat-value {
@@ -362,7 +368,7 @@
     background: var(--wpla-bg-hover);
     border-color: var(--wpla-primary);
     color: var(--wpla-primary);
-    box-shadow: 0 2px 4px rgba(99, 102, 241, 0.1);
+    box-shadow: 0 2px 4px rgba(249, 115, 22, 0.15);
 }
 
 .wpla-btn:active {
@@ -373,15 +379,15 @@
     background: var(--wpla-primary-gradient);
     color: #ffffff;
     border-color: transparent;
-    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.35);
     font-weight: 600;
 }
 
 .wpla-btn-primary:hover {
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    background: linear-gradient(135deg, #ea580c 0%, #f97316 100%);
     border-color: transparent;
     color: #ffffff;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.5);
     transform: translateY(-1px);
 }
 
@@ -453,9 +459,7 @@
     border-color: var(--wpla-primary);
     color: var(--wpla-primary);
     background: var(--wpla-primary-light);
-}
-
-/* ─────────────────────────────────────
+}/* ─────────────────────────────────────
    Form Elements
    ───────────────────────────────────── */
 .wpla-input,
@@ -475,7 +479,7 @@
 .wpla-input:focus,
 .wpla-select:focus {
     border-color: var(--wpla-border-focus);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18);
 }
 
 .wpla-input-lg {
@@ -579,35 +583,51 @@
 .wpla-modal {
     position: fixed;
     inset: 0;
-    z-index: 10000;
+    z-index: 100050;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 16px;
     animation: wplaFadeIn 0.2s ease;
 }
 
 .wpla-modal-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(4px);
+    cursor: pointer;
 }
 
 .wpla-modal-content {
     position: relative;
     background: var(--wpla-bg-card);
+    border: 1px solid var(--wpla-border);
     border-radius: var(--wpla-radius-lg);
     box-shadow: var(--wpla-shadow-modal);
-    width: 92%;
-    max-width: 480px;
-    max-height: 85vh;
+    width: 100%;
+    max-width: 560px;
+    max-height: 88vh;
     display: flex;
     flex-direction: column;
     animation: wplaSlideUp 0.3s ease;
+    overflow: hidden;
 }
 
-.wpla-modal-sm {
+/* Modal size variants */
+.wpla-modal-sm .wpla-modal-content,
+.wpla-modal-content.wpla-modal-sm {
     max-width: 400px;
+}
+
+.wpla-modal-md .wpla-modal-content,
+.wpla-modal-content.wpla-modal-md {
+    max-width: 640px;
+}
+
+.wpla-modal-lg .wpla-modal-content,
+.wpla-modal-content.wpla-modal-lg {
+    max-width: 960px;
 }
 
 @keyframes wplaSlideUp {
@@ -619,14 +639,17 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 18px 12px;
+    padding: 16px 20px 14px;
     border-bottom: 1px solid var(--wpla-border);
+    flex-shrink: 0;
+    background: var(--wpla-bg-card);
 }
 
 .wpla-modal-header h3 {
     font-size: 15px;
     font-weight: 700;
     margin: 0;
+    color: var(--wpla-primary);
 }
 
 .wpla-modal-close {
@@ -635,27 +658,32 @@
     font-size: 22px;
     color: var(--wpla-text-secondary);
     cursor: pointer;
-    padding: 4px;
+    padding: 4px 6px;
     line-height: 1;
-    transition: color var(--wpla-transition);
+    border-radius: 6px;
+    transition: all var(--wpla-transition);
 }
 
 .wpla-modal-close:hover {
     color: var(--wpla-danger);
+    background: var(--wpla-danger-light);
 }
 
 .wpla-modal-body {
-    padding: 14px 18px;
+    padding: 16px 20px;
     overflow-y: auto;
     flex: 1;
+    overscroll-behavior: contain;
 }
 
 .wpla-modal-footer {
     display: flex;
     justify-content: flex-end;
     gap: 8px;
-    padding: 12px 18px 14px;
+    padding: 12px 20px 16px;
     border-top: 1px solid var(--wpla-border);
+    flex-shrink: 0;
+    background: var(--wpla-bg-card);
 }
 
 /* ─────────────────────────────────────
@@ -692,7 +720,7 @@
 }
 
 .wpla-badge-primary {
-    background: rgba(99, 102, 241, 0.1);
+    background: rgba(249, 115, 22, 0.15);
     color: var(--wpla-primary);
 }
 
@@ -916,12 +944,14 @@
 .wpla-pagination button:hover {
     border-color: var(--wpla-primary);
     background: var(--wpla-primary-light);
+    color: var(--wpla-primary);
 }
 
 .wpla-pagination button.active {
     background: var(--wpla-primary);
     color: #ffffff;
     border-color: var(--wpla-primary);
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.4);
 }
 
 /* ─────────────────────────────────────
@@ -1095,10 +1125,17 @@
 /* ─────────────────────────────────────
    WordPress Admin overrides
    ───────────────────────────────────── */
+
+/* Remove default WP admin content padding so #wpla-app fills the area */
 #wpcontent {
     padding-left: 0 !important;
 }
 
+#wpbody-content {
+    padding-bottom: 0 !important;
+}
+
+/* Reset headings & links inside app */
 #wpla-app h1,
 #wpla-app h2,
 #wpla-app h3,
@@ -1111,15 +1148,6 @@
     text-decoration: none;
 }
 
-/* Fix: prevent content from hiding behind WP admin sidebar */
-.auto-fold #wpla-app {
-    max-width: calc(100vw - 160px);
-}
-
-.folded #wpla-app {
-    max-width: calc(100vw - 36px);
-}
-
 /* WP admin bar offset */
 .admin-bar .wpla-topbar {
     top: 32px;
@@ -1129,11 +1157,11 @@
     .admin-bar .wpla-topbar {
         top: 46px;
     }
+}
 
-    #wpla-app {
-        max-width: 100vw !important;
-        margin-left: -10px;
-    }
+/* Body scroll lock when modal is open */
+body.wpla-modal-open {
+    overflow: hidden;
 }
 
 /* ─────────────────────────────────────
@@ -1180,8 +1208,8 @@
 .wpla-qr-wrapper {
     display: inline-block;
     padding: 12px;
-    background: #fff;
-    border: 2px solid var(--wpla-border, #e2e8f0);
+    background: var(--wpla-bg-card);
+    border: 2px solid var(--wpla-border);
     border-radius: 12px;
     text-align: center;
 }
@@ -1203,31 +1231,31 @@
     align-items: center;
     gap: 6px;
     padding: 4px 10px;
-    background: var(--wpla-surface, #f1f5f9);
-    border: 1px solid var(--wpla-border, #e2e8f0);
+    background: var(--wpla-surface);
+    border: 1px solid var(--wpla-border);
     border-radius: 20px;
     cursor: pointer;
     transition: background .15s, border-color .15s;
     user-select: none;
 }
 .wpla-variable-chip:hover {
-    background: var(--wpla-primary-light, #e0e7ff);
-    border-color: var(--wpla-primary, #6366f1);
+    background: var(--wpla-primary-light);
+    border-color: var(--wpla-primary);
 }
 .wpla-variable-chip code {
     font-size: 12px;
-    color: var(--wpla-primary, #6366f1);
+    color: var(--wpla-primary);
     font-weight: 600;
     background: none;
     padding: 0;
 }
 .wpla-variable-label {
     font-size: 11px;
-    color: var(--wpla-muted, #94a3b8);
+    color: var(--wpla-muted);
 }
 
 /* Misc helpers */
 .wpla-ml-2  { margin-left: 8px; }
 .wpla-p-3   { padding: 12px; }
-.wpla-bg-light { background: var(--wpla-surface, #f8fafc); }
+.wpla-bg-light { background: var(--wpla-surface); }
 .wpla-rounded  { border-radius: 8px; }
