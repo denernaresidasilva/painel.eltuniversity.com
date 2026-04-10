@@ -79,6 +79,9 @@ final class Roket_CRM_Automation_Pro {
 
         // Admin
         require_once WPLA_PLUGIN_DIR . 'admin/class-wpla-admin.php';
+        if ( is_admin() ) {
+            new WPLA_Admin();
+        }
 
         // Elementor integration (conditional)
         add_action( 'elementor/widgets/register', array( $this, 'register_elementor_widgets' ) );
