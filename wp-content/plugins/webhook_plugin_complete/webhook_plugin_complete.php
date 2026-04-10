@@ -2026,8 +2026,8 @@ class Webhook_Receiver {
                                 <label for="webhook-id" class="form-label">
                                     <span class="icon">🔑</span> ID do Webhook
                                 </label>
-                                <input type="text" id="webhook-id" name="webhook_id" class="form-input" required pattern="[a-zA-Z0-9_-]+">
-                                <p class="form-description">Um identificador único para este webhook (apenas letras, números, traços e sublinhados).</p>
+                                <input type="text" id="webhook-id" name="webhook_id" class="form-input" required pattern="[a-zA-Z0-9_-]+" readonly style="background:#f1f5f9;cursor:default;">
+                                <p class="form-description">Gerado automaticamente a partir do nome (espaços substituídos por -).</p>
                             </div>
                         </div>
                         
@@ -2130,7 +2130,7 @@ class Webhook_Receiver {
                                 <span class="icon">🔗</span> URL do Webhook (prévia)
                             </label>
                             <div class="url-display-container">
-                                <code class="webhook-url-code" id="webhook-url-preview" style="font-size:0.8rem;word-break:break-all;display:block;padding:10px;background:#1a202c;color:#68d391;border-radius:6px;">Preencha o Nome e o ID do Webhook acima para ver a URL.</code>
+                                <code class="webhook-url-code" id="webhook-url-preview" style="font-size:0.8rem;word-break:break-all;display:block;padding:10px;background:#1a202c;color:#68d391;border-radius:6px;">Preencha o Nome do Webhook acima para ver a URL.</code>
                             </div>
                             <p class="form-description">Esta é a URL que você irá configurar na plataforma de origem para enviar os webhooks.</p>
                         </div>
@@ -2848,31 +2848,26 @@ class Webhook_Receiver {
             var baseRestUrl = '<?php echo esc_js(rest_url('webhook-receiver/v1/receive/')); ?>';
             
             function updateWebhookUrlPreview() {
-                var webhookName = $('#webhook-name').val();
                 var webhookId   = $('#webhook-id').val();
                 if (webhookId) {
-                    var previewUrl = baseRestUrl + webhookId + (webhookName ? '?name=' + encodeURIComponent(webhookName) : '');
+                    var previewUrl = baseRestUrl + webhookId;
                     $('#webhook-url-preview').text(previewUrl);
                 } else {
-                    $('#webhook-url-preview').text('Preencha o Nome e o ID do Webhook acima para ver a URL.');
+                    $('#webhook-url-preview').text('Preencha o Nome do Webhook acima para ver a URL.');
                 }
             }
 
             $('#webhook-name').on('input blur', function() {
-                if ($('#webhook-id').val() === '') {
-                    var webhookName = $(this).val();
-                    var webhookId = webhookName
-                        .replace(/\s+/g, '-')
-                        .replace(/[^a-zA-Z0-9_-]/g, '')
-                        .replace(/^-+|-+$/g, '');
-                    $('#webhook-id').val(webhookId);
-                }
+                var webhookName = $(this).val();
+                var webhookId = webhookName
+                    .replace(/\s+/g, '-')
+                    .replace(/[^a-zA-Z0-9_-]/g, '')
+                    .replace(/^-+|-+$/g, '')
+                    .toLowerCase();
+                $('#webhook-id').val(webhookId);
                 updateWebhookUrlPreview();
             });
 
-            $('#webhook-id').on('input', function() {
-                updateWebhookUrlPreview();
-            });
             
             $('#select-all-courses').on('click', function() {
                 $('input[name="course_ids[]"]').prop('checked', true);
@@ -3390,7 +3385,7 @@ class Webhook_Receiver {
                     $webhook->webhook_id
                 ));
                 
-                $webhook_url = rest_url('webhook-receiver/v1/receive/' . $webhook->webhook_id) . '?name=' . rawurlencode($webhook->webhook_name);
+                $webhook_url = rest_url('webhook-receiver/v1/receive/' . $webhook->webhook_id);
                 $has_webhook_data = !empty($webhook->webhook_data);
                 
                 $enrollment_type = isset($webhook->enrollment_type) ? $webhook->enrollment_type : 'enroll';
@@ -3463,22 +3458,12 @@ class Webhook_Receiver {
                                         data-webhook-name="<?php echo esc_attr($webhook->webhook_name); ?>">
                                     <span class="btn-icon">📄</span> Ver JSON
                                 </button>
-                                <button type="button" class="action-btn warning recover-sales" 
-                                        data-webhook-id="<?php echo esc_attr($webhook->webhook_id); ?>"
-                                        data-webhook-name="<?php echo esc_attr($webhook->webhook_name); ?>">
-                                    <span class="btn-icon">🔄</span> Recuperação de Vendas
-                                </button>
                             </div>
                         <?php else : ?>
                             <div class="webhook-actions">
                                 <button type="button" class="action-btn secondary listen-webhook" 
                                         data-webhook-id="<?php echo esc_attr($webhook->webhook_id); ?>">
                                     <span class="btn-icon">👂</span> Escutar Webhook
-                                </button>
-                                <button type="button" class="action-btn warning recover-sales" 
-                                        data-webhook-id="<?php echo esc_attr($webhook->webhook_id); ?>"
-                                        data-webhook-name="<?php echo esc_attr($webhook->webhook_name); ?>">
-                                    <span class="btn-icon">🔄</span> Recuperação de Vendas
                                 </button>
                             </div>
                         <?php endif; ?>
