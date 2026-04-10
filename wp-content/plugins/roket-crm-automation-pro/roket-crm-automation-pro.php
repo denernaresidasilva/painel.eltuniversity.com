@@ -3,7 +3,7 @@
  * Plugin Name: Roket CRM Automation Pro
  * Plugin URI:  https://roketcrm.com
  * Description: Advanced CRM + Marketing Automation + WhatsApp + Email + Webhooks system for WordPress. Similar to ActiveCampaign / HubSpot, fully inside WordPress.
- * Version:     1.0.0
+ * Version:     1.1.0
  * Author:      Dener Naresi
  * Author URI:  https://denernaresi.com
  * License:     GPL-2.0+
@@ -19,12 +19,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants
-define( 'WPLA_VERSION', '1.0.0' );
+define( 'WPLA_VERSION', '1.1.0' );
 define( 'WPLA_PLUGIN_FILE', __FILE__ );
 define( 'WPLA_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WPLA_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'WPLA_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
-define( 'WPLA_DB_VERSION', '1.0.0' );
+define( 'WPLA_DB_VERSION', '1.1.0' );
 
 /**
  * Main plugin class — singleton.
@@ -63,6 +63,7 @@ final class Roket_CRM_Automation_Pro {
         require_once WPLA_PLUGIN_DIR . 'includes/Models/class-wpla-contact.php';
         require_once WPLA_PLUGIN_DIR . 'includes/Models/class-wpla-list.php';
         require_once WPLA_PLUGIN_DIR . 'includes/Models/class-wpla-tag.php';
+        require_once WPLA_PLUGIN_DIR . 'includes/Models/class-wpla-webinar.php';
 
         // Services
         require_once WPLA_PLUGIN_DIR . 'includes/Services/class-wpla-event-manager.php';
@@ -126,11 +127,16 @@ final class Roket_CRM_Automation_Pro {
     }
 
     /**
-     * Init hook — load text domain, start event manager.
+     * Init hook — load text domain, start event manager, run DB upgrades.
      */
     public function init(): void {
         load_plugin_textdomain( 'roket-crm', false, dirname( WPLA_PLUGIN_BASENAME ) . '/languages' );
         WPLA_Event_Manager::instance();
+
+        // Run DB upgrade if version changed.
+        if ( get_option( 'wpla_db_version' ) !== WPLA_DB_VERSION ) {
+            WPLA_Database::install();
+        }
     }
 
     /**

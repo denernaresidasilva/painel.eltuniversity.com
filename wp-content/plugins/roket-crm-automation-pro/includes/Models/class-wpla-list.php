@@ -23,8 +23,10 @@ class WPLA_List_Model {
             'name'        => sanitize_text_field( $data['name'] ?? '' ),
             'description' => sanitize_textarea_field( $data['description'] ?? '' ),
             'status'      => 'active',
+            'list_type'   => sanitize_text_field( $data['list_type'] ?? 'general' ),
+            'webinar_id'  => absint( $data['webinar_id'] ?? 0 ),
             'form_fields' => $form_fields,
-        ), array( '%s', '%s', '%s', '%s' ) );
+        ), array( '%s', '%s', '%s', '%s', '%d', '%s' ) );
 
         return (int) $wpdb->insert_id;
     }

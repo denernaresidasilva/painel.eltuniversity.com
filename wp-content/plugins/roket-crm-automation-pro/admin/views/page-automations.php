@@ -62,15 +62,28 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="wpla-card wpla-mb-4">
             <h4><?php esc_html_e( 'Gatilho', 'roket-crm' ); ?></h4>
             <select id="automation-trigger" class="wpla-select">
-                <option value="contact_created"><?php esc_html_e( 'Contato Criado', 'roket-crm' ); ?></option>
-                <option value="contact_updated"><?php esc_html_e( 'Contato Atualizado', 'roket-crm' ); ?></option>
-                <option value="tag_added"><?php esc_html_e( 'Tag Adicionada', 'roket-crm' ); ?></option>
-                <option value="tag_removed"><?php esc_html_e( 'Tag Removida', 'roket-crm' ); ?></option>
-                <option value="list_subscribed"><?php esc_html_e( 'Inscrito na Lista', 'roket-crm' ); ?></option>
-                <option value="form_submitted"><?php esc_html_e( 'Formulário Enviado', 'roket-crm' ); ?></option>
-                <option value="webhook_received"><?php esc_html_e( 'Webhook Recebido', 'roket-crm' ); ?></option>
-                <option value="email_opened"><?php esc_html_e( 'Email Aberto', 'roket-crm' ); ?></option>
-                <option value="link_clicked"><?php esc_html_e( 'Link Clicado', 'roket-crm' ); ?></option>
+                <optgroup label="<?php esc_attr_e( 'Contatos', 'roket-crm' ); ?>">
+                    <option value="contact_created"><?php esc_html_e( 'Contato Criado', 'roket-crm' ); ?></option>
+                    <option value="contact_updated"><?php esc_html_e( 'Contato Atualizado', 'roket-crm' ); ?></option>
+                    <option value="tag_added"><?php esc_html_e( 'Tag Adicionada', 'roket-crm' ); ?></option>
+                    <option value="tag_removed"><?php esc_html_e( 'Tag Removida', 'roket-crm' ); ?></option>
+                    <option value="list_subscribed"><?php esc_html_e( 'Inscrito na Lista', 'roket-crm' ); ?></option>
+                    <option value="form_submitted"><?php esc_html_e( 'Formulário Enviado', 'roket-crm' ); ?></option>
+                </optgroup>
+                <optgroup label="<?php esc_attr_e( 'Webinar', 'roket-crm' ); ?>">
+                    <option value="webinar_inbox"><?php esc_html_e( '[Webinar] Entrou na INBOX', 'roket-crm' ); ?></option>
+                    <option value="webinar_assistiu_oferta"><?php esc_html_e( '[Webinar] Assistiu a Oferta', 'roket-crm' ); ?></option>
+                    <option value="webinar_nao_viu_oferta"><?php esc_html_e( '[Webinar] Não Viu a Oferta', 'roket-crm' ); ?></option>
+                    <option value="webinar_replay"><?php esc_html_e( '[Webinar] Encaminhado para Replay', 'roket-crm' ); ?></option>
+                    <option value="webinar_converteu"><?php esc_html_e( '[Webinar] Converteu (clicou oferta)', 'roket-crm' ); ?></option>
+                </optgroup>
+                <optgroup label="<?php esc_attr_e( 'Email', 'roket-crm' ); ?>">
+                    <option value="email_opened"><?php esc_html_e( 'Email Aberto', 'roket-crm' ); ?></option>
+                    <option value="link_clicked"><?php esc_html_e( 'Link Clicado', 'roket-crm' ); ?></option>
+                </optgroup>
+                <optgroup label="<?php esc_attr_e( 'Externo', 'roket-crm' ); ?>">
+                    <option value="webhook_received"><?php esc_html_e( 'Webhook Recebido', 'roket-crm' ); ?></option>
+                </optgroup>
             </select>
         </div>
 

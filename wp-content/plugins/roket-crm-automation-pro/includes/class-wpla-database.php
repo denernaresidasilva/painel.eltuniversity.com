@@ -56,11 +56,14 @@ class WPLA_Database {
             name VARCHAR(191) NOT NULL,
             description TEXT DEFAULT NULL,
             status ENUM('active','archived') DEFAULT 'active',
+            list_type VARCHAR(50) DEFAULT 'general',
+            webinar_id BIGINT UNSIGNED DEFAULT 0,
             form_fields LONGTEXT DEFAULT NULL,
             created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY  (id),
-            KEY status (status)
+            KEY status (status),
+            KEY webinar_id (webinar_id)
         ) $charset_collate;";
         dbDelta( $sql );
 
@@ -185,6 +188,27 @@ class WPLA_Database {
             KEY contact_id (contact_id),
             KEY status (status),
             KEY execute_at (execute_at)
+        ) $charset_collate;";
+        dbDelta( $sql );
+
+        // 11. Webinars
+        $sql = "CREATE TABLE {$prefix}webinars (
+            id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+            name VARCHAR(191) NOT NULL,
+            description TEXT DEFAULT NULL,
+            video_type ENUM('youtube','vimeo','html5') DEFAULT 'youtube',
+            video_url TEXT DEFAULT NULL,
+            offer_title VARCHAR(255) DEFAULT '',
+            offer_url TEXT DEFAULT NULL,
+            offer_button_text VARCHAR(191) DEFAULT '',
+            offer_time_live INT UNSIGNED DEFAULT 0,
+            offer_time_replay INT UNSIGNED DEFAULT 0,
+            automation_id BIGINT UNSIGNED DEFAULT 0,
+            status ENUM('active','paused','draft') DEFAULT 'draft',
+            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY  (id),
+            KEY status (status)
         ) $charset_collate;";
         dbDelta( $sql );
 

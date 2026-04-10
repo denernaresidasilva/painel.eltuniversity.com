@@ -15,11 +15,25 @@ class WPLA_Rest_Api {
      * Register all REST routes.
      */
     public static function register_routes(): void {
-        // Public webhook endpoint.
+        // Public webhook endpoint (inbound — named clearly for settings display).
+        register_rest_route( 'wpla/v1', '/webhook/inbound', array(
+            'methods'             => 'GET,HEAD,POST',
+            'callback'            => array( __CLASS__, 'handle_webhook' ),
+            'permission_callback' => array( __CLASS__, 'validate_api_key' ),
+        ) );
+
+        // Legacy webhook path (keep for compatibility).
         register_rest_route( 'wpla/v1', '/webhook', array(
             'methods'             => 'GET,HEAD,POST',
             'callback'            => array( __CLASS__, 'handle_webhook' ),
             'permission_callback' => array( __CLASS__, 'validate_api_key' ),
+        ) );
+
+        // Webinar player events (called from the front-end player).
+        register_rest_route( 'wpla/v1', '/webinar/event', array(
+            'methods'             => 'POST',
+            'callback'            => array( __CLASS__, 'handle_webinar_event' ),
+            'permission_callback' => '__return_true',
         ) );
 
         // Internal CRUD endpoints (admin only).
@@ -211,6 +225,76 @@ class WPLA_Rest_Api {
         return new WP_REST_Response( array(
             'success'    => true,
             'contact_id' => (int) $contact_id,
+        ), 200 );
+    }
+
+    /* ───── Webinar Player Events ───── */
+
+    /**
+     * Handle events fired by the webinar player (front-end JS calls this).
+     *
+     * Expected POST body (JSON):
+     *   {
+     *     "webinar_id": 5,
+     *     "event":      "offer_shown" | "offer_clicked" | "replay_requested",
+     *     "contact_id": 12,           // optional — if known
+     *     "email":      "x@y.com"     // optional — used to resolve contact if contact_id absent
+     *   }
+     */
+    public static function handle_webinar_event( WP_REST_Request $request ): WP_REST_Response {
+        $params = $request->get_json_params();
+
+        if ( empty( $params ) ) {
+            $params = $request->get_body_params();
+        }
+
+        $webinar_id = absint( $params['webinar_id'] ?? 0 );
+        $event      = sanitize_text_field( $params['event'] ?? '' );
+        $contact_id = absint( $params['contact_id'] ?? 0 );
+        $email      = sanitize_email( $params['email'] ?? '' );
+
+        if ( ! $webinar_id || ! $event ) {
+            return new WP_REST_Response( array( 'error' => 'webinar_id and event are required.' ), 400 );
+        }
+
+        // Resolve contact from email if contact_id not provided.
+        if ( ! $contact_id && is_email( $email ) ) {
+            $contact = WPLA_Contact::get_by_email( $email );
+            if ( $contact ) {
+                $contact_id = (int) $contact->id;
+            }
+        }
+
+        if ( ! $contact_id ) {
+            return new WP_REST_Response( array( 'error' => 'Could not resolve contact.' ), 404 );
+        }
+
+        // Map event string to routing destination.
+        $destination_map = array(
+            'offer_shown'       => 'assistiu_oferta',
+            'offer_not_shown'   => 'nao_viu_oferta',
+            'offer_clicked'     => 'converteu',
+            'replay_requested'  => 'replay',
+        );
+
+        $destination = $destination_map[ $event ] ?? '';
+
+        if ( $destination ) {
+            WPLA_Webinar::route_contact( $webinar_id, $contact_id, $destination );
+        } else {
+            // Unknown event — just fire action for custom handling.
+            do_action( 'wpla_event', "webinar_{$event}", $contact_id, array(
+                'webinar_id' => $webinar_id,
+                'event'      => $event,
+            ) );
+        }
+
+        return new WP_REST_Response( array(
+            'success'     => true,
+            'contact_id'  => $contact_id,
+            'webinar_id'  => $webinar_id,
+            'event'       => $event,
+            'destination' => $destination,
         ), 200 );
     }
 

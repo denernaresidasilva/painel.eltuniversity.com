@@ -361,6 +361,24 @@ class WPLA_Contact {
     }
 
     /**
+     * Unsubscribe a contact from a list (marks as 'unsubscribed').
+     */
+    public static function unsubscribe_list( int $contact_id, int $list_id ): bool {
+        global $wpdb;
+        $table = WPLA_Database::table( 'contact_lists' );
+
+        $result = $wpdb->update(
+            $table,
+            array( 'status' => 'unsubscribed' ),
+            array( 'contact_id' => $contact_id, 'list_id' => $list_id ),
+            array( '%s' ),
+            array( '%d', '%d' )
+        );
+
+        return $result !== false;
+    }
+
+    /**
      * Get total contacts count.
      */
     public static function count( string $status = '' ): int {

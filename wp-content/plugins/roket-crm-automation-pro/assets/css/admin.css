@@ -1159,3 +1159,75 @@
     transform: scale(0.98);
     transition-duration: 0.1s;
 }
+
+/* ─────────────────────────────────────
+   Webinars & QR Code additions
+   ───────────────────────────────────── */
+
+/* 2-column layout for webinar editor */
+.wpla-form-grid-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+@media (max-width: 960px) {
+    .wpla-form-grid-2col {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* QR Code wrapper */
+.wpla-qr-wrapper {
+    display: inline-block;
+    padding: 12px;
+    background: #fff;
+    border: 2px solid var(--wpla-border, #e2e8f0);
+    border-radius: 12px;
+    text-align: center;
+}
+.wpla-qr-image {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    display: block;
+}
+
+/* Variables grid for WhatsApp */
+.wpla-variables-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.wpla-variable-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: var(--wpla-surface, #f1f5f9);
+    border: 1px solid var(--wpla-border, #e2e8f0);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+    user-select: none;
+}
+.wpla-variable-chip:hover {
+    background: var(--wpla-primary-light, #e0e7ff);
+    border-color: var(--wpla-primary, #6366f1);
+}
+.wpla-variable-chip code {
+    font-size: 12px;
+    color: var(--wpla-primary, #6366f1);
+    font-weight: 600;
+    background: none;
+    padding: 0;
+}
+.wpla-variable-label {
+    font-size: 11px;
+    color: var(--wpla-muted, #94a3b8);
+}
+
+/* Misc helpers */
+.wpla-ml-2  { margin-left: 8px; }
+.wpla-p-3   { padding: 12px; }
+.wpla-bg-light { background: var(--wpla-surface, #f8fafc); }
+.wpla-rounded  { border-radius: 8px; }

@@ -96,6 +96,45 @@ class WPLA_Email {
     }
 
     /**
+     * Configure PHPMailer with SMTP settings when configured.
+     *
+     * @param \PHPMailer\PHPMailer\PHPMailer $phpmailer PHPMailer instance.
+     */
+    public static function configure_smtp( $phpmailer ): void {
+        $host = get_option( 'wpla_smtp_host', '' );
+
+        if ( empty( $host ) ) {
+            return; // No SMTP configured — use WordPress default.
+        }
+
+        $port       = (int) get_option( 'wpla_smtp_port', 587 );
+        $encryption = get_option( 'wpla_smtp_encryption', 'tls' );
+        $auth       = (bool) get_option( 'wpla_smtp_auth', '1' );
+        $user       = get_option( 'wpla_smtp_user', '' );
+        $pass       = get_option( 'wpla_smtp_pass', '' );
+        $from_name  = get_option( 'wpla_email_from_name', get_bloginfo( 'name' ) );
+        $from_email = get_option( 'wpla_email_from_address', get_bloginfo( 'admin_email' ) );
+
+        $phpmailer->isSMTP();
+        $phpmailer->Host       = $host;
+        $phpmailer->Port       = $port;
+        $phpmailer->SMTPAuth   = $auth;
+        $phpmailer->Username   = $user;
+        $phpmailer->Password   = $pass;
+        $phpmailer->FromName   = $from_name;
+        $phpmailer->From       = $from_email;
+
+        if ( 'ssl' === $encryption ) {
+            $phpmailer->SMTPSecure = 'ssl';
+        } elseif ( 'tls' === $encryption ) {
+            $phpmailer->SMTPSecure = 'tls';
+        } else {
+            $phpmailer->SMTPSecure = '';
+            $phpmailer->SMTPAutoTLS = false;
+        }
+    }
+
+    /**
      * Handle tracking requests (open / click). Hooked to template_redirect.
      */
     public static function handle_tracking(): void {
@@ -150,3 +189,6 @@ class WPLA_Email {
 
 // Hook tracking handler.
 add_action( 'template_redirect', array( 'WPLA_Email', 'handle_tracking' ), 1 );
+
+// Configure SMTP via PHPMailer when settings are present.
+add_action( 'phpmailer_init', array( 'WPLA_Email', 'configure_smtp' ) );
