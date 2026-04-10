@@ -20,22 +20,22 @@ $current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET[
             <div class="wpla-topbar-left">
                 <?php
                 $page_labels = array(
-                    'wpla-dashboard'   => __( 'Dashboard', 'roket-crm' ),
-                    'wpla-contacts'    => __( 'Contacts', 'roket-crm' ),
-                    'wpla-lists'       => __( 'Lists', 'roket-crm' ),
+                    'wpla-dashboard'   => __( 'Painel', 'roket-crm' ),
+                    'wpla-contacts'    => __( 'Contatos', 'roket-crm' ),
+                    'wpla-lists'       => __( 'Listas', 'roket-crm' ),
                     'wpla-tags'        => __( 'Tags', 'roket-crm' ),
-                    'wpla-automations' => __( 'Automations', 'roket-crm' ),
-                    'wpla-forms'       => __( 'Forms', 'roket-crm' ),
+                    'wpla-automations' => __( 'Automações', 'roket-crm' ),
+                    'wpla-forms'       => __( 'Formulários', 'roket-crm' ),
                     'wpla-whatsapp'    => __( 'WhatsApp', 'roket-crm' ),
                     'wpla-email'       => __( 'Email', 'roket-crm' ),
                     'wpla-webhooks'    => __( 'Webhooks', 'roket-crm' ),
-                    'wpla-settings'    => __( 'Settings', 'roket-crm' ),
+                    'wpla-settings'    => __( 'Configurações', 'roket-crm' ),
                 );
                 ?>
-                <h1 class="wpla-page-title"><?php echo esc_html( $page_labels[ $current_page ] ?? 'Dashboard' ); ?></h1>
+                <h1 class="wpla-page-title"><?php echo esc_html( $page_labels[ $current_page ] ?? 'Painel' ); ?></h1>
             </div>
             <div class="wpla-topbar-right">
-                <button class="wpla-theme-toggle" title="<?php esc_attr_e( 'Toggle Dark Mode', 'roket-crm' ); ?>" aria-label="<?php esc_attr_e( 'Toggle Dark Mode', 'roket-crm' ); ?>">
+                <button class="wpla-theme-toggle" title="<?php esc_attr_e( 'Alternar Modo Escuro', 'roket-crm' ); ?>" aria-label="<?php esc_attr_e( 'Alternar Modo Escuro', 'roket-crm' ); ?>">
                     <span class="wpla-theme-toggle-track">
                         <span>☀️</span>
                         <span>🌙</span>
@@ -53,7 +53,7 @@ $current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET[
             if ( file_exists( $view_file ) ) {
                 include $view_file;
             } else {
-                echo '<div class="wpla-card"><p>' . esc_html__( 'Page not found.', 'roket-crm' ) . '</p></div>';
+                echo '<div class="wpla-card"><p>' . esc_html__( 'Página não encontrada.', 'roket-crm' ) . '</p></div>';
             }
             ?>
         </div>
