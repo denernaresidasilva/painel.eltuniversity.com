@@ -1,0 +1,1233 @@
+/**
+ * LC CRM AUTOMATION — Admin CSS
+ * Modern SaaS-style UI (Notion / HubSpot inspired)
+ *
+ * @package LC_CRM_Automation
+ */
+
+/* ─────────────────────────────────────
+   CSS Variables — Light & Dark themes
+   ───────────────────────────────────── */
+:root {
+    --wpla-primary: #6366f1;
+    --wpla-primary-hover: #4f46e5;
+    --wpla-primary-light: #eef2ff;
+    --wpla-primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    --wpla-accent: #8b5cf6;
+    --wpla-success: #059669;
+    --wpla-success-light: #d1fae5;
+    --wpla-warning: #d97706;
+    --wpla-warning-light: #fef3c7;
+    --wpla-danger: #dc2626;
+    --wpla-danger-light: #fee2e2;
+    --wpla-info: #2563eb;
+    --wpla-info-light: #dbeafe;
+
+    --wpla-bg: #f8fafc;
+    --wpla-bg-card: #ffffff;
+    --wpla-bg-sidebar: #1e1b4b;
+    --wpla-bg-sidebar-hover: #312e81;
+    --wpla-bg-input: #ffffff;
+    --wpla-bg-hover: #f1f5f9;
+
+    --wpla-text: #1e293b;
+    --wpla-text-secondary: #64748b;
+    --wpla-text-sidebar: #c7d2fe;
+    --wpla-text-sidebar-active: #ffffff;
+
+    --wpla-border: #e2e8f0;
+    --wpla-border-focus: #6366f1;
+
+    --wpla-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+    --wpla-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.08);
+    --wpla-shadow-modal: 0 25px 50px rgba(0, 0, 0, 0.2);
+
+    --wpla-radius: 10px;
+    --wpla-radius-lg: 14px;
+    --wpla-topbar-height: 48px;
+
+    --wpla-transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --wpla-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Dark mode */
+.wpla-dark {
+    --wpla-bg: #0f172a;
+    --wpla-bg-card: #1e293b;
+    --wpla-bg-sidebar: #0c0a1d;
+    --wpla-bg-sidebar-hover: #1e1b4b;
+    --wpla-bg-input: #334155;
+    --wpla-bg-hover: #334155;
+
+    --wpla-text: #f1f5f9;
+    --wpla-text-secondary: #94a3b8;
+
+    --wpla-border: #334155;
+    --wpla-border-focus: #818cf8;
+    --wpla-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --wpla-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.4);
+
+    --wpla-success-light: rgba(5, 150, 105, 0.15);
+    --wpla-warning-light: rgba(217, 119, 6, 0.15);
+    --wpla-danger-light: rgba(220, 38, 38, 0.15);
+    --wpla-info-light: rgba(37, 99, 235, 0.15);
+}
+
+/* ─────────────────────────────────────
+   Reset & Base
+   ───────────────────────────────────── */
+#wpla-app *,
+#wpla-app *::before,
+#wpla-app *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+#wpla-app {
+    display: flex;
+    min-height: calc(100vh - 32px);
+    font-family: var(--wpla-font);
+    color: var(--wpla-text);
+    background: var(--wpla-bg);
+    font-size: 13px;
+    line-height: 1.5;
+    position: relative;
+    margin-left: -20px;
+    margin-top: -10px;
+    max-width: calc(100vw - 160px);
+    overflow-x: hidden;
+}
+
+/* ─────────────────────────────────────
+   Sidebar (removed — navigation via WP admin menu)
+   ───────────────────────────────────── */
+
+/* ─────────────────────────────────────
+   Main Content
+   ───────────────────────────────────── */
+.wpla-main {
+    flex: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Topbar */
+.wpla-topbar {
+    height: var(--wpla-topbar-height);
+    background: var(--wpla-bg-card);
+    border-bottom: 1px solid var(--wpla-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    position: sticky;
+    top: 32px;
+    z-index: 50;
+    box-shadow: var(--wpla-shadow);
+}
+
+.wpla-topbar-left,
+.wpla-topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.wpla-page-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--wpla-text);
+}
+
+.wpla-theme-toggle {
+    background: none;
+    border: 1px solid var(--wpla-border);
+    border-radius: var(--wpla-radius);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--wpla-text-secondary);
+    transition: all var(--wpla-transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.wpla-theme-toggle:hover {
+    background: var(--wpla-bg-hover);
+    border-color: var(--wpla-primary);
+    color: var(--wpla-primary);
+}
+
+/* Enhanced theme toggle */
+.wpla-theme-toggle {
+    width: 60px;
+    border-radius: 20px;
+    background: var(--wpla-bg-hover);
+    position: relative;
+}
+
+.wpla-theme-toggle-track {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px;
+    font-size: 14px;
+}
+
+.wpla-theme-toggle-thumb {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    background: var(--wpla-primary-gradient);
+    border-radius: 50%;
+    top: 3px;
+    left: 3px;
+    transition: transform var(--wpla-transition);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.wpla-dark .wpla-theme-toggle-thumb {
+    transform: translateX(24px);
+}
+
+.wpla-dark .wpla-theme-toggle {
+    background: var(--wpla-bg-hover);
+    border-color: var(--wpla-border);
+}
+
+/* Content */
+.wpla-content {
+    flex: 1;
+    padding: 16px;
+    animation: wplaFadeIn 0.3s ease;
+}
+
+@keyframes wplaFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─────────────────────────────────────
+   Cards
+   ───────────────────────────────────── */
+.wpla-card {
+    background: var(--wpla-bg-card);
+    border-radius: var(--wpla-radius-lg);
+    border: 1px solid var(--wpla-border);
+    padding: 16px;
+    box-shadow: var(--wpla-shadow);
+    transition: box-shadow var(--wpla-transition);
+}
+
+.wpla-card:hover {
+    box-shadow: var(--wpla-shadow-lg);
+}
+
+.wpla-card h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--wpla-text);
+}
+
+/* ─────────────────────────────────────
+   Stats Grid (Dashboard)
+   ───────────────────────────────────── */
+.wpla-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.wpla-stat-card {
+    background: var(--wpla-bg-card);
+    border: 1px solid var(--wpla-border);
+    border-radius: var(--wpla-radius-lg);
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--wpla-shadow);
+    transition: all var(--wpla-transition);
+}
+
+.wpla-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--wpla-shadow-lg);
+}
+
+.wpla-stat-icon {
+    font-size: 24px;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--wpla-primary-light);
+    border-radius: var(--wpla-radius);
+}
+
+.wpla-dark .wpla-stat-icon {
+    background: rgba(99, 102, 241, 0.15);
+}
+
+.wpla-stat-value {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--wpla-text);
+    line-height: 1.2;
+}
+
+.wpla-stat-label {
+    display: block;
+    font-size: 12px;
+    color: var(--wpla-text-secondary);
+    margin-top: 2px;
+}
+
+/* ─────────────────────────────────────
+   Tables
+   ───────────────────────────────────── */
+.wpla-table-wrapper {
+    overflow-x: auto;
+}
+
+.wpla-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.wpla-table th {
+    background: var(--wpla-bg);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--wpla-text-secondary);
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--wpla-border);
+}
+
+.wpla-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--wpla-border);
+    font-size: 12px;
+    color: var(--wpla-text);
+    vertical-align: middle;
+}
+
+.wpla-table tr:hover td {
+    background: var(--wpla-bg-hover);
+}
+
+.wpla-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* ─────────────────────────────────────
+   Buttons
+   ───────────────────────────────────── */
+.wpla-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 7px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid var(--wpla-border);
+    border-radius: var(--wpla-radius);
+    background: var(--wpla-bg-card);
+    color: var(--wpla-text);
+    cursor: pointer;
+    transition: all var(--wpla-transition);
+    text-decoration: none;
+    white-space: nowrap;
+    font-family: var(--wpla-font);
+    letter-spacing: -0.01em;
+}
+
+.wpla-btn:hover {
+    background: var(--wpla-bg-hover);
+    border-color: var(--wpla-primary);
+    color: var(--wpla-primary);
+    box-shadow: 0 2px 4px rgba(99, 102, 241, 0.1);
+}
+
+.wpla-btn:active {
+    transform: scale(0.97);
+}
+
+.wpla-btn-primary {
+    background: var(--wpla-primary-gradient);
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+    font-weight: 600;
+}
+
+.wpla-btn-primary:hover {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    border-color: transparent;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    transform: translateY(-1px);
+}
+
+.wpla-btn-primary:active {
+    transform: translateY(0) scale(0.97);
+}
+
+.wpla-btn-success {
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
+    font-weight: 600;
+}
+
+.wpla-btn-success:hover {
+    background: linear-gradient(135deg, #047857 0%, #059669 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4);
+    transform: translateY(-1px);
+}
+
+.wpla-btn-danger {
+    color: var(--wpla-danger);
+    border-color: var(--wpla-danger);
+    background: transparent;
+}
+
+.wpla-btn-danger:hover {
+    background: var(--wpla-danger);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+    transform: translateY(-1px);
+}
+
+.wpla-btn-warning {
+    background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 2px 8px rgba(217, 119, 6, 0.3);
+    font-weight: 600;
+}
+
+.wpla-btn-warning:hover {
+    background: linear-gradient(135deg, #b45309 0%, #d97706 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
+    transform: translateY(-1px);
+}
+
+.wpla-btn-sm {
+    padding: 4px 10px;
+    font-size: 11px;
+    border-radius: 6px;
+}
+
+.wpla-btn-lg {
+    padding: 10px 24px;
+    font-size: 14px;
+    border-radius: 10px;
+}
+
+.wpla-btn-dashed {
+    border-style: dashed;
+    color: var(--wpla-text-secondary);
+}
+
+.wpla-btn-dashed:hover {
+    border-color: var(--wpla-primary);
+    color: var(--wpla-primary);
+    background: var(--wpla-primary-light);
+}
+
+/* ─────────────────────────────────────
+   Form Elements
+   ───────────────────────────────────── */
+.wpla-input,
+.wpla-select {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 12px;
+    border: 1px solid var(--wpla-border);
+    border-radius: var(--wpla-radius);
+    background: var(--wpla-bg-input);
+    color: var(--wpla-text);
+    transition: border-color var(--wpla-transition), box-shadow var(--wpla-transition);
+    font-family: var(--wpla-font);
+    outline: none;
+}
+
+.wpla-input:focus,
+.wpla-select:focus {
+    border-color: var(--wpla-border-focus);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+.wpla-input-lg {
+    font-size: 16px;
+    padding: 10px 16px;
+    font-weight: 600;
+}
+
+.wpla-input-color {
+    width: 60px;
+    height: 38px;
+    padding: 4px;
+    border: 1px solid var(--wpla-border);
+    border-radius: var(--wpla-radius);
+    cursor: pointer;
+}
+
+.wpla-input-group {
+    display: flex;
+    gap: 8px;
+}
+
+.wpla-input-group .wpla-input {
+    flex: 1;
+}
+
+.wpla-field {
+    margin-bottom: 12px;
+}
+
+.wpla-field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--wpla-text-secondary);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.wpla-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 16px;
+}
+
+.wpla-fieldset {
+    border: 1px solid var(--wpla-border);
+    border-radius: var(--wpla-radius);
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.wpla-fieldset legend {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--wpla-text-secondary);
+    padding: 0 8px;
+}
+
+.wpla-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.wpla-checkbox input[type="checkbox"] {
+    accent-color: var(--wpla-primary);
+}
+
+/* ─────────────────────────────────────
+   Toolbar
+   ───────────────────────────────────── */
+.wpla-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.wpla-toolbar-left,
+.wpla-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.wpla-toolbar-left .wpla-input,
+.wpla-toolbar-left .wpla-select {
+    width: auto;
+    min-width: 200px;
+}
+
+/* ─────────────────────────────────────
+   Modal
+   ───────────────────────────────────── */
+.wpla-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: wplaFadeIn 0.2s ease;
+}
+
+.wpla-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+.wpla-modal-content {
+    position: relative;
+    background: var(--wpla-bg-card);
+    border-radius: var(--wpla-radius-lg);
+    box-shadow: var(--wpla-shadow-modal);
+    width: 92%;
+    max-width: 480px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    animation: wplaSlideUp 0.3s ease;
+}
+
+.wpla-modal-sm {
+    max-width: 400px;
+}
+
+@keyframes wplaSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.wpla-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px 12px;
+    border-bottom: 1px solid var(--wpla-border);
+}
+
+.wpla-modal-header h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.wpla-modal-close {
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: var(--wpla-text-secondary);
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    transition: color var(--wpla-transition);
+}
+
+.wpla-modal-close:hover {
+    color: var(--wpla-danger);
+}
+
+.wpla-modal-body {
+    padding: 14px 18px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.wpla-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 12px 18px 14px;
+    border-top: 1px solid var(--wpla-border);
+}
+
+/* ─────────────────────────────────────
+   Badges
+   ───────────────────────────────────── */
+.wpla-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 100px;
+    letter-spacing: 0.02em;
+}
+
+.wpla-badge-info {
+    background: var(--wpla-info-light);
+    color: var(--wpla-info);
+}
+
+.wpla-badge-success {
+    background: var(--wpla-success-light);
+    color: var(--wpla-success);
+}
+
+.wpla-badge-warning {
+    background: var(--wpla-warning-light);
+    color: var(--wpla-warning);
+}
+
+.wpla-badge-danger {
+    background: var(--wpla-danger-light);
+    color: var(--wpla-danger);
+}
+
+.wpla-badge-primary {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--wpla-primary);
+}
+
+/* Tag badges */
+.wpla-tag-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 100px;
+    color: #fff;
+    margin-right: 4px;
+    margin-bottom: 4px;
+}
+
+/* ─────────────────────────────────────
+   Tags Grid
+   ───────────────────────────────────── */
+.wpla-tags-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+}
+
+.wpla-tag-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--wpla-bg);
+    border: 1px solid var(--wpla-border);
+    border-radius: var(--wpla-radius);
+    padding: 10px 12px;
+    transition: all var(--wpla-transition);
+}
+
+.wpla-tag-card:hover {
+    border-color: var(--wpla-primary);
+    box-shadow: var(--wpla-shadow);
+}
+
+.wpla-tag-card-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.wpla-tag-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.wpla-tag-card-name {
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.wpla-tag-card-count {
+    font-size: 11px;
+    color: var(--wpla-text-secondary);
+}
+
+/* ─────────────────────────────────────
+   Flow Builder
+   ───────────────────────────────────── */
+.wpla-flow-canvas {
+    background: var(--wpla-bg);
+    border: 2px dashed var(--wpla-border);
+    border-radius: var(--wpla-radius-lg);
+    padding: 24px;
+    min-height: 300px;
+}
+
+.wpla-flow-nodes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+.wpla-flow-node {
+    background: var(--wpla-bg-card);
+    border: 2px solid var(--wpla-border);
+    border-radius: var(--wpla-radius-lg);
+    padding: 12px 18px;
+    min-width: 240px;
+    max-width: 360px;
+    position: relative;
+    cursor: grab;
+    transition: all var(--wpla-transition);
+    box-shadow: var(--wpla-shadow);
+}
+
+.wpla-flow-node:hover {
+    border-color: var(--wpla-primary);
+    box-shadow: var(--wpla-shadow-lg);
+    transform: translateY(-1px);
+}
+
+.wpla-flow-node.wpla-node-trigger {
+    border-color: var(--wpla-success);
+    border-left: 4px solid var(--wpla-success);
+}
+
+.wpla-flow-node.wpla-node-condition {
+    border-color: var(--wpla-warning);
+    border-left: 4px solid var(--wpla-warning);
+}
+
+.wpla-flow-node.wpla-node-action {
+    border-color: var(--wpla-primary);
+    border-left: 4px solid var(--wpla-primary);
+}
+
+.wpla-flow-node.wpla-node-delay {
+    border-color: var(--wpla-info);
+    border-left: 4px solid var(--wpla-info);
+}
+
+.wpla-flow-node-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.wpla-flow-node-type {
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    opacity: 0.7;
+}
+
+.wpla-flow-node-title {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.wpla-flow-node-desc {
+    font-size: 11px;
+    color: var(--wpla-text-secondary);
+}
+
+.wpla-flow-node-remove {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--wpla-danger);
+    color: #fff;
+    border: 2px solid var(--wpla-bg-card);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    line-height: 1;
+    opacity: 0;
+    transition: opacity var(--wpla-transition);
+}
+
+.wpla-flow-node:hover .wpla-flow-node-remove {
+    opacity: 1;
+}
+
+/* Connector line */
+.wpla-flow-connector {
+    width: 2px;
+    height: 28px;
+    background: var(--wpla-border);
+    position: relative;
+}
+
+.wpla-flow-connector::after {
+    content: '▼';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 8px;
+    color: var(--wpla-text-secondary);
+}
+
+.wpla-flow-add {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* ─────────────────────────────────────
+   Pagination
+   ───────────────────────────────────── */
+.wpla-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 20px;
+}
+
+.wpla-pagination button {
+    min-width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--wpla-border);
+    border-radius: var(--wpla-radius);
+    background: var(--wpla-bg-card);
+    color: var(--wpla-text);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all var(--wpla-transition);
+}
+
+.wpla-pagination button:hover {
+    border-color: var(--wpla-primary);
+    background: var(--wpla-primary-light);
+}
+
+.wpla-pagination button.active {
+    background: var(--wpla-primary);
+    color: #ffffff;
+    border-color: var(--wpla-primary);
+}
+
+/* ─────────────────────────────────────
+   Queue stats
+   ───────────────────────────────────── */
+.wpla-queue-stats {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* ─────────────────────────────────────
+   Code blocks
+   ───────────────────────────────────── */
+.wpla-code {
+    background: var(--wpla-bg);
+    border: 1px solid var(--wpla-border);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'SFMono-Regular', Menlo, Monaco, monospace;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.wpla-code-block {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 12px 16px;
+    border-radius: var(--wpla-radius);
+    font-family: 'SFMono-Regular', Menlo, Monaco, monospace;
+    font-size: 11px;
+    overflow-x: auto;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+/* ─────────────────────────────────────
+   Utility classes
+   ───────────────────────────────────── */
+.wpla-text-center { text-align: center; }
+.wpla-text-muted { color: var(--wpla-text-secondary); font-size: 12px; margin-bottom: 12px; }
+.wpla-mt-4 { margin-top: 16px; }
+.wpla-mb-4 { margin-bottom: 16px; }
+.wpla-lists-integration-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.wpla-hidden { display: none !important; }
+
+.wpla-empty-state {
+    text-align: center;
+    padding: 30px 16px;
+    color: var(--wpla-text-secondary);
+}
+
+.wpla-empty-state p {
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+/* Status badges */
+.wpla-status-active { color: var(--wpla-success); }
+.wpla-status-paused { color: var(--wpla-warning); }
+.wpla-status-draft { color: var(--wpla-text-secondary); }
+.wpla-status-unsubscribed { color: var(--wpla-danger); }
+.wpla-status-bounced { color: var(--wpla-danger); }
+.wpla-status-pending { color: var(--wpla-info); }
+.wpla-status-sent { color: var(--wpla-success); }
+.wpla-status-failed { color: var(--wpla-danger); }
+
+/* Toast notification */
+.wpla-toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--wpla-bg-card);
+    border: 1px solid var(--wpla-border);
+    border-radius: var(--wpla-radius);
+    padding: 10px 16px;
+    box-shadow: var(--wpla-shadow-lg);
+    z-index: 10001;
+    font-size: 12px;
+    animation: wplaSlideUp 0.3s ease;
+    max-width: 320px;
+}
+
+.wpla-toast-success {
+    border-left: 4px solid var(--wpla-success);
+}
+
+.wpla-toast-error {
+    border-left: 4px solid var(--wpla-danger);
+}
+
+/* ─────────────────────────────────────
+   Responsive
+   ───────────────────────────────────── */
+
+/* Tablet and small desktop */
+@media (max-width: 1024px) {
+    .wpla-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .wpla-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile phones */
+@media (max-width: 640px) {
+    .wpla-content {
+        padding: 12px 8px;
+    }
+
+    .wpla-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .wpla-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .wpla-toolbar-left,
+    .wpla-toolbar-right {
+        flex-wrap: wrap;
+    }
+
+    .wpla-toolbar-left .wpla-input,
+    .wpla-toolbar-left .wpla-select {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .wpla-topbar {
+        padding: 0 10px;
+    }
+
+    .wpla-page-title {
+        font-size: 13px;
+    }
+
+    .wpla-card {
+        padding: 12px;
+        border-radius: var(--wpla-radius);
+    }
+
+    .wpla-btn {
+        padding: 8px 14px;
+        font-size: 12px;
+    }
+
+    .wpla-modal-content {
+        width: 100%;
+        max-height: 100vh;
+        border-radius: var(--wpla-radius-lg) var(--wpla-radius-lg) 0 0;
+        margin-top: auto;
+    }
+
+    .wpla-table {
+        font-size: 11px;
+    }
+
+    .wpla-table th,
+    .wpla-table td {
+        padding: 6px 8px;
+    }
+}
+
+/* ─────────────────────────────────────
+   WordPress Admin overrides
+   ───────────────────────────────────── */
+#wpcontent {
+    padding-left: 0 !important;
+}
+
+#wpla-app h1,
+#wpla-app h2,
+#wpla-app h3,
+#wpla-app h4 {
+    padding: 0;
+    margin: 0;
+}
+
+#wpla-app a {
+    text-decoration: none;
+}
+
+/* Fix: prevent content from hiding behind WP admin sidebar */
+.auto-fold #wpla-app {
+    max-width: calc(100vw - 160px);
+}
+
+.folded #wpla-app {
+    max-width: calc(100vw - 36px);
+}
+
+/* WP admin bar offset */
+.admin-bar .wpla-topbar {
+    top: 32px;
+}
+
+@media screen and (max-width: 782px) {
+    .admin-bar .wpla-topbar {
+        top: 46px;
+    }
+
+    #wpla-app {
+        max-width: 100vw !important;
+        margin-left: -10px;
+    }
+}
+
+/* ─────────────────────────────────────
+   App-like smooth scroll & touch
+   ───────────────────────────────────── */
+#wpla-app {
+    -webkit-overflow-scrolling: touch;
+}
+
+.wpla-content {
+    scroll-behavior: smooth;
+}
+
+/* App-like active state for interactive elements */
+.wpla-btn:active,
+.wpla-stat-card:active,
+.wpla-tag-card:active {
+    transform: scale(0.97);
+    transition-duration: 0.1s;
+}
+
+.wpla-flow-node:active {
+    transform: scale(0.98);
+    transition-duration: 0.1s;
+}
+
+/* ─────────────────────────────────────
+   Webinars & QR Code additions
+   ───────────────────────────────────── */
+
+/* 2-column layout for webinar editor */
+.wpla-form-grid-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+@media (max-width: 960px) {
+    .wpla-form-grid-2col {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* QR Code wrapper */
+.wpla-qr-wrapper {
+    display: inline-block;
+    padding: 12px;
+    background: #fff;
+    border: 2px solid var(--wpla-border, #e2e8f0);
+    border-radius: 12px;
+    text-align: center;
+}
+.wpla-qr-image {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    display: block;
+}
+
+/* Variables grid for WhatsApp */
+.wpla-variables-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.wpla-variable-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: var(--wpla-surface, #f1f5f9);
+    border: 1px solid var(--wpla-border, #e2e8f0);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+    user-select: none;
+}
+.wpla-variable-chip:hover {
+    background: var(--wpla-primary-light, #e0e7ff);
+    border-color: var(--wpla-primary, #6366f1);
+}
+.wpla-variable-chip code {
+    font-size: 12px;
+    color: var(--wpla-primary, #6366f1);
+    font-weight: 600;
+    background: none;
+    padding: 0;
+}
+.wpla-variable-label {
+    font-size: 11px;
+    color: var(--wpla-muted, #94a3b8);
+}
+
+/* Misc helpers */
+.wpla-ml-2  { margin-left: 8px; }
+.wpla-p-3   { padding: 12px; }
+.wpla-bg-light { background: var(--wpla-surface, #f8fafc); }
+.wpla-rounded  { border-radius: 8px; }

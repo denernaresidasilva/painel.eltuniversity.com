@@ -1,4 +1,4 @@
-# Roket CRM Automation Pro
+# LC CRM AUTOMATION
 
 Plugin WordPress de automação de marketing completo para gestão de leads, webinars, email (SMTP), WhatsApp e automações com múltiplos gatilhos.
 
@@ -9,7 +9,7 @@ Plugin WordPress de automação de marketing completo para gestão de leads, web
 O plugin está em:
 
 ```
-wp-content/plugins/roket-crm-automation-pro/
+wp-content/plugins/lc-crm-automation/
 ```
 
 ---
@@ -17,11 +17,11 @@ wp-content/plugins/roket-crm-automation-pro/
 ## 🚀 Instalação
 
 1. Certifique-se de que o WordPress está instalado e configurado.
-2. O plugin já está no diretório `wp-content/plugins/roket-crm-automation-pro/`.
+2. O plugin já está no diretório `wp-content/plugins/lc-crm-automation/`.
 3. Acesse o painel WordPress → **Plugins → Plugins Instalados**.
-4. Localize **Roket CRM Automation Pro** e clique em **Ativar**.
+4. Localize **LC CRM AUTOMATION** e clique em **Ativar**.
 5. As tabelas do banco de dados são criadas automaticamente na ativação.
-6. O menu **Roket CRM** aparecerá na barra lateral do administrador.
+6. O menu **LC CRM** aparecerá na barra lateral do administrador.
 
 ### Requisitos
 
@@ -37,7 +37,7 @@ wp-content/plugins/roket-crm-automation-pro/
 
 ### Acessar Configurações
 
-`wp-admin → Roket CRM → Configurações`
+`wp-admin → LC CRM → Configurações`
 
 ---
 
@@ -49,7 +49,7 @@ wp-content/plugins/roket-crm-automation-pro/
 2. Preencha:
    - **URL Base da API**: endereço da sua instância Evolution (ex: `https://evolution.seudominio.com.br`).
    - **API Key (Global)**: chave global configurada na Evolution API.
-   - **Nome da Instância**: nome único para a instância (ex: `roket-marketing`).
+   - **Nome da Instância**: nome único para a instância (ex: `lc-marketing`).
 3. Clique em **Salvar Configurações**.
 4. O plugin criará a instância automaticamente na Evolution API.
 5. Um **QR Code** será exibido — escaneie com o WhatsApp para conectar.
@@ -87,7 +87,7 @@ wp-content/plugins/roket-crm-automation-pro/
 
 ### 🎥 Webinars
 
-1. Acesse `Roket CRM → Webinars → Novo Webinar`.
+1. Acesse `LC CRM → Webinars → Novo Webinar`.
 2. Configure:
    - **Tipo de vídeo**: YouTube, Vimeo ou HTML5 (MP4).
    - **Oferta**: título, URL, botão e **tempos diferentes** para exibição ao vivo vs. replay.
@@ -123,7 +123,7 @@ Content-Type: application/json
 
 ### ⚡ Automações
 
-`Roket CRM → Automações`
+`LC CRM → Automações`
 
 **Gatilhos disponíveis:**
 
@@ -184,7 +184,7 @@ Body:
 }
 ```
 
-A chave API está em: `Roket CRM → Configurações → Chave API`.
+A chave API está em: `LC CRM → Configurações → Chave API`.
 
 ---
 
@@ -214,7 +214,7 @@ Use em mensagens e templates. Clique na variável no painel para copiar:
 
 O plugin captura leads via **Elementor Forms** nativamente. Para mapear campos:
 
-1. No formulário Elementor, adicione uma **ação**: `Roket CRM — Capturar Lead`.
+1. No formulário Elementor, adicione uma **ação**: `LC CRM — Capturar Lead`.
 2. Mapeie os campos do formulário para: email, nome, telefone, etc.
 3. Configure a lista de destino e tags.
 
