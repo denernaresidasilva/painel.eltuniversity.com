@@ -1826,26 +1826,7 @@ class Webhook_Receiver {
         // Incluir scripts e estilos necessários
         wp_enqueue_script('jquery');
         ?>
-        <div class="wrap webhook-receiver-webhooks"><br><br>
-            <div class="wrap webhook-receiver-debug">           
 
-            <div class="webhook-card settings-card">
-                <div class="card-content">
-                    <form method="post" action="options.php" class="settings-form">
-                        <?php
-                        settings_fields('webhook_receiver_settings');
-                        do_settings_sections('webhook_receiver_settings');
-                        ?>
-                        
-                        <div class="form-actions">
-                            <button type="submit" class="webhook-btn primary">
-                                <span class="btn-icon">💾</span> Salvar Configurações
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
 
         <style>
         .webhook-receiver-settings {
@@ -2881,8 +2862,8 @@ class Webhook_Receiver {
                 if ($('#webhook-id').val() === '') {
                     var webhookName = $(this).val();
                     var webhookId = webhookName
-                        .toLowerCase()
-                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/\s+/g, '-')
+                        .replace(/[^a-zA-Z0-9_-]/g, '')
                         .replace(/^-+|-+$/g, '');
                     $('#webhook-id').val(webhookId);
                 }
@@ -2923,8 +2904,8 @@ class Webhook_Receiver {
                 var submitBtn = form.find('button[type="submit"]');
                 var spinner = form.find('.loading-spinner');
                 
-                if ($('input[name="course_ids[]"]:checked').length === 0) {
-                    showNotification('Selecione pelo menos um curso principal!', 'error');
+                if ($('input[name="fluentcrm_list_ids[]"]:checked').length === 0) {
+                    showNotification('Selecione pelo menos uma lista!', 'error');
                     return;
                 }
                 
