@@ -30,7 +30,6 @@
         state.currentPage = app.dataset.page || 'wpla-dashboard';
 
         initThemeToggle();
-        initSidebarToggle();
         initModals();
         loadPage();
     });
@@ -52,64 +51,6 @@
             app.classList.toggle('wpla-dark');
             var dark = app.classList.contains('wpla-dark');
             localStorage.setItem('wpla_dark', dark ? '1' : '0');
-        });
-    }
-
-    /* ───────────────────────────────────
-     * Sidebar Toggle
-     * ─────────────────────────────────── */
-    function initSidebarToggle() {
-        var btn = document.querySelector('.wpla-sidebar-toggle');
-        var sidebar = document.querySelector('.wpla-sidebar');
-        var backdrop = document.getElementById('wpla-sidebar-backdrop');
-        if (!btn || !sidebar) return;
-
-        var isMobile = function () {
-            return window.innerWidth <= 1024;
-        };
-
-        // Restore desktop collapsed state
-        var wasCollapsed = localStorage.getItem('wpla_sidebar_collapsed') === '1';
-        if (wasCollapsed && !isMobile()) {
-            sidebar.classList.add('wpla-collapsed');
-        }
-
-        btn.addEventListener('click', function () {
-            if (isMobile()) {
-                // Mobile: slide in/out full sidebar
-                var isOpen = sidebar.classList.contains('wpla-open');
-                if (isOpen) {
-                    sidebar.classList.remove('wpla-open');
-                    if (backdrop) backdrop.classList.remove('wpla-active');
-                } else {
-                    sidebar.classList.add('wpla-open');
-                    if (backdrop) backdrop.classList.add('wpla-active');
-                }
-            } else {
-                // Desktop: toggle collapsed icon-only mode
-                sidebar.classList.toggle('wpla-collapsed');
-                localStorage.setItem('wpla_sidebar_collapsed', sidebar.classList.contains('wpla-collapsed') ? '1' : '0');
-            }
-        });
-
-        // Close sidebar when clicking backdrop on mobile
-        if (backdrop) {
-            backdrop.addEventListener('click', function () {
-                sidebar.classList.remove('wpla-open');
-                backdrop.classList.remove('wpla-active');
-            });
-        }
-
-        // Handle window resize: reset mobile state if switching to desktop
-        var resizeTimer;
-        window.addEventListener('resize', function () {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(function () {
-                if (!isMobile()) {
-                    sidebar.classList.remove('wpla-open');
-                    if (backdrop) backdrop.classList.remove('wpla-active');
-                }
-            }, 150);
         });
     }
 
