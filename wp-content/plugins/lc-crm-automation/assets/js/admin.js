@@ -68,7 +68,7 @@
 
         // Close on ESC key.
         document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' || e.keyCode === 27) {
+            if (e.key === 'Escape') {
                 var openModals = document.querySelectorAll('.wpla-modal[style*="flex"]');
                 if (openModals.length) {
                     closeModal(openModals[openModals.length - 1]);
