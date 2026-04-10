@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: Supermembros - Receber Webhook de Qualquer Plataforma
-Description: Plugin para Receber Webhooks de Qualquer Plataforma e Cadastrar/Remover Alunos na Supermembros
+Plugin Name: Webhook Rocket
+Description: Plugin para Receber Webhooks de Qualquer Plataforma
 Version: 3.1
-Author: Raul Julio da Cruz
+Author: Dener Naresi
 */
 
 // Se este arquivo é chamado diretamente, aborta.
