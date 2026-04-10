@@ -84,25 +84,3 @@ if ( ! defined( 'ABSPATH' ) ) {
         </form>
     </div>
 </div>
-
-<style>
-.wpla-variables-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-.wpla-variable-chip {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    background: var(--wpla-surface, #f1f5f9);
-    border: 1px solid var(--wpla-border, #e2e8f0);
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background .15s;
-}
-.wpla-variable-chip:hover { background: var(--wpla-primary-light, #e0e7ff); }
-.wpla-variable-chip code { font-size: 12px; color: var(--wpla-primary, #6366f1); font-weight: 600; }
-.wpla-variable-label { font-size: 11px; color: var(--wpla-muted, #94a3b8); }
-</style>
