@@ -966,6 +966,9 @@
 .wpla-text-muted { color: var(--wpla-text-secondary); font-size: 12px; margin-bottom: 12px; }
 .wpla-mt-4 { margin-top: 16px; }
 .wpla-mb-4 { margin-bottom: 16px; }
+.wpla-lists-integration-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
 .wpla-hidden { display: none !important; }
 
 .wpla-empty-state {

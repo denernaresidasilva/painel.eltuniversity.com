@@ -17,7 +17,7 @@ class WPLA_Rest_Api {
     public static function register_routes(): void {
         // Public webhook endpoint.
         register_rest_route( 'wpla/v1', '/webhook', array(
-            'methods'             => 'POST',
+            'methods'             => 'GET,HEAD,POST',
             'callback'            => array( __CLASS__, 'handle_webhook' ),
             'permission_callback' => array( __CLASS__, 'validate_api_key' ),
         ) );
@@ -89,6 +89,11 @@ class WPLA_Rest_Api {
      * Validate API key for webhooks. Rate-limited.
      */
     public static function validate_api_key( WP_REST_Request $request ): bool {
+        $method = strtoupper( $request->get_method() );
+        if ( in_array( $method, array( 'GET', 'HEAD' ), true ) ) {
+            return true;
+        }
+
         $api_key  = get_option( 'wpla_api_key', '' );
         $provided = $request->get_header( 'X-API-Key' );
 
@@ -123,6 +128,15 @@ class WPLA_Rest_Api {
      * Handle incoming webhook.
      */
     public static function handle_webhook( WP_REST_Request $request ): WP_REST_Response {
+        $method = strtoupper( $request->get_method() );
+        if ( in_array( $method, array( 'GET', 'HEAD' ), true ) ) {
+            return new WP_REST_Response( array(
+                'success' => true,
+                'message' => 'Webhook endpoint ready.',
+                'method'  => $method,
+            ), 200 );
+        }
+
         $params = $request->get_json_params();
 
         if ( empty( $params ) ) {
@@ -133,6 +147,8 @@ class WPLA_Rest_Api {
         if ( ! is_email( $email ) ) {
             return new WP_REST_Response( array( 'error' => 'Valid email is required.' ), 400 );
         }
+
+        $list_id_from_query = absint( $request->get_param( 'list_id' ) );
 
         $data = array(
             'email'      => $email,
@@ -184,6 +200,10 @@ class WPLA_Rest_Api {
                     WPLA_Contact::subscribe_list( (int) $contact_id, $list_id );
                 }
             }
+        }
+
+        if ( $list_id_from_query > 0 ) {
+            WPLA_Contact::subscribe_list( (int) $contact_id, $list_id_from_query );
         }
 
         do_action( 'wpla_event', 'webhook_received', (int) $contact_id, $params );
