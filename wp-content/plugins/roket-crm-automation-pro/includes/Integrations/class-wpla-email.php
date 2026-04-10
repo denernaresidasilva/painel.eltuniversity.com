@@ -130,12 +130,19 @@ class WPLA_Email {
 
         if ( 'click' === $type && isset( $_GET['url'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
             $url = esc_url_raw( rawurldecode( wp_unslash( $_GET['url'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification
+
+            // Validate that the URL uses an allowed scheme to prevent javascript: or data: redirects.
+            $parsed = wp_parse_url( $url );
+            if ( ! $parsed || ! isset( $parsed['scheme'] ) || ! in_array( $parsed['scheme'], array( 'http', 'https' ), true ) ) {
+                $url = home_url();
+            }
+
             do_action( 'wpla_event', 'link_clicked', (int) $message->contact_id, array(
                 'tracking_id' => $tracking_id,
                 'url'         => $url,
             ) );
 
-            wp_redirect( $url ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
+            wp_redirect( $url ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- External URL redirect for email click tracking.
             exit;
         }
     }
