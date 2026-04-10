@@ -44,8 +44,6 @@
 
     --wpla-radius: 8px;
     --wpla-radius-lg: 12px;
-    --wpla-sidebar-width: 240px;
-    --wpla-sidebar-collapsed-width: 60px;
     --wpla-topbar-height: 56px;
 
     --wpla-transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -100,221 +98,17 @@
 }
 
 /* ─────────────────────────────────────
-   Sidebar
+   Sidebar (removed — navigation via WP admin menu)
    ───────────────────────────────────── */
-.wpla-sidebar {
-    width: var(--wpla-sidebar-width);
-    min-height: 100vh;
-    background: var(--wpla-bg-sidebar);
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: 100;
-    transition: width var(--wpla-transition), transform var(--wpla-transition);
-    overflow: hidden;
-}
-
-/* Desktop collapsed = icon-only sidebar */
-.wpla-sidebar.wpla-collapsed {
-    width: var(--wpla-sidebar-collapsed-width);
-}
-
-.wpla-sidebar.wpla-collapsed .wpla-logo-text,
-.wpla-sidebar.wpla-collapsed .wpla-version,
-.wpla-sidebar.wpla-collapsed .wpla-sidebar-footer small {
-    opacity: 0;
-    width: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    transition: opacity var(--wpla-transition);
-}
-
-.wpla-sidebar.wpla-collapsed .wpla-nav-label {
-    opacity: 0;
-    width: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    pointer-events: none;
-    transition: opacity var(--wpla-transition);
-}
-
-.wpla-sidebar.wpla-collapsed .wpla-nav-item {
-    justify-content: center;
-    padding: 10px 0;
-    position: relative;
-}
-
-.wpla-sidebar.wpla-collapsed .wpla-nav-icon {
-    width: auto;
-    font-size: 18px;
-}
-
-/* Tooltip on hover for collapsed sidebar */
-.wpla-sidebar.wpla-collapsed .wpla-nav-item::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    left: calc(100% + 8px);
-    top: 50%;
-    transform: translateY(-50%);
-    background: var(--wpla-bg-sidebar);
-    color: #ffffff;
-    padding: 6px 12px;
-    border-radius: var(--wpla-radius);
-    font-size: 12px;
-    font-weight: 500;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 200;
-    box-shadow: var(--wpla-shadow-lg);
-    transition: opacity 0.15s ease;
-}
-
-.wpla-sidebar.wpla-collapsed .wpla-nav-item:hover::after {
-    opacity: 1;
-}
-
-.wpla-sidebar.wpla-collapsed .wpla-sidebar-header {
-    padding: 20px 8px 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.wpla-sidebar.wpla-collapsed .wpla-logo {
-    justify-content: center;
-}
-
-.wpla-sidebar.wpla-collapsed .wpla-sidebar-footer {
-    padding: 12px 4px;
-}
-
-/* Mobile backdrop overlay */
-.wpla-sidebar-backdrop {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
-    z-index: 99;
-    opacity: 0;
-    transition: opacity var(--wpla-transition);
-}
-
-.wpla-sidebar-backdrop.wpla-active {
-    display: block;
-    opacity: 1;
-}
-
-.wpla-sidebar-header {
-    padding: 20px 16px 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.wpla-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.wpla-logo-icon {
-    font-size: 24px;
-}
-
-.wpla-logo-text {
-    font-size: 18px;
-    font-weight: 700;
-    color: #ffffff;
-    letter-spacing: -0.5px;
-}
-
-.wpla-version {
-    display: block;
-    color: rgba(255, 255, 255, 0.35);
-    margin-top: 4px;
-    font-size: 11px;
-}
-
-/* Nav */
-.wpla-nav {
-    flex: 1;
-    padding: 12px 8px;
-    overflow-y: auto;
-}
-
-.wpla-nav-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
-    border-radius: var(--wpla-radius);
-    color: var(--wpla-text-sidebar);
-    text-decoration: none;
-    font-size: 13.5px;
-    font-weight: 500;
-    transition: all var(--wpla-transition);
-    margin-bottom: 2px;
-    position: relative;
-}
-
-.wpla-nav-item:hover {
-    background: var(--wpla-bg-sidebar-hover);
-    color: #ffffff;
-}
-
-.wpla-nav-item.wpla-nav-active {
-    background: var(--wpla-primary-gradient);
-    color: var(--wpla-text-sidebar-active);
-    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
-    font-weight: 600;
-}
-
-.wpla-nav-item.wpla-nav-active::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3px;
-    height: 60%;
-    background: #ffffff;
-    border-radius: 0 3px 3px 0;
-}
-
-.wpla-nav-icon {
-    font-size: 16px;
-    width: 20px;
-    text-align: center;
-}
-
-.wpla-sidebar-footer {
-    padding: 16px;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.3);
-    font-size: 11px;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.wpla-sidebar-footer strong {
-    color: rgba(255, 255, 255, 0.6);
-}
 
 /* ─────────────────────────────────────
    Main Content
    ───────────────────────────────────── */
 .wpla-main {
     flex: 1;
-    margin-left: var(--wpla-sidebar-width);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    transition: margin-left var(--wpla-transition);
-}
-
-.wpla-sidebar.wpla-collapsed ~ .wpla-main {
-    margin-left: var(--wpla-sidebar-collapsed-width);
 }
 
 /* Topbar */
@@ -345,7 +139,6 @@
     color: var(--wpla-text);
 }
 
-.wpla-sidebar-toggle,
 .wpla-theme-toggle {
     background: none;
     border: 1px solid var(--wpla-border);
@@ -363,7 +156,6 @@
     overflow: hidden;
 }
 
-.wpla-sidebar-toggle:hover,
 .wpla-theme-toggle:hover {
     background: var(--wpla-bg-hover);
     border-color: var(--wpla-primary);
@@ -1225,61 +1017,6 @@
 
 /* Tablet and small desktop */
 @media (max-width: 1024px) {
-    .wpla-sidebar {
-        transform: translateX(-100%);
-        width: var(--wpla-sidebar-width);
-    }
-
-    .wpla-sidebar.wpla-open {
-        transform: translateX(0);
-    }
-
-    /* On mobile/tablet, collapsed class should not apply icon-only mode */
-    .wpla-sidebar.wpla-collapsed {
-        width: var(--wpla-sidebar-width);
-        transform: translateX(-100%);
-    }
-
-    .wpla-sidebar.wpla-collapsed.wpla-open {
-        transform: translateX(0);
-    }
-
-    .wpla-sidebar.wpla-collapsed .wpla-logo-text,
-    .wpla-sidebar.wpla-collapsed .wpla-version,
-    .wpla-sidebar.wpla-collapsed .wpla-sidebar-footer small,
-    .wpla-sidebar.wpla-collapsed .wpla-nav-label {
-        opacity: 1;
-        width: auto;
-        overflow: visible;
-    }
-
-    .wpla-sidebar.wpla-collapsed .wpla-nav-item {
-        justify-content: flex-start;
-        padding: 10px 12px;
-    }
-
-    .wpla-sidebar.wpla-collapsed .wpla-nav-item::after {
-        display: none;
-    }
-
-    .wpla-sidebar.wpla-collapsed .wpla-nav-icon {
-        font-size: 16px;
-        width: 20px;
-    }
-
-    .wpla-sidebar.wpla-collapsed .wpla-sidebar-header {
-        padding: 20px 16px 12px;
-        align-items: flex-start;
-    }
-
-    .wpla-main {
-        margin-left: 0;
-    }
-
-    .wpla-sidebar.wpla-collapsed ~ .wpla-main {
-        margin-left: 0;
-    }
-
     .wpla-form-grid {
         grid-template-columns: 1fr;
     }
