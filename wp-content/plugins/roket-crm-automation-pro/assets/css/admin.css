@@ -1,0 +1,1083 @@
+/**
+ * Roket CRM Automation Pro — Admin CSS
+ * Modern SaaS-style UI (Notion / HubSpot inspired)
+ *
+ * @package Roket_CRM_Automation_Pro
+ */
+
+/* ─────────────────────────────────────
+   CSS Variables — Light & Dark themes
+   ───────────────────────────────────── */
+:root {
+    --wpla-primary: #6366f1;
+    --wpla-primary-hover: #4f46e5;
+    --wpla-primary-light: #eef2ff;
+    --wpla-accent: #8b5cf6;
+    --wpla-success: #10b981;
+    --wpla-warning: #f59e0b;
+    --wpla-danger: #ef4444;
+    --wpla-info: #3b82f6;
+
+    --wpla-bg: #f8fafc;
+    --wpla-bg-card: #ffffff;
+    --wpla-bg-sidebar: #1e1b4b;
+    --wpla-bg-sidebar-hover: #312e81;
+    --wpla-bg-input: #ffffff;
+    --wpla-bg-hover: #f1f5f9;
+
+    --wpla-text: #1e293b;
+    --wpla-text-secondary: #64748b;
+    --wpla-text-sidebar: #c7d2fe;
+    --wpla-text-sidebar-active: #ffffff;
+
+    --wpla-border: #e2e8f0;
+    --wpla-border-focus: #6366f1;
+
+    --wpla-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+    --wpla-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.08);
+    --wpla-shadow-modal: 0 25px 50px rgba(0, 0, 0, 0.2);
+
+    --wpla-radius: 8px;
+    --wpla-radius-lg: 12px;
+    --wpla-sidebar-width: 240px;
+    --wpla-topbar-height: 56px;
+
+    --wpla-transition: 0.2s ease;
+    --wpla-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Dark mode */
+.wpla-dark {
+    --wpla-bg: #0f172a;
+    --wpla-bg-card: #1e293b;
+    --wpla-bg-sidebar: #0c0a1d;
+    --wpla-bg-sidebar-hover: #1e1b4b;
+    --wpla-bg-input: #334155;
+    --wpla-bg-hover: #334155;
+
+    --wpla-text: #f1f5f9;
+    --wpla-text-secondary: #94a3b8;
+
+    --wpla-border: #334155;
+    --wpla-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --wpla-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* ─────────────────────────────────────
+   Reset & Base
+   ───────────────────────────────────── */
+#wpla-app *,
+#wpla-app *::before,
+#wpla-app *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+#wpla-app {
+    display: flex;
+    min-height: 100vh;
+    font-family: var(--wpla-font);
+    color: var(--wpla-text);
+    background: var(--wpla-bg);
+    font-size: 14px;
+    line-height: 1.6;
+    position: relative;
+    margin-left: -20px;
+    margin-top: -10px;
+}
+
+/* ─────────────────────────────────────
+   Sidebar
+   ───────────────────────────────────── */
+.wpla-sidebar {
+    width: var(--wpla-sidebar-width);
+    min-height: 100vh;
+    background: var(--wpla-bg-sidebar);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 100;
+    transition: transform var(--wpla-transition);
+}
+
+.wpla-sidebar.wpla-collapsed {
+    transform: translateX(-100%);
+}
+
+.wpla-sidebar-header {
+    padding: 20px 16px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.wpla-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.wpla-logo-icon {
+    font-size: 24px;
+}
+
+.wpla-logo-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+}
+
+.wpla-version {
+    display: block;
+    color: rgba(255, 255, 255, 0.35);
+    margin-top: 4px;
+    font-size: 11px;
+}
+
+/* Nav */
+.wpla-nav {
+    flex: 1;
+    padding: 12px 8px;
+    overflow-y: auto;
+}
+
+.wpla-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--wpla-radius);
+    color: var(--wpla-text-sidebar);
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 500;
+    transition: all var(--wpla-transition);
+    margin-bottom: 2px;
+}
+
+.wpla-nav-item:hover {
+    background: var(--wpla-bg-sidebar-hover);
+    color: #ffffff;
+}
+
+.wpla-nav-item.wpla-nav-active {
+    background: var(--wpla-primary);
+    color: var(--wpla-text-sidebar-active);
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.wpla-nav-icon {
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+}
+
+.wpla-sidebar-footer {
+    padding: 16px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 11px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.wpla-sidebar-footer strong {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* ─────────────────────────────────────
+   Main Content
+   ───────────────────────────────────── */
+.wpla-main {
+    flex: 1;
+    margin-left: var(--wpla-sidebar-width);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: margin-left var(--wpla-transition);
+}
+
+.wpla-sidebar.wpla-collapsed ~ .wpla-main {
+    margin-left: 0;
+}
+
+/* Topbar */
+.wpla-topbar {
+    height: var(--wpla-topbar-height);
+    background: var(--wpla-bg-card);
+    border-bottom: 1px solid var(--wpla-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    box-shadow: var(--wpla-shadow);
+}
+
+.wpla-topbar-left,
+.wpla-topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.wpla-page-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--wpla-text);
+}
+
+.wpla-sidebar-toggle,
+.wpla-theme-toggle {
+    background: none;
+    border: 1px solid var(--wpla-border);
+    border-radius: var(--wpla-radius);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--wpla-text-secondary);
+    transition: all var(--wpla-transition);
+}
+
+.wpla-sidebar-toggle:hover,
+.wpla-theme-toggle:hover {
+    background: var(--wpla-bg-hover);
+    border-color: var(--wpla-primary);
+}
+
+/* Content */
+.wpla-content {
+    flex: 1;
+    padding: 24px;
+    animation: wplaFadeIn 0.3s ease;
+}
+
+@keyframes wplaFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─────────────────────────────────────
+   Cards
+   ───────────────────────────────────── */
+.wpla-card {
+    background: var(--wpla-bg-card);
+    border-radius: var(--wpla-radius-lg);
+    border: 1px solid var(--wpla-border);
+    padding: 24px;
+    box-shadow: var(--wpla-shadow);
+    transition: box-shadow var(--wpla-transition);
+}
+
+.wpla-card:hover {
+    box-shadow: var(--wpla-shadow-lg);
+}
+
+.wpla-card h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--wpla-text);
+}
+
+/* ─────────────────────────────────────
+   Stats Grid (Dashboard)
+   ───────────────────────────────────── */
+.wpla-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.wpla-stat-card {
+    background: var(--wpla-bg-card);
+    border: 1px solid var(--wpla-border);
+    border-radius: var(--wpla-radius-lg);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: var(--wpla-shadow);
+    transition: all var(--wpla-transition);
+}
+
+.wpla-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--wpla-shadow-lg);
+}
+
+.wpla-stat-icon {
+    font-size: 32px;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--wpla-primary-light);
+    border-radius: var(--wpla-radius);
+}
+
+.wpla-dark .wpla-stat-icon {
+    background: rgba(99, 102, 241, 0.15);
+}
+
+.wpla-stat-value {
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--wpla-text);
+    line-height: 1.2;
+}
+
+.wpla-stat-label {
+    display: block;
+    font-size: 12px;
+    color: var(--wpla-text-secondary);
+    margin-top: 2px;
+}
+
+/* ─────────────────────────────────────
+   Tables
+   ───────────────────────────────────── */
+.wpla-table-wrapper {
+    overflow-x: auto;
+}
+
+.wpla-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.wpla-table th {
+    background: var(--wpla-bg);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--wpla-text-secondary);
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--wpla-border);
+}
+
+.wpla-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--wpla-border);
+    font-size: 13px;
+    color: var(--wpla-text);
+    vertical-align: middle;
+}
+
+.wpla-table tr:hover td {
+    background: var(--wpla-bg-hover);
+}
+
+.wpla-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* ─────────────────────────────────────
+   Buttons
+   ───────────────────────────────────── */
+.wpla-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid var(--wpla-border);
+    border-radius: var(--wpla-radius);
+    background: var(--wpla-bg-card);
+    color: var(--wpla-text);
+    cursor: pointer;
+    transition: all var(--wpla-transition);
+    text-decoration: none;
+    white-space: nowrap;
+    font-family: var(--wpla-font);
+}
+
+.wpla-btn:hover {
+    background: var(--wpla-bg-hover);
+    border-color: var(--wpla-text-secondary);
+}
+
+.wpla-btn-primary {
+    background: var(--wpla-primary);
+    color: #ffffff;
+    border-color: var(--wpla-primary);
+}
+
+.wpla-btn-primary:hover {
+    background: var(--wpla-primary-hover);
+    border-color: var(--wpla-primary-hover);
+    color: #ffffff;
+}
+
+.wpla-btn-danger {
+    color: var(--wpla-danger);
+    border-color: var(--wpla-danger);
+}
+
+.wpla-btn-danger:hover {
+    background: var(--wpla-danger);
+    color: #fff;
+}
+
+.wpla-btn-sm {
+    padding: 4px 10px;
+    font-size: 12px;
+}
+
+.wpla-btn-lg {
+    padding: 12px 28px;
+    font-size: 15px;
+}
+
+.wpla-btn-dashed {
+    border-style: dashed;
+    color: var(--wpla-text-secondary);
+}
+
+.wpla-btn-dashed:hover {
+    border-color: var(--wpla-primary);
+    color: var(--wpla-primary);
+    background: var(--wpla-primary-light);
+}
+
+/* ─────────────────────────────────────
+   Form Elements
+   ───────────────────────────────────── */
+.wpla-input,
+.wpla-select {
+    width: 100%;
+    padding: 9px 12px;
+    font-size: 13px;
+    border: 1px solid var(--wpla-border);
+    border-radius: var(--wpla-radius);
+    background: var(--wpla-bg-input);
+    color: var(--wpla-text);
+    transition: border-color var(--wpla-transition), box-shadow var(--wpla-transition);
+    font-family: var(--wpla-font);
+    outline: none;
+}
+
+.wpla-input:focus,
+.wpla-select:focus {
+    border-color: var(--wpla-border-focus);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+.wpla-input-lg {
+    font-size: 16px;
+    padding: 10px 16px;
+    font-weight: 600;
+}
+
+.wpla-input-color {
+    width: 60px;
+    height: 38px;
+    padding: 4px;
+    border: 1px solid var(--wpla-border);
+    border-radius: var(--wpla-radius);
+    cursor: pointer;
+}
+
+.wpla-input-group {
+    display: flex;
+    gap: 8px;
+}
+
+.wpla-input-group .wpla-input {
+    flex: 1;
+}
+
+.wpla-field {
+    margin-bottom: 16px;
+}
+
+.wpla-field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--wpla-text-secondary);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.wpla-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 20px;
+}
+
+.wpla-fieldset {
+    border: 1px solid var(--wpla-border);
+    border-radius: var(--wpla-radius);
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.wpla-fieldset legend {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--wpla-text-secondary);
+    padding: 0 8px;
+}
+
+.wpla-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.wpla-checkbox input[type="checkbox"] {
+    accent-color: var(--wpla-primary);
+}
+
+/* ─────────────────────────────────────
+   Toolbar
+   ───────────────────────────────────── */
+.wpla-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.wpla-toolbar-left,
+.wpla-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.wpla-toolbar-left .wpla-input,
+.wpla-toolbar-left .wpla-select {
+    width: auto;
+    min-width: 200px;
+}
+
+/* ─────────────────────────────────────
+   Modal
+   ───────────────────────────────────── */
+.wpla-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: wplaFadeIn 0.2s ease;
+}
+
+.wpla-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+.wpla-modal-content {
+    position: relative;
+    background: var(--wpla-bg-card);
+    border-radius: var(--wpla-radius-lg);
+    box-shadow: var(--wpla-shadow-modal);
+    width: 95%;
+    max-width: 560px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    animation: wplaSlideUp 0.3s ease;
+}
+
+.wpla-modal-sm {
+    max-width: 400px;
+}
+
+@keyframes wplaSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.wpla-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--wpla-border);
+}
+
+.wpla-modal-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.wpla-modal-close {
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: var(--wpla-text-secondary);
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    transition: color var(--wpla-transition);
+}
+
+.wpla-modal-close:hover {
+    color: var(--wpla-danger);
+}
+
+.wpla-modal-body {
+    padding: 20px 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.wpla-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px 24px 20px;
+    border-top: 1px solid var(--wpla-border);
+}
+
+/* ─────────────────────────────────────
+   Badges
+   ───────────────────────────────────── */
+.wpla-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 100px;
+    letter-spacing: 0.02em;
+}
+
+.wpla-badge-info {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--wpla-info);
+}
+
+.wpla-badge-success {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--wpla-success);
+}
+
+.wpla-badge-warning {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--wpla-warning);
+}
+
+.wpla-badge-danger {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--wpla-danger);
+}
+
+.wpla-badge-primary {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--wpla-primary);
+}
+
+/* Tag badges */
+.wpla-tag-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 100px;
+    color: #fff;
+    margin-right: 4px;
+    margin-bottom: 4px;
+}
+
+/* ─────────────────────────────────────
+   Tags Grid
+   ───────────────────────────────────── */
+.wpla-tags-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+}
+
+.wpla-tag-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--wpla-bg);
+    border: 1px solid var(--wpla-border);
+    border-radius: var(--wpla-radius);
+    padding: 12px 16px;
+    transition: all var(--wpla-transition);
+}
+
+.wpla-tag-card:hover {
+    border-color: var(--wpla-primary);
+    box-shadow: var(--wpla-shadow);
+}
+
+.wpla-tag-card-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.wpla-tag-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.wpla-tag-card-name {
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.wpla-tag-card-count {
+    font-size: 11px;
+    color: var(--wpla-text-secondary);
+}
+
+/* ─────────────────────────────────────
+   Flow Builder
+   ───────────────────────────────────── */
+.wpla-flow-canvas {
+    background: var(--wpla-bg);
+    border: 2px dashed var(--wpla-border);
+    border-radius: var(--wpla-radius-lg);
+    padding: 32px;
+    min-height: 400px;
+}
+
+.wpla-flow-nodes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+.wpla-flow-node {
+    background: var(--wpla-bg-card);
+    border: 2px solid var(--wpla-border);
+    border-radius: var(--wpla-radius-lg);
+    padding: 16px 24px;
+    min-width: 280px;
+    max-width: 400px;
+    position: relative;
+    cursor: grab;
+    transition: all var(--wpla-transition);
+    box-shadow: var(--wpla-shadow);
+}
+
+.wpla-flow-node:hover {
+    border-color: var(--wpla-primary);
+    box-shadow: var(--wpla-shadow-lg);
+    transform: translateY(-1px);
+}
+
+.wpla-flow-node.wpla-node-trigger {
+    border-color: var(--wpla-success);
+    border-left: 4px solid var(--wpla-success);
+}
+
+.wpla-flow-node.wpla-node-condition {
+    border-color: var(--wpla-warning);
+    border-left: 4px solid var(--wpla-warning);
+}
+
+.wpla-flow-node.wpla-node-action {
+    border-color: var(--wpla-primary);
+    border-left: 4px solid var(--wpla-primary);
+}
+
+.wpla-flow-node.wpla-node-delay {
+    border-color: var(--wpla-info);
+    border-left: 4px solid var(--wpla-info);
+}
+
+.wpla-flow-node-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.wpla-flow-node-type {
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    opacity: 0.7;
+}
+
+.wpla-flow-node-title {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.wpla-flow-node-desc {
+    font-size: 11px;
+    color: var(--wpla-text-secondary);
+}
+
+.wpla-flow-node-remove {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--wpla-danger);
+    color: #fff;
+    border: 2px solid var(--wpla-bg-card);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    line-height: 1;
+    opacity: 0;
+    transition: opacity var(--wpla-transition);
+}
+
+.wpla-flow-node:hover .wpla-flow-node-remove {
+    opacity: 1;
+}
+
+/* Connector line */
+.wpla-flow-connector {
+    width: 2px;
+    height: 28px;
+    background: var(--wpla-border);
+    position: relative;
+}
+
+.wpla-flow-connector::after {
+    content: '▼';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 8px;
+    color: var(--wpla-text-secondary);
+}
+
+.wpla-flow-add {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* ─────────────────────────────────────
+   Pagination
+   ───────────────────────────────────── */
+.wpla-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 20px;
+}
+
+.wpla-pagination button {
+    min-width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--wpla-border);
+    border-radius: var(--wpla-radius);
+    background: var(--wpla-bg-card);
+    color: var(--wpla-text);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all var(--wpla-transition);
+}
+
+.wpla-pagination button:hover {
+    border-color: var(--wpla-primary);
+    background: var(--wpla-primary-light);
+}
+
+.wpla-pagination button.active {
+    background: var(--wpla-primary);
+    color: #ffffff;
+    border-color: var(--wpla-primary);
+}
+
+/* ─────────────────────────────────────
+   Queue stats
+   ───────────────────────────────────── */
+.wpla-queue-stats {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* ─────────────────────────────────────
+   Code blocks
+   ───────────────────────────────────── */
+.wpla-code {
+    background: var(--wpla-bg);
+    border: 1px solid var(--wpla-border);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'SFMono-Regular', Menlo, Monaco, monospace;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.wpla-code-block {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 16px 20px;
+    border-radius: var(--wpla-radius);
+    font-family: 'SFMono-Regular', Menlo, Monaco, monospace;
+    font-size: 12px;
+    overflow-x: auto;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+/* ─────────────────────────────────────
+   Utility classes
+   ───────────────────────────────────── */
+.wpla-text-center { text-align: center; }
+.wpla-text-muted { color: var(--wpla-text-secondary); font-size: 13px; margin-bottom: 16px; }
+.wpla-mt-4 { margin-top: 24px; }
+.wpla-mb-4 { margin-bottom: 24px; }
+.wpla-hidden { display: none !important; }
+
+.wpla-empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--wpla-text-secondary);
+}
+
+.wpla-empty-state p {
+    font-size: 15px;
+    margin-bottom: 16px;
+}
+
+/* Status badges */
+.wpla-status-active { color: var(--wpla-success); }
+.wpla-status-paused { color: var(--wpla-warning); }
+.wpla-status-draft { color: var(--wpla-text-secondary); }
+.wpla-status-unsubscribed { color: var(--wpla-danger); }
+.wpla-status-bounced { color: var(--wpla-danger); }
+.wpla-status-pending { color: var(--wpla-info); }
+.wpla-status-sent { color: var(--wpla-success); }
+.wpla-status-failed { color: var(--wpla-danger); }
+
+/* Toast notification */
+.wpla-toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--wpla-bg-card);
+    border: 1px solid var(--wpla-border);
+    border-radius: var(--wpla-radius);
+    padding: 12px 20px;
+    box-shadow: var(--wpla-shadow-lg);
+    z-index: 10001;
+    font-size: 13px;
+    animation: wplaSlideUp 0.3s ease;
+    max-width: 360px;
+}
+
+.wpla-toast-success {
+    border-left: 4px solid var(--wpla-success);
+}
+
+.wpla-toast-error {
+    border-left: 4px solid var(--wpla-danger);
+}
+
+/* ─────────────────────────────────────
+   Responsive
+   ───────────────────────────────────── */
+@media (max-width: 1024px) {
+    .wpla-sidebar {
+        transform: translateX(-100%);
+    }
+
+    .wpla-sidebar.wpla-open {
+        transform: translateX(0);
+    }
+
+    .wpla-main {
+        margin-left: 0;
+    }
+
+    .wpla-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .wpla-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .wpla-content {
+        padding: 16px;
+    }
+
+    .wpla-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .wpla-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .wpla-toolbar-left,
+    .wpla-toolbar-right {
+        flex-wrap: wrap;
+    }
+
+    .wpla-toolbar-left .wpla-input,
+    .wpla-toolbar-left .wpla-select {
+        min-width: 0;
+        flex: 1;
+    }
+}
+
+/* ─────────────────────────────────────
+   WordPress Admin overrides
+   ───────────────────────────────────── */
+#wpcontent {
+    padding-left: 0 !important;
+}
+
+#wpla-app h1,
+#wpla-app h2,
+#wpla-app h3,
+#wpla-app h4 {
+    padding: 0;
+    margin: 0;
+}
+
+#wpla-app a {
+    text-decoration: none;
+}
