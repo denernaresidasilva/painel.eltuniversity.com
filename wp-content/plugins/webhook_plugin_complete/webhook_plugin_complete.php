@@ -40,11 +40,6 @@ class Webhook_Receiver {
         add_action('wp_ajax_webhook_receiver_save_webhook', array($this, 'ajax_save_webhook'));
         add_action('wp_ajax_webhook_receiver_delete_webhook', array($this, 'ajax_delete_webhook'));
         
-        // AJAX para order bumps
-        add_action('wp_ajax_webhook_receiver_save_order_bump', array($this, 'ajax_save_order_bump'));
-        add_action('wp_ajax_webhook_receiver_delete_order_bump', array($this, 'ajax_delete_order_bump'));
-        add_action('wp_ajax_webhook_receiver_get_order_bumps', array($this, 'ajax_get_order_bumps'));
-        
         // AJAX para cursos principais
         add_action('wp_ajax_webhook_receiver_save_main_courses', array($this, 'ajax_save_main_courses'));
         add_action('wp_ajax_webhook_receiver_get_main_courses', array($this, 'ajax_get_main_courses'));
@@ -368,6 +363,15 @@ class Webhook_Receiver {
         
         // Obter os dados do corpo da requisição
         $body = $request->get_body();
+
+        // Eduzz "verificar URL" envia payload vazio; responder 200 sem processar.
+        if (trim((string) $body) === '') {
+            return new WP_REST_Response(array(
+                'success' => true,
+                'message' => 'Webhook ativo (payload vazio aceito).'
+            ), 200);
+        }
+
         $data = json_decode($body, true);
         
         // Salvar dados brutos do webhook se for a primeira vez
@@ -927,11 +931,6 @@ class Webhook_Receiver {
                     $this->enroll_user_in_courses($user_id, $course_ids);
                 }
                 
-                // Processar order bumps se houver
-                if ($webhook_config) {
-                    $this->process_order_bumps_enrollment($user_id, $sale_data, $webhook_config);
-                }
-                
                 // Integração FluentCRM
                 if ($webhook_config) {
                     $this->add_contact_to_fluentcrm($sale_data, $webhook_config, $user_id);
@@ -964,11 +963,6 @@ class Webhook_Receiver {
 
                 if (!empty($course_ids)) {
                     $this->enroll_user_in_courses($user->ID, $course_ids);
-                }
-                
-                // Processar order bumps se houver
-                if ($webhook_config) {
-                    $this->process_order_bumps_enrollment($user->ID, $sale_data, $webhook_config);
                 }
                 
                 // Integração FluentCRM
@@ -1012,11 +1006,6 @@ class Webhook_Receiver {
             $this->unenroll_user_from_courses($user_id, $course_ids);
         }
         
-        // Processar desmatrícula de order bumps se houver
-        if ($webhook_config) {
-            $this->process_order_bumps_unenrollment($user_id, $sale_data, $webhook_config);
-        }
-        
         // Notificar administrador se configurado
         if (get_option('webhook_receiver_notify_admin', 'no') === 'yes') {
             $admin_email = get_option('admin_email');
@@ -1027,281 +1016,6 @@ class Webhook_Receiver {
         }
         
         return $user_id;
-    }
-    
-    /**
-     * ================================================================================
-     * PROCESSAR MATRICULAS DE ORDER BUMPS
-     * ================================================================================
-     */
-    private function process_order_bumps_enrollment($user_id, $sale_data, $webhook_config) {
-        // Log de debug
-        if (get_option('webhook_receiver_enable_logs', 'yes') === 'yes') {
-            $this->log_webhook("DEBUG: Iniciando processamento de order bumps para usuário $user_id");
-            $this->log_webhook("DEBUG: Dados de produtos adicionais: " . print_r($sale_data['produtos_adicionais'], true));
-        }
-        
-        // Verificar se há produtos adicionais
-        if (empty($sale_data['produtos_adicionais']) || !is_array($sale_data['produtos_adicionais'])) {
-            if (get_option('webhook_receiver_enable_logs', 'yes') === 'yes') {
-                $this->log_webhook("DEBUG: Nenhum produto adicional encontrado");
-            }
-            return;
-        }
-        
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'webhook_receiver_order_bumps';
-        
-        // Obter configurações de order bumps para este webhook
-        $order_bump_configs = $wpdb->get_results($wpdb->prepare(
-            "SELECT * FROM $table_name WHERE webhook_id = %s",
-            $webhook_config->webhook_id
-        ));
-        
-        if (empty($order_bump_configs)) {
-            if (get_option('webhook_receiver_enable_logs', 'yes') === 'yes') {
-                $this->log_webhook("DEBUG: Nenhuma configuração de order bump encontrada para webhook: " . $webhook_config->webhook_id);
-            }
-            return;
-        }
-        
-        // Log das configurações encontradas
-        if (get_option('webhook_receiver_enable_logs', 'yes') === 'yes') {
-            $this->log_webhook("DEBUG: Configurações de order bump encontradas: " . print_r($order_bump_configs, true));
-        }
-        
-        // Criar um mapa de product_id => course_id para fácil acesso
-        $order_bump_map = array();
-        foreach ($order_bump_configs as $config) {
-            // Adicionar múltiplas variações de ID para aumentar chances de match
-            $order_bump_map[strval($config->product_id)] = $config->course_id;
-            $order_bump_map[intval($config->product_id)] = $config->course_id;
-            
-            // Log de debug
-            if (get_option('webhook_receiver_enable_logs', 'yes') === 'yes') {
-                $this->log_webhook("DEBUG: Mapeamento adicionado - ID: {$config->product_id} => Curso: {$config->course_id}");
-            }
-        }
-        
-        // Processar cada produto adicional
-        $courses_to_enroll = array();
-        foreach ($sale_data['produtos_adicionais'] as $produto_adicional) {
-            if (get_option('webhook_receiver_enable_logs', 'yes') === 'yes') {
-                $this->log_webhook("DEBUG: Processando produto adicional: " . print_r($produto_adicional, true));
-            }
-            
-            $matched = false;
-            
-            // Verificar por ID do produto (tentar várias chaves possíveis)
-            $possible_id_keys = array('id', 'ID', 'product_id', 'produto_id', 'sku', 'SKU');
-            foreach ($possible_id_keys as $key) {
-                if (isset($produto_adicional[$key])) {
-                    $product_id = $produto_adicional[$key];
-                    
-                    // Tentar match direto
-                    if (isset($order_bump_map[$product_id])) {
-                        $courses_to_enroll[] = $order_bump_map[$product_id];
-                        $matched = true;
-                        if (get_option('webhook_receiver_enable_logs', 'yes') === 'yes') {
-                            $this->log_webhook("DEBUG: Match encontrado por ID ($key): $product_id => Curso: " . $order_bump_map[$product_id]);
-                        }
-                        break;
-                    }
-                    
-                    // Tentar match como string
-                    if (isset($order_bump_map[strval($product_id)])) {
-                        $courses_to_enroll[] = $order_bump_map[strval($product_id)];
-                        $matched = true;
-                        if (get_option('webhook_receiver_enable_logs', 'yes') === 'yes') {
-                            $this->log_webhook("DEBUG: Match encontrado por ID string ($key): $product_id => Curso: " . $order_bump_map[strval($product_id)]);
-                        }
-                        break;
-                    }
-                    
-                    // Tentar match como inteiro
-                    if (isset($order_bump_map[intval($product_id)])) {
-                        $courses_to_enroll[] = $order_bump_map[intval($product_id)];
-                        $matched = true;
-                        if (get_option('webhook_receiver_enable_logs', 'yes') === 'yes') {
-                            $this->log_webhook("DEBUG: Match encontrado por ID int ($key): $product_id => Curso: " . $order_bump_map[intval($product_id)]);
-                        }
-                        break;
-                    }
-                }
-            }
-            
-            // Se não encontrou por ID, tentar por nome do produto
-            if (!$matched) {
-                $possible_name_keys = array('nome', 'name', 'product_name', 'produto_nome', 'title');
-                foreach ($possible_name_keys as $key) {
-                    if (isset($produto_adicional[$key])) {
-                        $product_name = $produto_adicional[$key];
-                        
-                        foreach ($order_bump_configs as $config) {
-                            // Comparação case-insensitive e com trim
-                            if (strcasecmp(trim($config->product_name), trim($product_name)) === 0) {
-                                $courses_to_enroll[] = $config->course_id;
-                                $matched = true;
-                                if (get_option('webhook_receiver_enable_logs', 'yes') === 'yes') {
-                                    $this->log_webhook("DEBUG: Match encontrado por nome ($key): $product_name => Curso: {$config->course_id}");
-                                }
-                                break 2;
-                            }
-                            
-                            // Tentar match parcial se o nome contém o configurado
-                            if (stripos(trim($product_name), trim($config->product_name)) !== false || 
-                                stripos(trim($config->product_name), trim($product_name)) !== false) {
-                                $courses_to_enroll[] = $config->course_id;
-                                $matched = true;
-                                if (get_option('webhook_receiver_enable_logs', 'yes') === 'yes') {
-                                    $this->log_webhook("DEBUG: Match parcial encontrado por nome ($key): $product_name => Curso: {$config->course_id}");
-                                }
-                                break 2;
-                            }
-                        }
-                    }
-                }
-            }
-            
-            if (!$matched && get_option('webhook_receiver_enable_logs', 'yes') === 'yes') {
-                $this->log_webhook("DEBUG: Nenhum match encontrado para produto adicional: " . print_r($produto_adicional, true));
-            }
-        }
-        
-        // Matricular o usuário nos cursos dos order bumps
-        if (!empty($courses_to_enroll)) {
-            $courses_to_enroll = array_unique($courses_to_enroll); // Remover duplicatas
-            
-            if (get_option('webhook_receiver_enable_logs', 'yes') === 'yes') {
-                $this->log_webhook("DEBUG: Matriculando usuário $user_id nos cursos de order bump: " . implode(', ', $courses_to_enroll));
-            }
-            
-            $this->enroll_user_in_courses($user_id, $courses_to_enroll);
-            
-            if (get_option('webhook_receiver_enable_logs', 'yes') === 'yes') {
-                $this->log_webhook("Order bumps processados com sucesso para o usuário $user_id: " . implode(', ', $courses_to_enroll));
-            }
-        } else {
-            if (get_option('webhook_receiver_enable_logs', 'yes') === 'yes') {
-                $this->log_webhook("DEBUG: Nenhum curso de order bump para matricular");
-            }
-        }
-    }
-    
-    /**
-     * ================================================================================
-     * PROCESSAR DESMATRÍCULAS DE ORDER BUMPS
-     * ================================================================================
-     */
-    private function process_order_bumps_unenrollment($user_id, $sale_data, $webhook_config) {
-        // Log de debug
-        if (get_option('webhook_receiver_enable_logs', 'yes') === 'yes') {
-            $this->log_webhook("DEBUG: Iniciando processamento de desmatrícula de order bumps para usuário $user_id");
-            $this->log_webhook("DEBUG: Dados de produtos adicionais: " . print_r($sale_data['produtos_adicionais'], true));
-        }
-        
-        // Verificar se há produtos adicionais
-        if (empty($sale_data['produtos_adicionais']) || !is_array($sale_data['produtos_adicionais'])) {
-            if (get_option('webhook_receiver_enable_logs', 'yes') === 'yes') {
-                $this->log_webhook("DEBUG: Nenhum produto adicional encontrado para desmatrícula");
-            }
-            return;
-        }
-        
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'webhook_receiver_order_bumps';
-        
-        // Obter configurações de order bumps para este webhook
-        $order_bump_configs = $wpdb->get_results($wpdb->prepare(
-            "SELECT * FROM $table_name WHERE webhook_id = %s",
-            $webhook_config->webhook_id
-        ));
-        
-        if (empty($order_bump_configs)) {
-            if (get_option('webhook_receiver_enable_logs', 'yes') === 'yes') {
-                $this->log_webhook("DEBUG: Nenhuma configuração de order bump encontrada para webhook: " . $webhook_config->webhook_id);
-            }
-            return;
-        }
-        
-        // Criar um mapa de product_id => course_id
-        $order_bump_map = array();
-        foreach ($order_bump_configs as $config) {
-            $order_bump_map[strval($config->product_id)] = $config->course_id;
-            $order_bump_map[intval($config->product_id)] = $config->course_id;
-        }
-        
-        // Processar cada produto adicional
-        $courses_to_unenroll = array();
-        foreach ($sale_data['produtos_adicionais'] as $produto_adicional) {
-            $matched = false;
-            
-            // Verificar por ID do produto
-            $possible_id_keys = array('id', 'ID', 'product_id', 'produto_id', 'sku', 'SKU');
-            foreach ($possible_id_keys as $key) {
-                if (isset($produto_adicional[$key])) {
-                    $product_id = $produto_adicional[$key];
-                    
-                    if (isset($order_bump_map[$product_id])) {
-                        $courses_to_unenroll[] = $order_bump_map[$product_id];
-                        $matched = true;
-                        break;
-                    }
-                    
-                    if (isset($order_bump_map[strval($product_id)])) {
-                        $courses_to_unenroll[] = $order_bump_map[strval($product_id)];
-                        $matched = true;
-                        break;
-                    }
-                    
-                    if (isset($order_bump_map[intval($product_id)])) {
-                        $courses_to_unenroll[] = $order_bump_map[intval($product_id)];
-                        $matched = true;
-                        break;
-                    }
-                }
-            }
-            
-            // Se não encontrou por ID, tentar por nome
-            if (!$matched) {
-                $possible_name_keys = array('nome', 'name', 'product_name', 'produto_nome', 'title');
-                foreach ($possible_name_keys as $key) {
-                    if (isset($produto_adicional[$key])) {
-                        $product_name = $produto_adicional[$key];
-                        
-                        foreach ($order_bump_configs as $config) {
-                            if (strcasecmp(trim($config->product_name), trim($product_name)) === 0) {
-                                $courses_to_unenroll[] = $config->course_id;
-                                $matched = true;
-                                break 2;
-                            }
-                            
-                            if (stripos(trim($product_name), trim($config->product_name)) !== false || 
-                                stripos(trim($config->product_name), trim($product_name)) !== false) {
-                                $courses_to_unenroll[] = $config->course_id;
-                                $matched = true;
-                                break 2;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
-        // Desmatricular o usuário dos cursos dos order bumps
-        if (!empty($courses_to_unenroll)) {
-            $courses_to_unenroll = array_unique($courses_to_unenroll);
-            
-            if (get_option('webhook_receiver_enable_logs', 'yes') === 'yes') {
-                $this->log_webhook("DEBUG: Desmatriculando usuário $user_id dos cursos de order bump: " . implode(', ', $courses_to_unenroll));
-            }
-            
-            $this->unenroll_user_from_courses($user_id, $courses_to_unenroll);
-            
-            if (get_option('webhook_receiver_enable_logs', 'yes') === 'yes') {
-                $this->log_webhook("Order bumps desmatriculados com sucesso para o usuário $user_id: " . implode(', ', $courses_to_unenroll));
-            }
-        }
     }
     
     /**
@@ -1483,24 +1197,10 @@ class Webhook_Receiver {
             KEY webhook_id (webhook_id)
         ) $charset_collate;";
         
-        // NOVA TABELA: Configurações de order bumps por webhook
-        $order_bumps_table = $wpdb->prefix . 'webhook_receiver_order_bumps';
-        $order_bumps_sql = "CREATE TABLE IF NOT EXISTS $order_bumps_table (
-            id bigint(20) NOT NULL AUTO_INCREMENT,
-            webhook_id varchar(50) NOT NULL,
-            product_id varchar(100) NOT NULL,
-            product_name varchar(255) NOT NULL,
-            course_id bigint(20) NOT NULL,
-            created_at datetime NOT NULL,
-            PRIMARY KEY (id),
-            KEY webhook_id (webhook_id)
-        ) $charset_collate;";
-        
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql);
         dbDelta($webhooks_sql);
         dbDelta($webhook_courses_sql);
-        dbDelta($order_bumps_sql);
         
         // Verificar se a coluna webhook_data existe e adicioná-la se não existir
         $column_exists = $wpdb->get_results($wpdb->prepare(
@@ -2159,68 +1859,6 @@ class Webhook_Receiver {
                 </div>
             </div>
             
-            <!-- Modal para gerenciar order bumps -->
-            <div id="order-bumps-modal" class="webhook-modal">
-                <div class="modal-backdrop"></div>
-                <div class="modal-content large">
-                    <div class="modal-header">
-                        <h2><span class="icon">🛍️</span> Gerenciar Order Bumps - <span id="modal-webhook-name" class="highlight-text"></span></h2>
-                        <button type="button" class="close-modal-btn">✕</button>
-                    </div>
-                    <input type="hidden" id="modal-webhook-id" value="">
-                    
-                    <div class="modal-body">
-                        <div class="order-bump-form">
-                            <h3><span class="icon">➕</span> Adicionar Order Bump</h3>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="order-bump-product-id" class="form-label">ID/SKU do Produto</label>
-                                    <input type="text" id="order-bump-product-id" class="form-input">
-                                    <p class="form-description">ID ou SKU do produto adicional (order bump)</p>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="order-bump-product-name" class="form-label">Nome do Produto</label>
-                                    <input type="text" id="order-bump-product-name" class="form-input">
-                                    <p class="form-description">Nome descritivo do order bump</p>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="order-bump-course-id" class="form-label">Curso a Liberar</label>
-                                    <select id="order-bump-course-id" class="form-select">
-                                        <option value="">Selecione um curso</option>
-                                        <?php
-                                        foreach ($courses as $course) {
-                                            echo '<option value="' . esc_attr($course->ID) . '">' . esc_html($course->post_title) . '</option>';
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <div class="form-actions">
-                                <button type="button" id="add-order-bump" class="webhook-btn primary">
-                                    <span class="btn-icon">➕</span> Adicionar Order Bump
-                                </button>
-                                <div class="loading-spinner">
-                                    <div class="spinner"></div>
-                                    <span>Adicionando...</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="order-bumps-list">
-                            <h3><span class="icon">📋</span> Order Bumps Configurados</h3>
-                            <div id="order-bumps-table"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="modal-footer">
-                        <button type="button" class="webhook-btn secondary close-modal">Fechar</button>
-                    </div>
-                </div>
-            </div>
-            
             <!-- Modal para mostrar estrutura JSON -->
             <div id="json-structure-modal" class="webhook-modal">
                 <div class="modal-backdrop"></div>
@@ -2732,7 +2370,7 @@ class Webhook_Receiver {
             align-items: center;
         }
 
-        .main-courses-form, .order-bump-form {
+        .main-courses-form {
             background: #f7fafc;
             padding: 25px;
             border-radius: 12px;
@@ -2740,7 +2378,7 @@ class Webhook_Receiver {
             margin-bottom: 25px;
         }
 
-        .main-courses-form h3, .order-bump-form h3 {
+        .main-courses-form h3 {
             margin: 0 0 20px 0;
             color: #2d3748;
             font-weight: 600;
@@ -2752,16 +2390,6 @@ class Webhook_Receiver {
 
         .modal-spinner {
             display: none;
-        }
-
-        .order-bumps-list {
-            margin-top: 30px;
-        }
-
-        .order-bumps-list h3 {
-            color: #2d3748;
-            margin-bottom: 20px;
-            font-weight: 600;
         }
 
         .json-structure-content h3 {
@@ -3067,104 +2695,8 @@ class Webhook_Receiver {
             }
             
             $('.close-modal, .close-modal-btn, .modal-backdrop').on('click', function() {
-                $('#order-bumps-modal, #main-courses-modal, #json-structure-modal, #recover-sales-modal').hide();
+                $('#main-courses-modal, #json-structure-modal, #recover-sales-modal').hide();
             });
-            
-            $(document).on('click', '.manage-order-bumps', function(e) {
-                e.preventDefault();
-                var webhookId = $(this).data('webhook-id');
-                var webhookName = $(this).data('webhook-name');
-                
-                $('#modal-webhook-id').val(webhookId);
-                $('#modal-webhook-name').text(webhookName);
-                
-                loadOrderBumps(webhookId);
-                
-                $('#order-bumps-modal').show();
-            });
-            
-            $('#add-order-bump').on('click', function() {
-                var webhookId = $('#modal-webhook-id').val();
-                var productId = $('#order-bump-product-id').val();
-                var productName = $('#order-bump-product-name').val();
-                var courseId = $('#order-bump-course-id').val();
-                
-                if (!productId || !productName || !courseId) {
-                    alert('Preencha todos os campos!');
-                    return;
-                }
-                
-                var spinner = $(this).siblings('.loading-spinner');
-                spinner.css('display', 'flex');
-                
-                $.ajax({
-                    url: ajaxurl,
-                    type: 'POST',
-                    data: {
-                        action: 'webhook_receiver_save_order_bump',
-                        webhook_id: webhookId,
-                        product_id: productId,
-                        product_name: productName,
-                        course_id: courseId,
-                        nonce: '<?php echo wp_create_nonce('webhook_receiver_order_bump'); ?>'
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $('#order-bump-product-id').val('');
-                            $('#order-bump-product-name').val('');
-                            $('#order-bump-course-id').val('');
-                            loadOrderBumps(webhookId);
-                            showNotification('Order bump adicionado com sucesso!', 'success');
-                        } else {
-                            alert('Erro: ' + response.data.message);
-                        }
-                    },
-                    complete: function() {
-                        spinner.css('display', 'none');
-                    }
-                });
-            });
-            
-            $(document).on('click', '.delete-order-bump', function() {
-                if (!confirm('Tem certeza que deseja excluir este order bump?')) {
-                    return;
-                }
-                
-                var orderBumpId = $(this).data('id');
-                var webhookId = $('#modal-webhook-id').val();
-                
-                $.ajax({
-                    url: ajaxurl,
-                    type: 'POST',
-                    data: {
-                        action: 'webhook_receiver_delete_order_bump',
-                        order_bump_id: orderBumpId,
-                        nonce: '<?php echo wp_create_nonce('webhook_receiver_order_bump'); ?>'
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            loadOrderBumps(webhookId);
-                        }
-                    }
-                });
-            });
-            
-            function loadOrderBumps(webhookId) {
-                $.ajax({
-                    url: ajaxurl,
-                    type: 'POST',
-                    data: {
-                        action: 'webhook_receiver_get_order_bumps',
-                        webhook_id: webhookId,
-                        nonce: '<?php echo wp_create_nonce('webhook_receiver_order_bump'); ?>'
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $('#order-bumps-table').html(response.data.html);
-                        }
-                    }
-                });
-            }
             
             $(document).on('click', '.delete-webhook', function(e) {
                 e.preventDefault();
@@ -3353,7 +2885,6 @@ class Webhook_Receiver {
         global $wpdb;
         $table_name = $wpdb->prefix . 'webhook_receiver_endpoints';
         $webhook_courses_table = $wpdb->prefix . 'webhook_receiver_courses';
-        $order_bumps_table = $wpdb->prefix . 'webhook_receiver_order_bumps';
         $webhooks = $wpdb->get_results("SELECT * FROM $table_name ORDER BY webhook_name ASC");
         
         if (empty($webhooks)) {
@@ -3379,11 +2910,6 @@ class Webhook_Receiver {
                 
                 $courses_display = !empty($course_titles) ? implode(', ', $course_titles) : 'Nenhum curso configurado';
                 $courses_count = count($course_titles);
-                
-                $order_bumps_count = $wpdb->get_var($wpdb->prepare(
-                    "SELECT COUNT(*) FROM $order_bumps_table WHERE webhook_id = %s",
-                    $webhook->webhook_id
-                ));
                 
                 $webhook_url = rest_url('webhook-receiver/v1/receive/' . $webhook->webhook_id);
                 $has_webhook_data = !empty($webhook->webhook_data);
@@ -3426,18 +2952,6 @@ class Webhook_Receiver {
                             <div class="info-section">
                                 <span class="info-label">ID do Webhook</span>
                                 <code class="webhook-id-display"><?php echo esc_html($webhook->webhook_id); ?></code>
-                            </div>
-                            
-                            <div class="info-section">
-                                <span class="info-label">Order Bumps</span>
-                                <div class="order-bumps-info">
-                                    <span class="order-bumps-count"><?php echo $order_bumps_count; ?> configurado(s)</span>
-                                    <button type="button" class="manage-btn small manage-order-bumps" 
-                                            data-webhook-id="<?php echo esc_attr($webhook->webhook_id); ?>"
-                                            data-webhook-name="<?php echo esc_attr($webhook->webhook_name); ?>">
-                                        <span class="btn-icon">🛍️</span> Gerenciar
-                                    </button>
-                                </div>
                             </div>
                         </div>
                         
@@ -3591,13 +3105,13 @@ class Webhook_Receiver {
             font-size: 0.85rem;
         }
 
-        .courses-info, .order-bumps-info {
+        .courses-info {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .courses-count, .order-bumps-count {
+        .courses-count {
             color: #4a5568;
             font-weight: 500;
         }
@@ -4080,10 +3594,8 @@ class Webhook_Receiver {
         global $wpdb;
         $table_name = $wpdb->prefix . 'webhook_receiver_endpoints';
         $courses_table = $wpdb->prefix . 'webhook_receiver_courses';
-        $order_bumps_table = $wpdb->prefix . 'webhook_receiver_order_bumps';
         
         $wpdb->delete($courses_table, array('webhook_id' => $webhook_id));
-        $wpdb->delete($order_bumps_table, array('webhook_id' => $webhook_id));
         $result = $wpdb->delete($table_name, array('webhook_id' => $webhook_id));
         
         if ($result === false) {
@@ -4189,270 +3701,6 @@ class Webhook_Receiver {
         wp_send_json_success(array('html' => $html));
     }
     
-    /**
-     * ========================================
-     * AJAX PARA SALVAR ORDER BUMPS
-     * ========================================
-     */
-    public function ajax_save_order_bump() {
-        check_ajax_referer('webhook_receiver_order_bump', 'nonce');
-        
-        if (!current_user_can('manage_options')) {
-            wp_send_json_error(array('message' => 'Permissão negada.'));
-            return;
-        }
-        
-        $webhook_id = sanitize_key($_POST['webhook_id']);
-        $product_id = sanitize_text_field($_POST['product_id']);
-        $product_name = sanitize_text_field($_POST['product_name']);
-        $course_id = intval($_POST['course_id']);
-        
-        if (empty($webhook_id) || empty($product_id) || empty($product_name) || empty($course_id)) {
-            wp_send_json_error(array('message' => 'Todos os campos são obrigatórios.'));
-            return;
-        }
-        
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'webhook_receiver_order_bumps';
-        
-        $exists = $wpdb->get_var($wpdb->prepare(
-            "SELECT COUNT(*) FROM $table_name WHERE webhook_id = %s AND product_id = %s",
-            $webhook_id, $product_id
-        ));
-        
-        if ($exists) {
-            wp_send_json_error(array('message' => 'Este ID de produto já está configurado para este webhook.'));
-            return;
-        }
-        
-        $result = $wpdb->insert(
-            $table_name,
-            array(
-                'webhook_id' => $webhook_id,
-                'product_id' => $product_id,
-                'product_name' => $product_name,
-                'course_id' => $course_id,
-                'created_at' => current_time('mysql')
-            )
-        );
-        
-        if ($result === false) {
-            wp_send_json_error(array('message' => 'Erro ao salvar order bump.'));
-            return;
-        }
-        
-        wp_send_json_success();
-    }
-    
-    /**
-     * ========================================
-     * AJAX PARA DELETAR ORDER BUMPS
-     * ========================================
-     */
-    public function ajax_delete_order_bump() {
-        check_ajax_referer('webhook_receiver_order_bump', 'nonce');
-        
-        if (!current_user_can('manage_options')) {
-            wp_send_json_error(array('message' => 'Permissão negada.'));
-            return;
-        }
-        
-        $order_bump_id = intval($_POST['order_bump_id']);
-        
-        if (empty($order_bump_id)) {
-            wp_send_json_error(array('message' => 'ID inválido.'));
-            return;
-        }
-        
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'webhook_receiver_order_bumps';
-        
-        $result = $wpdb->delete($table_name, array('id' => $order_bump_id));
-        
-        if ($result === false) {
-            wp_send_json_error(array('message' => 'Erro ao excluir order bump.'));
-            return;
-        }
-        
-        wp_send_json_success();
-    }
-    
-    /**
-     * ========================================
-     * AJAX PARA LISTAR ORDER BUMPS
-     * ========================================
-     */
-    public function ajax_get_order_bumps() {
-        check_ajax_referer('webhook_receiver_order_bump', 'nonce');
-        
-        if (!current_user_can('manage_options')) {
-            wp_send_json_error(array('message' => 'Permissão negada.'));
-            return;
-        }
-        
-        $webhook_id = sanitize_key($_POST['webhook_id']);
-        
-        if (empty($webhook_id)) {
-            wp_send_json_error(array('message' => 'ID do webhook inválido.'));
-            return;
-        }
-        
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'webhook_receiver_order_bumps';
-        
-        $order_bumps = $wpdb->get_results($wpdb->prepare(
-            "SELECT * FROM $table_name WHERE webhook_id = %s ORDER BY product_name ASC",
-            $webhook_id
-        ));
-        
-        ob_start();
-        
-        if (empty($order_bumps)) {
-            echo '<div class="empty-state"><span class="empty-icon">🛍️</span><p>Nenhum order bump configurado.</p></div>';
-        } else {
-            ?>
-            <div class="order-bumps-modern-table">
-                <div class="table-header">
-                    <div class="header-cell">ID/SKU do Produto</div>
-                    <div class="header-cell">Nome do Produto</div>
-                    <div class="header-cell">Curso a Liberar</div>
-                    <div class="header-cell">Ações</div>
-                </div>
-                <div class="table-body">
-                    <?php foreach ($order_bumps as $order_bump) : 
-                        $course = get_post($order_bump->course_id);
-                        $course_title = $course ? $course->post_title : 'Curso não encontrado';
-                    ?>
-                        <div class="table-row">
-                            <div class="table-cell">
-                                <code class="product-sku"><?php echo esc_html($order_bump->product_id); ?></code>
-                            </div>
-                            <div class="table-cell">
-                                <span class="product-name"><?php echo esc_html($order_bump->product_name); ?></span>
-                            </div>
-                            <div class="table-cell">
-                                <span class="course-name <?php echo $course ? '' : 'error'; ?>"><?php echo esc_html($course_title); ?></span>
-                            </div>
-                            <div class="table-cell">
-                                <button type="button" class="delete-order-bump-btn delete-order-bump" data-id="<?php echo $order_bump->id; ?>">
-                                    <span class="btn-icon">🗑️</span> Excluir
-                                </button>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-
-            <style>
-            .order-bumps-modern-table {
-                background: white;
-                border-radius: 8px;
-                overflow: hidden;
-                border: 1px solid #e2e8f0;
-            }
-
-            .order-bumps-modern-table .table-header {
-                display: grid;
-                grid-template-columns: 1fr 2fr 2fr 1fr;
-                background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-                border-bottom: 1px solid #e2e8f0;
-            }
-
-            .order-bumps-modern-table .header-cell {
-                padding: 15px;
-                font-weight: 600;
-                color: #2d3748;
-                font-size: 0.9rem;
-            }
-
-            .order-bumps-modern-table .table-body {
-                max-height: 300px;
-                overflow-y: auto;
-            }
-
-            .order-bumps-modern-table .table-row {
-                display: grid;
-                grid-template-columns: 1fr 2fr 2fr 1fr;
-                border-bottom: 1px solid #e2e8f0;
-                transition: all 0.3s ease;
-            }
-
-            .order-bumps-modern-table .table-row:hover {
-                background: #f7fafc;
-            }
-
-            .order-bumps-modern-table .table-cell {
-                padding: 15px;
-                display: flex;
-                align-items: center;
-            }
-
-            .product-sku {
-                background: #1a202c;
-                color: #68d391;
-                padding: 4px 8px;
-                border-radius: 4px;
-                font-family: 'Fira Code', 'Consolas', monospace;
-                font-size: 0.85rem;
-            }
-
-            .product-name {
-                color: #2d3748;
-                font-weight: 500;
-            }
-
-            .course-name {
-                color: #4a5568;
-            }
-
-            .course-name.error {
-                color: #e53e3e;
-                font-style: italic;
-            }
-
-            .delete-order-bump-btn {
-                background: #fed7d7;
-                color: #742a2a;
-                border: 1px solid #fc8181;
-                padding: 6px 10px;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 0.8rem;
-                font-weight: 500;
-                transition: all 0.3s ease;
-                display: inline-flex;
-                align-items: center;
-                gap: 4px;
-            }
-
-            .delete-order-bump-btn:hover {
-                background: #feb2b2;
-                transform: translateY(-1px);
-            }
-
-            @media (max-width: 768px) {
-                .order-bumps-modern-table .table-header,
-                .order-bumps-modern-table .table-row {
-                    grid-template-columns: 1fr;
-                    text-align: left;
-                }
-
-                .order-bumps-modern-table .table-cell {
-                    padding: 10px 15px;
-                    border-bottom: 1px solid #e2e8f0;
-                }
-
-                .order-bumps-modern-table .table-row .table-cell:last-child {
-                    border-bottom: none;
-                }
-            }
-            </style>
-            <?php
-        }
-        
-        $html = ob_get_clean();
-        wp_send_json_success(array('html' => $html));
-    }
     
     /**
      * ========================================
