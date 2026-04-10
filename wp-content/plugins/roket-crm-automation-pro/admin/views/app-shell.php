@@ -25,6 +25,7 @@ $current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET[
                     'wpla-lists'       => __( 'Listas', 'roket-crm' ),
                     'wpla-tags'        => __( 'Tags', 'roket-crm' ),
                     'wpla-automations' => __( 'Automações', 'roket-crm' ),
+                    'wpla-webinars'    => __( 'Webinars', 'roket-crm' ),
                     'wpla-forms'       => __( 'Formulários', 'roket-crm' ),
                     'wpla-whatsapp'    => __( 'WhatsApp', 'roket-crm' ),
                     'wpla-email'       => __( 'Email', 'roket-crm' ),

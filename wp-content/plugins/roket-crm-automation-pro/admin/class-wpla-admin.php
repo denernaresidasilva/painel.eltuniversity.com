@@ -32,6 +32,15 @@ class WPLA_Admin {
             'wpla_contact_subscribe_list',
             'wpla_send_test_email',
             'wpla_send_test_whatsapp',
+            // Webinar handlers.
+            'wpla_save_webinar',
+            'wpla_delete_webinar',
+            'wpla_get_webinar',
+            'wpla_list_webinars',
+            'wpla_get_webinar_lists',
+            // Evolution API handlers.
+            'wpla_evolution_create_instance',
+            'wpla_evolution_get_qr',
         );
 
         foreach ( $ajax_actions as $action ) {
@@ -59,6 +68,7 @@ class WPLA_Admin {
             'wpla-lists'       => __( 'Listas', 'roket-crm' ),
             'wpla-tags'        => __( 'Tags', 'roket-crm' ),
             'wpla-automations' => __( 'Automações', 'roket-crm' ),
+            'wpla-webinars'    => __( 'Webinars', 'roket-crm' ),
             'wpla-forms'       => __( 'Formulários', 'roket-crm' ),
             'wpla-whatsapp'    => __( 'WhatsApp', 'roket-crm' ),
             'wpla-email'       => __( 'Email', 'roket-crm' ),
@@ -288,12 +298,23 @@ class WPLA_Admin {
             'wpla_meta_phone_number_id',
             'wpla_email_from_name',
             'wpla_email_from_address',
+            // SMTP fields.
+            'wpla_smtp_host',
+            'wpla_smtp_port',
+            'wpla_smtp_encryption',
+            'wpla_smtp_auth',
+            'wpla_smtp_user',
         );
 
         foreach ( $fields as $field ) {
             if ( isset( $_POST[ $field ] ) ) {
                 update_option( $field, sanitize_text_field( wp_unslash( $_POST[ $field ] ) ) );
             }
+        }
+
+        // SMTP password stored separately (sanitize but don't strip).
+        if ( isset( $_POST['wpla_smtp_pass'] ) ) {
+            update_option( 'wpla_smtp_pass', sanitize_text_field( wp_unslash( $_POST['wpla_smtp_pass'] ) ) );
         }
 
         // Regenerate API key if requested.
@@ -357,5 +378,225 @@ class WPLA_Admin {
         $result = WPLA_WhatsApp::send( $msg );
 
         wp_send_json_success( array( 'sent' => $result ) );
+    }
+
+    /* ── Webinars ── */
+
+    public function wpla_list_webinars(): void {
+        $this->verify_nonce();
+
+        $webinars = WPLA_Webinar::get_all();
+
+        wp_send_json_success( array(
+            'items' => $webinars,
+            'total' => count( $webinars ),
+        ) );
+    }
+
+    public function wpla_get_webinar(): void {
+        $this->verify_nonce();
+
+        $id      = isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0;
+        $webinar = WPLA_Webinar::get( $id );
+
+        if ( ! $webinar ) {
+            wp_send_json_error( array( 'message' => __( 'Webinar não encontrado.', 'roket-crm' ) ) );
+            return;
+        }
+
+        wp_send_json_success( array( 'webinar' => $webinar ) );
+    }
+
+    public function wpla_save_webinar(): void {
+        $this->verify_nonce();
+
+        $id = isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0;
+
+        $data = array(
+            'name'               => isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '',
+            'description'        => isset( $_POST['description'] ) ? sanitize_textarea_field( wp_unslash( $_POST['description'] ) ) : '',
+            'status'             => isset( $_POST['status'] ) ? sanitize_text_field( wp_unslash( $_POST['status'] ) ) : 'draft',
+            'video_type'         => isset( $_POST['video_type'] ) ? sanitize_text_field( wp_unslash( $_POST['video_type'] ) ) : 'youtube',
+            'video_url'          => isset( $_POST['video_url'] ) ? esc_url_raw( wp_unslash( $_POST['video_url'] ) ) : '',
+            'offer_title'        => isset( $_POST['offer_title'] ) ? sanitize_text_field( wp_unslash( $_POST['offer_title'] ) ) : '',
+            'offer_url'          => isset( $_POST['offer_url'] ) ? esc_url_raw( wp_unslash( $_POST['offer_url'] ) ) : '',
+            'offer_button_text'  => isset( $_POST['offer_button_text'] ) ? sanitize_text_field( wp_unslash( $_POST['offer_button_text'] ) ) : '',
+            'offer_time_live'    => isset( $_POST['offer_time_live'] ) ? absint( $_POST['offer_time_live'] ) : 0,
+            'offer_time_replay'  => isset( $_POST['offer_time_replay'] ) ? absint( $_POST['offer_time_replay'] ) : 0,
+        );
+
+        if ( $id ) {
+            WPLA_Webinar::update( $id, $data );
+            $webinar = WPLA_Webinar::get( $id );
+            wp_send_json_success( array(
+                'id'           => $id,
+                'automation_id' => $webinar ? (int) $webinar->automation_id : 0,
+            ) );
+        } else {
+            $new_id = WPLA_Webinar::create( $data );
+            if ( ! $new_id ) {
+                wp_send_json_error( array( 'message' => __( 'Erro ao criar webinar.', 'roket-crm' ) ) );
+                return;
+            }
+            $webinar = WPLA_Webinar::get( $new_id );
+            wp_send_json_success( array(
+                'id'           => $new_id,
+                'automation_id' => $webinar ? (int) $webinar->automation_id : 0,
+            ) );
+        }
+    }
+
+    public function wpla_delete_webinar(): void {
+        $this->verify_nonce();
+        $id = isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0;
+        wp_send_json_success( array( 'deleted' => WPLA_Webinar::delete( $id ) ) );
+    }
+
+    public function wpla_get_webinar_lists(): void {
+        $this->verify_nonce();
+
+        $webinar_id = isset( $_POST['webinar_id'] ) ? absint( $_POST['webinar_id'] ) : 0;
+
+        global $wpdb;
+        $table = WPLA_Database::table( 'lists' );
+        $cl    = WPLA_Database::table( 'contact_lists' );
+
+        $lists = $wpdb->get_results( $wpdb->prepare(
+            "SELECT l.*, (SELECT COUNT(*) FROM $cl WHERE list_id = l.id AND status = 'subscribed') AS subscriber_count
+             FROM $table l
+             WHERE l.webinar_id = %d
+             ORDER BY l.id ASC",
+            $webinar_id
+        ) );
+
+        wp_send_json_success( array( 'lists' => $lists ) );
+    }
+
+    /* ── Evolution API ── */
+
+    public function wpla_evolution_create_instance(): void {
+        $this->verify_nonce();
+
+        $api_url  = isset( $_POST['api_url'] ) ? esc_url_raw( wp_unslash( $_POST['api_url'] ) ) : '';
+        $api_key  = isset( $_POST['api_key'] ) ? sanitize_text_field( wp_unslash( $_POST['api_key'] ) ) : '';
+        $instance = isset( $_POST['instance'] ) ? sanitize_text_field( wp_unslash( $_POST['instance'] ) ) : '';
+
+        if ( empty( $api_url ) || empty( $api_key ) || empty( $instance ) ) {
+            wp_send_json_error( array( 'message' => __( 'Preencha URL, chave API e nome da instância.', 'roket-crm' ) ) );
+            return;
+        }
+
+        // Call Evolution API to create instance.
+        $response = wp_remote_post(
+            trailingslashit( $api_url ) . 'instance/create',
+            array(
+                'headers' => array(
+                    'Content-Type' => 'application/json',
+                    'apikey'       => $api_key,
+                ),
+                'body'    => wp_json_encode( array(
+                    'instanceName' => $instance,
+                    'qrcode'       => true,
+                ) ),
+                'timeout' => 30,
+            )
+        );
+
+        if ( is_wp_error( $response ) ) {
+            wp_send_json_error( array( 'message' => $response->get_error_message() ) );
+            return;
+        }
+
+        $code = wp_remote_retrieve_response_code( $response );
+        $body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+        // Extract QR code from response.
+        $qr_code = '';
+        if ( isset( $body['qrcode']['base64'] ) ) {
+            $qr_code = $body['qrcode']['base64'];
+            if ( strpos( $qr_code, 'data:image' ) === false ) {
+                $qr_code = 'data:image/png;base64,' . $qr_code;
+            }
+            update_option( 'wpla_evolution_qr_code', $qr_code );
+        }
+
+        $status = $body['instance']['state'] ?? ( $code >= 200 && $code < 300 ? 'connecting' : 'error' );
+
+        if ( $code >= 200 && $code < 300 || $code === 409 ) {
+            // 409 = instance already exists — still success.
+            wp_send_json_success( array(
+                'status'   => $status,
+                'qr_code'  => $qr_code,
+                'response' => $body,
+            ) );
+        } else {
+            $msg = isset( $body['message'] ) ? $body['message'] : __( 'Erro ao criar instância Evolution.', 'roket-crm' );
+            wp_send_json_error( array( 'message' => $msg ) );
+        }
+    }
+
+    public function wpla_evolution_get_qr(): void {
+        $this->verify_nonce();
+
+        $api_url  = get_option( 'wpla_evolution_api_url', '' );
+        $api_key  = get_option( 'wpla_evolution_api_key', '' );
+        $instance = get_option( 'wpla_evolution_instance', '' );
+
+        if ( empty( $api_url ) || empty( $api_key ) || empty( $instance ) ) {
+            wp_send_json_error( array( 'message' => __( 'Configurações da Evolution API incompletas.', 'roket-crm' ) ) );
+            return;
+        }
+
+        // First check connection state.
+        $state_resp = wp_remote_get(
+            trailingslashit( $api_url ) . "instance/connectionState/{$instance}",
+            array(
+                'headers' => array( 'apikey' => $api_key ),
+                'timeout' => 15,
+            )
+        );
+
+        if ( ! is_wp_error( $state_resp ) ) {
+            $state_body = json_decode( wp_remote_retrieve_body( $state_resp ), true );
+            $state      = $state_body['instance']['state'] ?? '';
+
+            if ( 'open' === $state ) {
+                // Already connected — no QR needed.
+                delete_option( 'wpla_evolution_qr_code' );
+                wp_send_json_success( array( 'status' => 'open', 'qr_code' => '' ) );
+                return;
+            }
+        }
+
+        // Fetch QR code.
+        $response = wp_remote_get(
+            trailingslashit( $api_url ) . "instance/connect/{$instance}",
+            array(
+                'headers' => array( 'apikey' => $api_key ),
+                'timeout' => 30,
+            )
+        );
+
+        if ( is_wp_error( $response ) ) {
+            wp_send_json_error( array( 'message' => $response->get_error_message() ) );
+            return;
+        }
+
+        $body    = json_decode( wp_remote_retrieve_body( $response ), true );
+        $qr_code = '';
+
+        if ( isset( $body['base64'] ) ) {
+            $qr_code = $body['base64'];
+            if ( strpos( $qr_code, 'data:image' ) === false ) {
+                $qr_code = 'data:image/png;base64,' . $qr_code;
+            }
+            update_option( 'wpla_evolution_qr_code', $qr_code );
+        }
+
+        if ( $qr_code ) {
+            wp_send_json_success( array( 'status' => 'connecting', 'qr_code' => $qr_code ) );
+        } else {
+            wp_send_json_error( array( 'message' => __( 'Não foi possível obter o QR Code. Verifique se a instância existe.', 'roket-crm' ) ) );
+        }
     }
 }

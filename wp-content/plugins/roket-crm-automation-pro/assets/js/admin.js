@@ -134,6 +134,9 @@
     }
 
     WPLA.showToast = showToast;
+    WPLA.showNotice = showToast; // Alias used by dynamically loaded page views.
+    WPLA.ajax = ajax;            // Expose ajax helper for page views.
+    WPLA.escHtml = esc;          // Expose HTML escaping for page views.
 
     /* ───────────────────────────────────
      * Copy to clipboard

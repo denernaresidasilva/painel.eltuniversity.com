@@ -285,6 +285,21 @@ class WPLA_Automation_Engine {
                 }
                 return "subscribed_list:{$list_id}";
 
+            case 'unsubscribe_list':
+                $list_id = absint( $config['list_id'] ?? 0 );
+                if ( $list_id ) {
+                    WPLA_Contact::unsubscribe_list( $contact_id, $list_id );
+                }
+                return "unsubscribed_list:{$list_id}";
+
+            case 'route_webinar':
+                $webinar_id  = absint( $config['webinar_id'] ?? 0 );
+                $destination = sanitize_text_field( $config['destination'] ?? '' );
+                if ( $webinar_id && $destination ) {
+                    WPLA_Webinar::route_contact( $webinar_id, $contact_id, $destination );
+                }
+                return "webinar_routed:{$webinar_id}:{$destination}";
+
             case 'send_email':
                 $subject = sanitize_text_field( $config['subject'] ?? '' );
                 $body    = wp_kses_post( $config['body'] ?? '' );

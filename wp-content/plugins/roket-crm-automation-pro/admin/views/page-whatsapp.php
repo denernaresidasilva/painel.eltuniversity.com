@@ -10,6 +10,39 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <div class="wpla-whatsapp-page">
+
+    <!-- Variables reference -->
+    <div class="wpla-card wpla-mb-4">
+        <h3>🔖 <?php esc_html_e( 'Variáveis Disponíveis', 'roket-crm' ); ?></h3>
+        <p class="wpla-text-muted"><?php esc_html_e( 'Clique em uma variável para copiá-la e colá-la na sua mensagem.', 'roket-crm' ); ?></p>
+        <div class="wpla-variables-grid wpla-mt-2">
+            <?php
+            $variables = array(
+                '{nome}'            => __( 'Nome completo do contato', 'roket-crm' ),
+                '{primeiro_nome}'   => __( 'Primeiro nome', 'roket-crm' ),
+                '{sobrenome}'       => __( 'Sobrenome', 'roket-crm' ),
+                '{email}'           => __( 'E-mail do contato', 'roket-crm' ),
+                '{telefone}'        => __( 'Telefone do contato', 'roket-crm' ),
+                '{empresa}'         => __( 'Empresa do contato', 'roket-crm' ),
+                '{webinar_nome}'    => __( 'Nome do webinar', 'roket-crm' ),
+                '{webinar_link}'    => __( 'Link do webinar', 'roket-crm' ),
+                '{oferta_titulo}'   => __( 'Título da oferta do webinar', 'roket-crm' ),
+                '{oferta_link}'     => __( 'Link da oferta do webinar', 'roket-crm' ),
+                '{lista}'           => __( 'Nome da lista atual', 'roket-crm' ),
+                '{utm_source}'      => __( 'UTM Source', 'roket-crm' ),
+                '{utm_campaign}'    => __( 'UTM Campaign', 'roket-crm' ),
+            );
+            foreach ( $variables as $var => $label ) :
+            ?>
+            <div class="wpla-variable-chip" title="<?php echo esc_attr( $label ); ?>" onclick="WPLA.copyToClipboard('<?php echo esc_attr( $var ); ?>', this)">
+                <code><?php echo esc_html( $var ); ?></code>
+                <span class="wpla-variable-label"><?php echo esc_html( $label ); ?></span>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+    <!-- Message queue -->
     <div class="wpla-card">
         <h3><?php esc_html_e( 'Mensagens WhatsApp', 'roket-crm' ); ?></h3>
         <p class="wpla-text-muted"><?php esc_html_e( 'Visualizar mensagens WhatsApp enviadas e na fila.', 'roket-crm' ); ?></p>
@@ -35,14 +68,15 @@ if ( ! defined( 'ABSPATH' ) ) {
     <!-- Test send -->
     <div class="wpla-card wpla-mt-4">
         <h3><?php esc_html_e( 'Enviar Mensagem de Teste', 'roket-crm' ); ?></h3>
+        <p class="wpla-text-muted wpla-mb-3"><?php esc_html_e( 'Use as variáveis acima no campo de mensagem (elas não serão substituídas no teste, pois não há um contato real).', 'roket-crm' ); ?></p>
         <form id="test-whatsapp-form" class="wpla-form-grid">
             <div class="wpla-field">
                 <label><?php esc_html_e( 'Número de Telefone', 'roket-crm' ); ?></label>
                 <input type="text" id="test-wa-phone" class="wpla-input" placeholder="+5511999999999" />
             </div>
-            <div class="wpla-field">
+            <div class="wpla-field" style="grid-column: 1/-1;">
                 <label><?php esc_html_e( 'Mensagem', 'roket-crm' ); ?></label>
-                <textarea id="test-wa-message" class="wpla-input" rows="3" placeholder="<?php esc_attr_e( 'Olá do Roket CRM!', 'roket-crm' ); ?>"></textarea>
+                <textarea id="test-wa-message" class="wpla-input" rows="4" placeholder="<?php esc_attr_e( 'Olá {primeiro_nome}, seja bem-vindo ao {webinar_nome}!', 'roket-crm' ); ?>"></textarea>
             </div>
             <div class="wpla-field">
                 <button type="submit" class="wpla-btn wpla-btn-primary"><?php esc_html_e( 'Enviar Teste', 'roket-crm' ); ?></button>
