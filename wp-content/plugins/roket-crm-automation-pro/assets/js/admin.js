@@ -360,6 +360,7 @@
      * Lists
      * ─────────────────────────────────── */
     function initLists() {
+        initListIntegrationBar();
         loadLists();
 
         var addBtn = document.getElementById('btn-add-list');
@@ -395,6 +396,8 @@
         restGet('lists', function (lists) {
             var tbody = document.getElementById('lists-tbody');
             if (!tbody) return;
+
+            updateListIntegrationOptions(lists || []);
 
             if (!lists || lists.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="6" class="wpla-text-center">Nenhuma lista ainda.</td></tr>';
@@ -434,6 +437,69 @@
             }
         });
     };
+
+    function initListIntegrationBar() {
+        var select = document.getElementById('list-tools-select');
+        if (!select) return;
+
+        ['list-form-title', 'list-form-button', 'list-form-class', 'list-tools-select'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('input', updateListIntegrationPreview);
+                el.addEventListener('change', updateListIntegrationPreview);
+            }
+        });
+
+        updateListIntegrationPreview();
+    }
+
+    function updateListIntegrationOptions(lists) {
+        var select = document.getElementById('list-tools-select');
+        if (!select) return;
+
+        var currentValue = select.value || '';
+        var options = ['<option value="">Selecione uma lista</option>'].concat(
+            (lists || []).map(function (list) {
+                return '<option value="' + escAttr(String(list.id)) + '">' + esc(list.name) + ' (ID ' + esc(String(list.id)) + ')</option>';
+            })
+        );
+        select.innerHTML = options.join('');
+
+        if (currentValue && (lists || []).some(function (list) { return String(list.id) === currentValue; })) {
+            select.value = currentValue;
+        }
+
+        updateListIntegrationPreview();
+    }
+
+    function updateListIntegrationPreview() {
+        var select = document.getElementById('list-tools-select');
+        var title = document.getElementById('list-form-title');
+        var button = document.getElementById('list-form-button');
+        var cssClass = document.getElementById('list-form-class');
+        var webhook = document.getElementById('list-webhook-url');
+        var shortcode = document.getElementById('list-form-shortcode');
+        if (!select || !webhook || !shortcode) return;
+
+        var listId = select.value || '0';
+        var baseWebhook = (typeof wpla !== 'undefined' && wpla.rest_url)
+            ? wpla.rest_url.replace(/\/$/, '') + '/webhook'
+            : webhook.value.split('?')[0];
+
+        webhook.value = baseWebhook + '?list_id=' + encodeURIComponent(listId);
+
+        var parts = ['[wpla_form', 'list="' + listId + '"'];
+        if (title && title.value.trim()) {
+            parts.push('title="' + escAttr(title.value.trim()) + '"');
+        }
+        if (button && button.value.trim()) {
+            parts.push('button_text="' + escAttr(button.value.trim()) + '"');
+        }
+        if (cssClass && cssClass.value.trim()) {
+            parts.push('class="' + escAttr(cssClass.value.trim()) + '"');
+        }
+        shortcode.value = parts.join(' ') + ']';
+    }
 
     /* ───────────────────────────────────
      * Tags
