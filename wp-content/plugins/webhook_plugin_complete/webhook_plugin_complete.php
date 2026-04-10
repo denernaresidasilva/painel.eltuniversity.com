@@ -326,17 +326,57 @@ class Webhook_Receiver {
         
         // Endpoints para webhooks específicos
         register_rest_route('webhook-receiver/v1', '/receive/(?P<webhook_id>[a-zA-Z0-9_-]+)', array(
-            'methods' => 'POST',
-            'callback' => array($this, 'process_specific_webhook'),
-            'permission_callback' => '__return_true',
-            'args' => array(
-                'webhook_id' => array(
-                    'validate_callback' => function($param) {
-                        return is_string($param);
-                    }
+            array(
+                'methods' => 'POST',
+                'callback' => array($this, 'process_specific_webhook'),
+                'permission_callback' => '__return_true',
+                'args' => array(
+                    'webhook_id' => array(
+                        'validate_callback' => function($param) {
+                            return is_string($param);
+                        }
+                    ),
+                ),
+            ),
+            array(
+                // Suporte a GET/HEAD para verificação de URL (ex.: Eduzz "Verificar URL")
+                'methods' => 'GET, HEAD',
+                'callback' => array($this, 'verify_specific_webhook_url'),
+                'permission_callback' => '__return_true',
+                'args' => array(
+                    'webhook_id' => array(
+                        'validate_callback' => function($param) {
+                            return is_string($param);
+                        }
+                    ),
                 ),
             ),
         ));
+    }
+
+    /**
+     * ================================================================================
+     * VERIFICAR URL DO WEBHOOK (GET/HEAD) — USADO PELA EDUZZ E OUTRAS PLATAFORMAS
+     * ================================================================================
+     */
+    public function verify_specific_webhook_url($request) {
+        $webhook_id = $request->get_param('webhook_id');
+
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'webhook_receiver_endpoints';
+        $webhook_config = $wpdb->get_row($wpdb->prepare(
+            "SELECT webhook_id FROM $table_name WHERE webhook_id = %s",
+            $webhook_id
+        ));
+
+        if (!$webhook_config) {
+            return new WP_Error('invalid_webhook', 'Webhook não encontrado', array('status' => 404));
+        }
+
+        return new WP_REST_Response(array(
+            'success' => true,
+            'message' => 'Webhook ativo.'
+        ), 200);
     }
 
     /**
