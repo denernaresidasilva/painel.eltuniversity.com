@@ -54,16 +54,16 @@ class WPLA_Admin {
         );
 
         $subpages = array(
-            'wpla-dashboard'   => __( 'Dashboard', 'roket-crm' ),
-            'wpla-contacts'    => __( 'Contacts', 'roket-crm' ),
-            'wpla-lists'       => __( 'Lists', 'roket-crm' ),
+            'wpla-dashboard'   => __( 'Painel', 'roket-crm' ),
+            'wpla-contacts'    => __( 'Contatos', 'roket-crm' ),
+            'wpla-lists'       => __( 'Listas', 'roket-crm' ),
             'wpla-tags'        => __( 'Tags', 'roket-crm' ),
-            'wpla-automations' => __( 'Automations', 'roket-crm' ),
-            'wpla-forms'       => __( 'Forms', 'roket-crm' ),
+            'wpla-automations' => __( 'Automações', 'roket-crm' ),
+            'wpla-forms'       => __( 'Formulários', 'roket-crm' ),
             'wpla-whatsapp'    => __( 'WhatsApp', 'roket-crm' ),
             'wpla-email'       => __( 'Email', 'roket-crm' ),
             'wpla-webhooks'    => __( 'Webhooks', 'roket-crm' ),
-            'wpla-settings'    => __( 'Settings', 'roket-crm' ),
+            'wpla-settings'    => __( 'Configurações', 'roket-crm' ),
         );
 
         foreach ( $subpages as $slug => $title ) {
@@ -302,7 +302,7 @@ class WPLA_Admin {
         }
 
         wp_send_json_success( array(
-            'message' => __( 'Settings saved successfully.', 'roket-crm' ),
+            'message' => __( 'Configurações salvas com sucesso.', 'roket-crm' ),
             'api_key' => get_option( 'wpla_api_key' ),
         ) );
     }
@@ -333,7 +333,7 @@ class WPLA_Admin {
         $this->verify_nonce();
 
         $to      = isset( $_POST['to'] ) ? sanitize_email( wp_unslash( $_POST['to'] ) ) : '';
-        $subject = isset( $_POST['subject'] ) ? sanitize_text_field( wp_unslash( $_POST['subject'] ) ) : 'Test Email from Roket CRM';
+        $subject = isset( $_POST['subject'] ) ? sanitize_text_field( wp_unslash( $_POST['subject'] ) ) : 'Email de Teste do Roket CRM';
         $body    = isset( $_POST['body'] ) ? wp_kses_post( wp_unslash( $_POST['body'] ) ) : '<p>This is a test email.</p>';
 
         $headers = array( 'Content-Type: text/html; charset=UTF-8' );
@@ -346,7 +346,7 @@ class WPLA_Admin {
         $this->verify_nonce();
 
         $phone   = isset( $_POST['phone'] ) ? sanitize_text_field( wp_unslash( $_POST['phone'] ) ) : '';
-        $message = isset( $_POST['message'] ) ? sanitize_text_field( wp_unslash( $_POST['message'] ) ) : 'Test from Roket CRM';
+        $message = isset( $_POST['message'] ) ? sanitize_text_field( wp_unslash( $_POST['message'] ) ) : 'Teste do Roket CRM';
 
         // Create a mock message object.
         $msg = (object) array(

@@ -120,7 +120,7 @@ final class Roket_CRM_Automation_Pro {
     public function add_cron_interval( array $schedules ): array {
         $schedules['every_minute'] = array(
             'interval' => 60,
-            'display'  => __( 'Every Minute', 'roket-crm' ),
+            'display'  => __( 'A Cada Minuto', 'roket-crm' ),
         );
         return $schedules;
     }
