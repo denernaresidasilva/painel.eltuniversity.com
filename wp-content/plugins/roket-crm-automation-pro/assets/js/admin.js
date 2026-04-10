@@ -822,7 +822,7 @@
             case 'action':
                 return (step.action_type || step.config.action_type || 'action').replace(/_/g, ' ');
             case 'delay':
-                return 'Aguardar ' + (step.config.amount || '?') + ' ' + (step.config.unit || 'hours');
+                return 'Aguardar ' + (step.config.amount || '?') + ' ' + (step.config.unit || 'horas');
             default:
                 return step.step_type;
         }
