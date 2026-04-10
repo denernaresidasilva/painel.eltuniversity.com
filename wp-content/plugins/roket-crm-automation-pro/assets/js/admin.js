@@ -99,7 +99,7 @@
             })
             .catch(function (err) {
                 console.error('WPLA Ajax error:', err);
-                showToast('Network error.', 'error');
+                showToast('Erro de rede.', 'error');
             });
     }
 
@@ -140,7 +140,7 @@
      * ─────────────────────────────────── */
     WPLA.copyToClipboard = function (text) {
         navigator.clipboard.writeText(text).then(function () {
-            showToast('Copied!', 'success');
+            showToast('Copiado!', 'success');
         });
     };
 
@@ -211,7 +211,7 @@
             var tbody = document.getElementById('recent-events-body');
             if (tbody && d.recent_events) {
                 if (d.recent_events.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="3" class="wpla-text-center">No events yet.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="3" class="wpla-text-center">Nenhum evento ainda.</td></tr>';
                 } else {
                     tbody.innerHTML = d.recent_events.map(function (ev) {
                         var name = (ev.first_name || '') + ' ' + (ev.last_name || '');
@@ -261,7 +261,7 @@
                 document.getElementById('contact-phone').value = '';
                 document.getElementById('contact-company').value = '';
                 document.getElementById('contact-status').value = 'active';
-                document.getElementById('contact-modal-title').textContent = 'Add Contact';
+                document.getElementById('contact-modal-title').textContent = 'Adicionar Contato';
                 WPLA.openModal('contact-modal');
             });
         }
@@ -282,10 +282,10 @@
                 ajax('wpla_save_contact', data, function (res) {
                     if (res.success) {
                         WPLA.closeModal('contact-modal');
-                        showToast('Contact saved!');
+                        showToast('Contato salvo!');
                         loadContacts();
                     } else {
-                        showToast(res.data.message || 'Error saving contact.', 'error');
+                        showToast(res.data.message || 'Erro ao salvar contato.', 'error');
                     }
                 });
             });
@@ -305,7 +305,7 @@
         if (!tbody) return;
 
         if (state.contacts.items.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="8" class="wpla-text-center">No contacts found.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="8" class="wpla-text-center">Nenhum contato encontrado.</td></tr>';
             return;
         }
 
@@ -321,8 +321,8 @@
                 '<td>—</td>' +
                 '<td>' + esc(c.created_at || '') + '</td>' +
                 '<td>' +
-                    '<button class="wpla-btn wpla-btn-sm" onclick="WPLA.editContact(' + c.id + ')">Edit</button> ' +
-                    '<button class="wpla-btn wpla-btn-sm wpla-btn-danger" onclick="WPLA.deleteContact(' + c.id + ')">Delete</button>' +
+                    '<button class="wpla-btn wpla-btn-sm" onclick="WPLA.editContact(' + c.id + ')">Editar</button> ' +
+                    '<button class="wpla-btn wpla-btn-sm wpla-btn-danger" onclick="WPLA.deleteContact(' + c.id + ')">Excluir</button>' +
                 '</td></tr>';
         }).join('');
 
@@ -341,16 +341,16 @@
             document.getElementById('contact-phone').value = c.phone || '';
             document.getElementById('contact-company').value = c.company || '';
             document.getElementById('contact-status').value = c.status || 'active';
-            document.getElementById('contact-modal-title').textContent = 'Edit Contact';
+            document.getElementById('contact-modal-title').textContent = 'Editar Contato';
             WPLA.openModal('contact-modal');
         });
     };
 
     WPLA.deleteContact = function (id) {
-        if (!confirm('Delete this contact?')) return;
+        if (!confirm('Excluir este contato?')) return;
         ajax('wpla_delete_contact', { id: id }, function (res) {
             if (res.success) {
-                showToast('Contact deleted.');
+                showToast('Contato excluído.');
                 loadContacts();
             }
         });
@@ -368,7 +368,7 @@
                 document.getElementById('list-id').value = '';
                 document.getElementById('list-name').value = '';
                 document.getElementById('list-description').value = '';
-                document.getElementById('list-modal-title').textContent = 'New List';
+                document.getElementById('list-modal-title').textContent = 'Nova Lista';
                 WPLA.openModal('list-modal');
             });
         }
@@ -383,7 +383,7 @@
                 }, function (res) {
                     if (res.success) {
                         WPLA.closeModal('list-modal');
-                        showToast('List saved!');
+                        showToast('Lista salva!');
                         loadLists();
                     }
                 });
@@ -397,7 +397,7 @@
             if (!tbody) return;
 
             if (!lists || lists.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="wpla-text-center">No lists yet.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" class="wpla-text-center">Nenhuma lista ainda.</td></tr>';
                 return;
             }
 
@@ -410,8 +410,8 @@
                     '<td><code class="wpla-code">' + esc(shortcode) + '</code></td>' +
                     '<td>' + esc(l.created_at) + '</td>' +
                     '<td>' +
-                        '<button class="wpla-btn wpla-btn-sm" onclick="WPLA.editList(' + l.id + ',\'' + escAttr(l.name) + '\',\'' + escAttr(l.description || '') + '\')">Edit</button> ' +
-                        '<button class="wpla-btn wpla-btn-sm wpla-btn-danger" onclick="WPLA.deleteList(' + l.id + ')">Delete</button>' +
+                        '<button class="wpla-btn wpla-btn-sm" onclick="WPLA.editList(' + l.id + ',\'' + escAttr(l.name) + '\',\'' + escAttr(l.description || '') + '\')">Editar</button> ' +
+                        '<button class="wpla-btn wpla-btn-sm wpla-btn-danger" onclick="WPLA.deleteList(' + l.id + ')">Excluir</button>' +
                     '</td></tr>';
             }).join('');
         });
@@ -421,15 +421,15 @@
         document.getElementById('list-id').value = id;
         document.getElementById('list-name').value = name;
         document.getElementById('list-description').value = desc;
-        document.getElementById('list-modal-title').textContent = 'Edit List';
+        document.getElementById('list-modal-title').textContent = 'Editar Lista';
         WPLA.openModal('list-modal');
     };
 
     WPLA.deleteList = function (id) {
-        if (!confirm('Delete this list?')) return;
+        if (!confirm('Excluir esta lista?')) return;
         ajax('wpla_delete_list', { id: id }, function (res) {
             if (res.success) {
-                showToast('List deleted.');
+                showToast('Lista excluída.');
                 loadLists();
             }
         });
@@ -447,7 +447,7 @@
                 document.getElementById('tag-id').value = '';
                 document.getElementById('tag-name').value = '';
                 document.getElementById('tag-color').value = '#6366f1';
-                document.getElementById('tag-modal-title').textContent = 'New Tag';
+                document.getElementById('tag-modal-title').textContent = 'Nova Tag';
                 WPLA.openModal('tag-modal');
             });
         }
@@ -462,7 +462,7 @@
                 }, function (res) {
                     if (res.success) {
                         WPLA.closeModal('tag-modal');
-                        showToast('Tag saved!');
+                        showToast('Tag salva!');
                         loadTags();
                     }
                 });
@@ -476,7 +476,7 @@
             if (!grid) return;
 
             if (!tags || tags.length === 0) {
-                grid.innerHTML = '<p class="wpla-text-center">No tags yet.</p>';
+                grid.innerHTML = '<p class="wpla-text-center">Nenhuma tag ainda.</p>';
                 return;
             }
 
@@ -489,7 +489,7 @@
                         '</div>' +
                     '</div>' +
                     '<div>' +
-                        '<button class="wpla-btn wpla-btn-sm" onclick="WPLA.editTag(' + t.id + ',\'' + escAttr(t.name) + '\',\'' + escAttr(t.color) + '\')">Edit</button> ' +
+                        '<button class="wpla-btn wpla-btn-sm" onclick="WPLA.editTag(' + t.id + ',\'' + escAttr(t.name) + '\',\'' + escAttr(t.color) + '\')">Editar</button> ' +
                         '<button class="wpla-btn wpla-btn-sm wpla-btn-danger" onclick="WPLA.deleteTag(' + t.id + ')">×</button>' +
                     '</div>' +
                 '</div>';
@@ -501,15 +501,15 @@
         document.getElementById('tag-id').value = id;
         document.getElementById('tag-name').value = name;
         document.getElementById('tag-color').value = color;
-        document.getElementById('tag-modal-title').textContent = 'Edit Tag';
+        document.getElementById('tag-modal-title').textContent = 'Editar Tag';
         WPLA.openModal('tag-modal');
     };
 
     WPLA.deleteTag = function (id) {
-        if (!confirm('Delete this tag?')) return;
+        if (!confirm('Excluir esta tag?')) return;
         ajax('wpla_delete_tag', { id: id }, function (res) {
             if (res.success) {
-                showToast('Tag deleted.');
+                showToast('Tag excluída.');
                 loadTags();
             }
         });
@@ -555,7 +555,7 @@
             if (!tbody) return;
 
             if (!automations || automations.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="wpla-text-center">No automations yet.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" class="wpla-text-center">Nenhuma automação ainda.</td></tr>';
                 return;
             }
 
@@ -567,8 +567,8 @@
                     '<td><span class="' + statusClass + '">' + esc(a.status) + '</span></td>' +
                     '<td>' + esc(a.created_at) + '</td>' +
                     '<td>' +
-                        '<button class="wpla-btn wpla-btn-sm" onclick="WPLA.editAutomation(' + a.id + ')">Edit</button> ' +
-                        '<button class="wpla-btn wpla-btn-sm wpla-btn-danger" onclick="WPLA.deleteAutomation(' + a.id + ')">Delete</button>' +
+                        '<button class="wpla-btn wpla-btn-sm" onclick="WPLA.editAutomation(' + a.id + ')">Editar</button> ' +
+                        '<button class="wpla-btn wpla-btn-sm wpla-btn-danger" onclick="WPLA.deleteAutomation(' + a.id + ')">Excluir</button>' +
                     '</td></tr>';
             }).join('');
         });
@@ -612,10 +612,10 @@
     };
 
     WPLA.deleteAutomation = function (id) {
-        if (!confirm('Delete this automation?')) return;
+        if (!confirm('Excluir esta automação?')) return;
         ajax('wpla_delete_automation', { id: id }, function (res) {
             if (res.success) {
-                showToast('Automation deleted.');
+                showToast('Automação excluída.');
                 loadAutomations();
             }
         });
@@ -633,9 +633,9 @@
         ajax('wpla_save_automation', data, function (res) {
             if (res.success) {
                 state.automationId = res.data.id;
-                showToast('Automation saved!');
+                showToast('Automação salva!');
             } else {
-                showToast('Error saving.', 'error');
+                showToast('Erro ao salvar.', 'error');
             }
         });
     }
@@ -692,24 +692,24 @@
         switch (actionType) {
             case 'add_tag':
             case 'remove_tag':
-                html = '<div class="wpla-field"><label>Tag Name</label><input type="text" id="action-tag-name" class="wpla-input" placeholder="e.g. lead" /></div>';
+                html = '<div class="wpla-field"><label>Nome da Tag</label><input type="text" id="action-tag-name" class="wpla-input" placeholder="e.g. lead" /></div>';
                 break;
             case 'subscribe_list':
-                html = '<div class="wpla-field"><label>List ID</label><input type="number" id="action-list-id" class="wpla-input" placeholder="1" /></div>';
+                html = '<div class="wpla-field"><label>ID da Lista</label><input type="number" id="action-list-id" class="wpla-input" placeholder="1" /></div>';
                 break;
             case 'send_email':
-                html = '<div class="wpla-field"><label>Subject</label><input type="text" id="action-email-subject" class="wpla-input" /></div>' +
-                       '<div class="wpla-field"><label>Body (HTML)</label><textarea id="action-email-body" class="wpla-input" rows="4"></textarea></div>';
+                html = '<div class="wpla-field"><label>Assunto</label><input type="text" id="action-email-subject" class="wpla-input" /></div>' +
+                       '<div class="wpla-field"><label>Corpo (HTML)</label><textarea id="action-email-body" class="wpla-input" rows="4"></textarea></div>';
                 break;
             case 'send_whatsapp':
-                html = '<div class="wpla-field"><label>Message</label><textarea id="action-wa-message" class="wpla-input" rows="3"></textarea></div>';
+                html = '<div class="wpla-field"><label>Mensagem</label><textarea id="action-wa-message" class="wpla-input" rows="3"></textarea></div>';
                 break;
             case 'update_field':
-                html = '<div class="wpla-field"><label>Field</label><input type="text" id="action-field-name" class="wpla-input" placeholder="first_name" /></div>' +
-                       '<div class="wpla-field"><label>Value</label><input type="text" id="action-field-value" class="wpla-input" /></div>';
+                html = '<div class="wpla-field"><label>Campo</label><input type="text" id="action-field-name" class="wpla-input" placeholder="first_name" /></div>' +
+                       '<div class="wpla-field"><label>Valor</label><input type="text" id="action-field-value" class="wpla-input" /></div>';
                 break;
             case 'update_score':
-                html = '<div class="wpla-field"><label>Score Delta (+/-)</label><input type="number" id="action-score-delta" class="wpla-input" value="5" /></div>';
+                html = '<div class="wpla-field"><label>Delta de Pontuação (+/-)</label><input type="number" id="action-score-delta" class="wpla-input" value="5" /></div>';
                 break;
             case 'webhook':
                 html = '<div class="wpla-field"><label>URL</label><input type="url" id="action-webhook-url" class="wpla-input" placeholder="https://..." /></div>';
@@ -783,7 +783,7 @@
         if (!container) return;
 
         if (state.automationSteps.length === 0) {
-            container.innerHTML = '<p class="wpla-text-center" style="color:var(--wpla-text-secondary);padding:40px;">No steps yet. Click "+ Add Step" to build your flow.</p>';
+            container.innerHTML = '<p class="wpla-text-center" style="color:var(--wpla-text-secondary);padding:40px;">Nenhuma etapa ainda. Clique em "+ Adicionar Etapa" para construir seu fluxo.</p>';
             return;
         }
 
@@ -822,7 +822,7 @@
             case 'action':
                 return (step.action_type || step.config.action_type || 'action').replace(/_/g, ' ');
             case 'delay':
-                return 'Wait ' + (step.config.amount || '?') + ' ' + (step.config.unit || 'hours');
+                return 'Aguardar ' + (step.config.amount || '?') + ' ' + (step.config.unit || 'hours');
             default:
                 return step.step_type;
         }
@@ -835,8 +835,8 @@
                 return (c.condition_type || '') + ' = ' + (c.value || '');
             case 'action':
                 if (c.tag_name) return 'Tag: ' + c.tag_name;
-                if (c.list_id) return 'List: ' + c.list_id;
-                if (c.subject) return 'Subject: ' + c.subject;
+                if (c.list_id) return 'Lista: ' + c.list_id;
+                if (c.subject) return 'Assunto: ' + c.subject;
                 if (c.message) return c.message.substring(0, 50);
                 if (c.url) return c.url;
                 return '';
@@ -864,7 +864,7 @@
                     phone: document.getElementById('test-wa-phone').value,
                     message: document.getElementById('test-wa-message').value,
                 }, function (res) {
-                    showToast(res.success ? 'Test message sent!' : 'Failed to send.', res.success ? 'success' : 'error');
+                    showToast(res.success ? 'Mensagem de teste enviada!' : 'Falha ao enviar.', res.success ? 'success' : 'error');
                 });
             });
         }
@@ -885,7 +885,7 @@
                     subject: document.getElementById('test-email-subject').value,
                     body: document.getElementById('test-email-body').value,
                 }, function (res) {
-                    showToast(res.success ? 'Test email sent!' : 'Failed to send.', res.success ? 'success' : 'error');
+                    showToast(res.success ? 'Email de teste enviado!' : 'Falha ao enviar.', res.success ? 'success' : 'error');
                 });
             });
         }
@@ -896,7 +896,7 @@
         // For now, we'll show a placeholder. In production, add a REST endpoint.
         var tbody = document.getElementById(tbodyId);
         if (tbody) {
-            tbody.innerHTML = '<tr><td colspan="5" class="wpla-text-center">Message history loads from the queue.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" class="wpla-text-center">O histórico de mensagens é carregado da fila.</td></tr>';
         }
     }
 
@@ -920,7 +920,7 @@
 
                 ajax('wpla_save_settings', formData, function (res) {
                     if (res.success) {
-                        showToast(res.data.message || 'Settings saved!');
+                        showToast(res.data.message || 'Configurações salvas!');
                     }
                 });
             });
@@ -942,7 +942,7 @@
 
         var html = '';
         if (currentPage > 1) {
-            html += '<button onclick="this._cb()">← Prev</button>';
+            html += '<button onclick="this._cb()">← Anterior</button>';
         }
 
         var start = Math.max(1, currentPage - 2);
@@ -954,7 +954,7 @@
         }
 
         if (currentPage < totalPages) {
-            html += '<button data-page="' + (currentPage + 1) + '">Next →</button>';
+            html += '<button data-page="' + (currentPage + 1) + '">Próximo →</button>';
         }
 
         container.innerHTML = html;
