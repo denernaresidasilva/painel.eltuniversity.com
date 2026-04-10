@@ -13,6 +13,9 @@ $current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET[
 ?>
 <div id="wpla-app" class="wpla-app" data-page="<?php echo esc_attr( $current_page ); ?>">
 
+    <!-- Mobile backdrop overlay -->
+    <div class="wpla-sidebar-backdrop" id="wpla-sidebar-backdrop"></div>
+
     <!-- Sidebar -->
     <aside class="wpla-sidebar">
         <div class="wpla-sidebar-header">
@@ -41,7 +44,7 @@ $current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET[
             foreach ( $nav_items as $slug => $item ) :
                 $active = $current_page === $slug ? ' wpla-nav-active' : '';
                 ?>
-                <a href="<?php echo esc_url( admin_url( 'admin.php?page=' . $slug ) ); ?>" class="wpla-nav-item<?php echo $active; ?>">
+                <a href="<?php echo esc_url( admin_url( 'admin.php?page=' . $slug ) ); ?>" class="wpla-nav-item<?php echo $active; ?>" data-tooltip="<?php echo esc_attr( $item['label'] ); ?>">
                     <span class="wpla-nav-icon"><?php echo $item['icon']; ?></span>
                     <span class="wpla-nav-label"><?php echo esc_html( $item['label'] ); ?></span>
                 </a>
@@ -58,11 +61,17 @@ $current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET[
         <!-- Top bar -->
         <header class="wpla-topbar">
             <div class="wpla-topbar-left">
-                <button class="wpla-sidebar-toggle" title="Toggle Sidebar">☰</button>
+                <button class="wpla-sidebar-toggle" title="<?php esc_attr_e( 'Toggle Sidebar', 'roket-crm' ); ?>">☰</button>
                 <h1 class="wpla-page-title"><?php echo esc_html( $nav_items[ $current_page ]['label'] ?? 'Dashboard' ); ?></h1>
             </div>
             <div class="wpla-topbar-right">
-                <button class="wpla-theme-toggle" title="Toggle Dark Mode">🌙</button>
+                <button class="wpla-theme-toggle" title="<?php esc_attr_e( 'Toggle Dark Mode', 'roket-crm' ); ?>" aria-label="<?php esc_attr_e( 'Toggle Dark Mode', 'roket-crm' ); ?>">
+                    <span class="wpla-theme-toggle-track">
+                        <span>☀️</span>
+                        <span>🌙</span>
+                    </span>
+                    <span class="wpla-theme-toggle-thumb"></span>
+                </button>
             </div>
         </header>
 
