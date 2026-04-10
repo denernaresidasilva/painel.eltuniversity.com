@@ -59,6 +59,12 @@ class Webhook_Receiver {
         // AJAX para matricular aluno manualmente
         add_action('wp_ajax_webhook_complete_manual_enroll', array($this, 'ajax_manual_enroll'));
         
+        // AJAX para recuperação de vendas
+        add_action('wp_ajax_webhook_receiver_recover_sales', array($this, 'ajax_recover_sales'));
+        
+        // Executar migrações de banco na inicialização do admin (para sites já instalados)
+        add_action('admin_init', array($this, 'maybe_run_db_migrations'));
+        
         add_option('webhook_receiver_user_email_subject', 'Bem-vindo! Seus dados de acesso');
         add_option('webhook_receiver_user_email_template', 'Olá <strong>(nome)</strong>,<br>Sua conta foi criada! ...');
 
@@ -926,6 +932,11 @@ class Webhook_Receiver {
                     $this->process_order_bumps_enrollment($user_id, $sale_data, $webhook_config);
                 }
                 
+                // Integração FluentCRM
+                if ($webhook_config) {
+                    $this->add_contact_to_fluentcrm($sale_data, $webhook_config, $user_id);
+                }
+                
                 // Notificar administrador se configurado
                 if (get_option('webhook_receiver_notify_admin', 'no') === 'yes') {
                     $admin_email = get_option('admin_email');
@@ -958,6 +969,11 @@ class Webhook_Receiver {
                 // Processar order bumps se houver
                 if ($webhook_config) {
                     $this->process_order_bumps_enrollment($user->ID, $sale_data, $webhook_config);
+                }
+                
+                // Integração FluentCRM
+                if ($webhook_config) {
+                    $this->add_contact_to_fluentcrm($sale_data, $webhook_config, $user->ID);
                 }
                 
                 return $user->ID;
@@ -1508,6 +1524,25 @@ class Webhook_Receiver {
             $wpdb->query("ALTER TABLE $webhooks_table ADD COLUMN enrollment_type varchar(20) NOT NULL DEFAULT 'enroll'");
         }
         
+        // Verificar e adicionar colunas para integração FluentCRM
+        $fluentcrm_list_ids_exists = $wpdb->get_results($wpdb->prepare(
+            "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS 
+             WHERE table_name = %s AND column_name = 'fluentcrm_list_ids'",
+            $webhooks_table
+        ));
+        if (empty($fluentcrm_list_ids_exists)) {
+            $wpdb->query("ALTER TABLE $webhooks_table ADD COLUMN fluentcrm_list_ids text DEFAULT NULL");
+        }
+        
+        $fluentcrm_tag_ids_exists = $wpdb->get_results($wpdb->prepare(
+            "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS 
+             WHERE table_name = %s AND column_name = 'fluentcrm_tag_ids'",
+            $webhooks_table
+        ));
+        if (empty($fluentcrm_tag_ids_exists)) {
+            $wpdb->query("ALTER TABLE $webhooks_table ADD COLUMN fluentcrm_tag_ids text DEFAULT NULL");
+        }
+        
         // Migrar dados existentes de course_id único para múltiplos cursos
         $existing_webhooks = $wpdb->get_results("SELECT * FROM $webhooks_table WHERE course_id > 0");
         foreach ($existing_webhooks as $webhook) {
@@ -1557,8 +1592,8 @@ class Webhook_Receiver {
         // Adicionar submenu de matrícula manual
         add_submenu_page(
             'webhook-receiver-endpoints',
-            'Matricular Aluno',
-            'Matricular Aluno',
+            'ADD MANUAL',
+            'ADD MANUAL',
             'manage_options',
             'webhook-complete-manual-enroll',
             array($this, 'test_webhook_page')
@@ -1575,7 +1610,7 @@ class Webhook_Receiver {
         $courses = get_posts(array('post_type' => 'courses', 'numberposts' => -1, 'post_status' => array('publish', 'draft', 'future', 'pending')));
         ?>
         <div class="wrap webhook-test-page">
-            <h1>🎓 Matricular Aluno</h1>
+            <h1>🎓 ADD MANUAL</h1>
             <p class="description">Preencha os dados abaixo para cadastrar e matricular um aluno diretamente no curso.</p>
             
             <div class="webhook-test-card">
@@ -1625,7 +1660,7 @@ class Webhook_Receiver {
                     <div class="form-actions">
                         <button type="submit" class="button button-primary button-large">
                             <span class="dashicons dashicons-yes-alt"></span>
-                            🎓 Matricular Aluno
+                            🎓 ADD MANUAL
                         </button>
                     </div>
                 </form>
@@ -1742,7 +1777,7 @@ class Webhook_Receiver {
                     },
                     complete: function() {
                         submitButton.prop('disabled', false).html(
-                            '<span class="dashicons dashicons-yes-alt"></span> 🎓 Matricular Aluno'
+                            '<span class="dashicons dashicons-yes-alt"></span> 🎓 ADD MANUAL'
                         );
                     }
                 });
@@ -1995,7 +2030,7 @@ class Webhook_Receiver {
                                     <span class="option-content">
                                         <span class="option-icon">✅</span>
                                         <span class="option-text">
-                                            <strong>Matrícula</strong>
+                                            <strong>Aprovado</strong>
                                             <small>Matricular usuários nos cursos selecionados</small>
                                         </span>
                                     </span>
@@ -2005,7 +2040,7 @@ class Webhook_Receiver {
                                     <span class="option-content">
                                         <span class="option-icon">❌</span>
                                         <span class="option-text">
-                                            <strong>Desmatrícula</strong>
+                                            <strong>Reembolso</strong>
                                             <small>Desmatricular usuários dos cursos selecionados</small>
                                         </span>
                                     </span>
@@ -2039,6 +2074,69 @@ class Webhook_Receiver {
                                 <button type="button" id="deselect-all-courses" class="webhook-btn secondary small">Desmarcar Todos</button>
                             </div>
                             <p class="form-description">Selecione os cursos para matricular/desmatricular o usuário.</p>
+                        </div>
+                        
+                        <?php
+                        $fluentcrm_active = function_exists('FluentCrmApi');
+                        if ($fluentcrm_active) :
+                            $fcrm_lists = FluentCrmApi('lists')->all();
+                            $fcrm_tags  = FluentCrmApi('tags')->all();
+                        ?>
+                        <div class="form-group fluentcrm-section">
+                            <label class="form-label">
+                                <span class="icon">📧</span> FluentCRM – Listas
+                            </label>
+                            <div class="courses-container">
+                                <?php if (!empty($fcrm_lists)) : ?>
+                                    <?php foreach ($fcrm_lists as $fcrm_list) : ?>
+                                        <label class="course-checkbox">
+                                            <input type="checkbox" name="fluentcrm_list_ids[]" value="<?php echo esc_attr($fcrm_list->id); ?>">
+                                            <span class="checkmark"></span>
+                                            <span class="course-title"><?php echo esc_html($fcrm_list->title); ?></span>
+                                        </label>
+                                    <?php endforeach; ?>
+                                <?php else : ?>
+                                    <div class="empty-state"><span class="empty-icon">📧</span><p>Nenhuma lista ativa encontrada no FluentCRM.</p></div>
+                                <?php endif; ?>
+                            </div>
+                            <p class="form-description">O contato será adicionado às listas selecionadas ao processar uma venda.</p>
+                        </div>
+                        
+                        <div class="form-group fluentcrm-section">
+                            <label class="form-label">
+                                <span class="icon">🏷️</span> FluentCRM – Etiquetas (Tags)
+                            </label>
+                            <div class="courses-container">
+                                <?php if (!empty($fcrm_tags)) : ?>
+                                    <?php foreach ($fcrm_tags as $fcrm_tag) : ?>
+                                        <label class="course-checkbox">
+                                            <input type="checkbox" name="fluentcrm_tag_ids[]" value="<?php echo esc_attr($fcrm_tag->id); ?>">
+                                            <span class="checkmark"></span>
+                                            <span class="course-title"><?php echo esc_html($fcrm_tag->title); ?></span>
+                                        </label>
+                                    <?php endforeach; ?>
+                                <?php else : ?>
+                                    <div class="empty-state"><span class="empty-icon">🏷️</span><p>Nenhuma etiqueta encontrada no FluentCRM.</p></div>
+                                <?php endif; ?>
+                            </div>
+                            <p class="form-description">O contato será marcado com as etiquetas selecionadas ao processar uma venda.</p>
+                        </div>
+                        <?php elseif (!$fluentcrm_active) : ?>
+                        <div class="form-group">
+                            <div class="notice notice-warning inline" style="padding:10px 15px;border-radius:6px;">
+                                <p><strong>⚠️ FluentCRM não detectado.</strong> Instale e ative o plugin FluentCRM para habilitar a integração com listas e etiquetas.</p>
+                            </div>
+                        </div>
+                        <?php endif; ?>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                <span class="icon">🔗</span> URL do Webhook (prévia)
+                            </label>
+                            <div class="url-display-container">
+                                <code class="webhook-url-code" id="webhook-url-preview" style="font-size:0.8rem;word-break:break-all;display:block;padding:10px;background:#1a202c;color:#68d391;border-radius:6px;">Preencha o Nome e o ID do Webhook acima para ver a URL.</code>
+                            </div>
+                            <p class="form-description">Esta é a URL que você irá configurar na plataforma de origem para enviar os webhooks.</p>
                         </div>
                         
                         <div class="form-actions">
@@ -2192,6 +2290,39 @@ class Webhook_Receiver {
                     </div>
                     
                     <div class="modal-footer">
+                        <button type="button" class="webhook-btn secondary close-modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal para Recuperação de Vendas -->
+            <div id="recover-sales-modal" class="webhook-modal">
+                <div class="modal-backdrop"></div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2><span class="icon">🔄</span> Recuperação de Vendas - <span id="modal-recover-webhook-name" class="highlight-text"></span></h2>
+                        <button type="button" class="close-modal-btn">✕</button>
+                    </div>
+                    <input type="hidden" id="modal-recover-webhook-id" value="">
+                    
+                    <div class="modal-body">
+                        <p>Reprocessa as últimas vendas recebidas por este webhook, recriando matrículas a partir dos dados originais armazenados.</p>
+                        <div class="form-group">
+                            <label for="recover-sales-limit" class="form-label">Número de vendas a reprocessar</label>
+                            <input type="number" id="recover-sales-limit" class="form-input" value="10" min="1" max="100" style="width:120px;">
+                            <p class="form-description">Máximo: 100 vendas por vez.</p>
+                        </div>
+                        <div id="recover-sales-result" style="margin-top:15px;"></div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" id="run-recover-sales" class="webhook-btn primary">
+                            <span class="btn-icon">🔄</span> Iniciar Recuperação
+                        </button>
+                        <div class="loading-spinner modal-spinner" style="display:none;">
+                            <div class="spinner"></div>
+                            <span>Processando...</span>
+                        </div>
                         <button type="button" class="webhook-btn secondary close-modal">Fechar</button>
                     </div>
                 </div>
@@ -2764,8 +2895,20 @@ class Webhook_Receiver {
         <script>
         jQuery(document).ready(function ($) {
             var isSubmitting = false;
+            var baseRestUrl = '<?php echo esc_js(rest_url('webhook-receiver/v1/receive/')); ?>';
             
-            $('#webhook-name').on('blur', function() {
+            function updateWebhookUrlPreview() {
+                var webhookName = $('#webhook-name').val();
+                var webhookId   = $('#webhook-id').val();
+                if (webhookId) {
+                    var previewUrl = baseRestUrl + webhookId + (webhookName ? '?name=' + encodeURIComponent(webhookName) : '');
+                    $('#webhook-url-preview').text(previewUrl);
+                } else {
+                    $('#webhook-url-preview').text('Preencha o Nome e o ID do Webhook acima para ver a URL.');
+                }
+            }
+
+            $('#webhook-name').on('input blur', function() {
                 if ($('#webhook-id').val() === '') {
                     var webhookName = $(this).val();
                     var webhookId = webhookName
@@ -2774,6 +2917,11 @@ class Webhook_Receiver {
                         .replace(/^-+|-+$/g, '');
                     $('#webhook-id').val(webhookId);
                 }
+                updateWebhookUrlPreview();
+            });
+
+            $('#webhook-id').on('input', function() {
+                updateWebhookUrlPreview();
             });
             
             $('#select-all-courses').on('click', function() {
@@ -2974,7 +3122,7 @@ class Webhook_Receiver {
             }
             
             $('.close-modal, .close-modal-btn, .modal-backdrop').on('click', function() {
-                $('#order-bumps-modal, #main-courses-modal, #json-structure-modal').hide();
+                $('#order-bumps-modal, #main-courses-modal, #json-structure-modal, #recover-sales-modal').hide();
             });
             
             $(document).on('click', '.manage-order-bumps', function(e) {
@@ -3193,6 +3341,59 @@ class Webhook_Receiver {
             $('#deselect-all-main-courses').on('click', function() {
                 $('.main-course-checkbox').prop('checked', false);
             });
+
+            // Recuperação de Vendas
+            $(document).on('click', '.recover-sales', function() {
+                var webhookId   = $(this).data('webhook-id');
+                var webhookName = $(this).data('webhook-name');
+                $('#modal-recover-webhook-id').val(webhookId);
+                $('#modal-recover-webhook-name').text(webhookName);
+                $('#recover-sales-result').html('');
+                $('#recover-sales-limit').val(10);
+                $('#recover-sales-modal').fadeIn(300);
+            });
+
+            $('#run-recover-sales').on('click', function() {
+                var webhookId = $('#modal-recover-webhook-id').val();
+                var limit     = parseInt($('#recover-sales-limit').val()) || 10;
+                var spinner   = $(this).siblings('.modal-spinner');
+                spinner.css('display', 'flex');
+                $(this).prop('disabled', true);
+
+                $.ajax({
+                    url: ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'webhook_receiver_recover_sales',
+                        webhook_id: webhookId,
+                        limit: limit,
+                        nonce: '<?php echo wp_create_nonce('webhook_receiver_recover_sales'); ?>'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            var html = '<div class="notice notice-success inline" style="padding:10px 15px;border-radius:6px;">';
+                            html += '<p><strong>✅ Recuperação concluída!</strong></p>';
+                            html += '<p>Vendas processadas: <strong>' + response.data.processed + '</strong></p>';
+                            if (response.data.details && response.data.details.length > 0) {
+                                html += '<ul style="max-height:200px;overflow-y:auto;">';
+                                response.data.details.forEach(function(d) { html += '<li>' + d + '</li>'; });
+                                html += '</ul>';
+                            }
+                            html += '</div>';
+                            $('#recover-sales-result').html(html);
+                        } else {
+                            $('#recover-sales-result').html('<div class="notice notice-error inline" style="padding:10px 15px;border-radius:6px;"><p><strong>❌ Erro:</strong> ' + response.data.message + '</p></div>');
+                        }
+                    },
+                    error: function() {
+                        $('#recover-sales-result').html('<div class="notice notice-error inline" style="padding:10px 15px;border-radius:6px;"><p>❌ Erro de conexão.</p></div>');
+                    },
+                    complete: function() {
+                        spinner.css('display', 'none');
+                        $('#run-recover-sales').prop('disabled', false);
+                    }
+                });
+            });
         });
         </script>
         <?php
@@ -3239,11 +3440,11 @@ class Webhook_Receiver {
                     $webhook->webhook_id
                 ));
                 
-                $webhook_url = rest_url('webhook-receiver/v1/receive/' . $webhook->webhook_id);
+                $webhook_url = rest_url('webhook-receiver/v1/receive/' . $webhook->webhook_id) . '?name=' . rawurlencode($webhook->webhook_name);
                 $has_webhook_data = !empty($webhook->webhook_data);
                 
                 $enrollment_type = isset($webhook->enrollment_type) ? $webhook->enrollment_type : 'enroll';
-                $enrollment_label = $enrollment_type === 'unenroll' ? 'Desmatrícula' : 'Matrícula';
+                $enrollment_label = $enrollment_type === 'unenroll' ? 'Reembolso' : 'Aprovado';
                 $enrollment_icon = $enrollment_type === 'unenroll' ? '❌' : '✅';
                 $enrollment_class = $enrollment_type === 'unenroll' ? 'type-unenroll' : 'type-enroll';
             ?>
@@ -3314,12 +3515,22 @@ class Webhook_Receiver {
                                         data-webhook-name="<?php echo esc_attr($webhook->webhook_name); ?>">
                                     <span class="btn-icon">📄</span> Ver JSON
                                 </button>
+                                <button type="button" class="action-btn warning recover-sales" 
+                                        data-webhook-id="<?php echo esc_attr($webhook->webhook_id); ?>"
+                                        data-webhook-name="<?php echo esc_attr($webhook->webhook_name); ?>">
+                                    <span class="btn-icon">🔄</span> Recuperação de Vendas
+                                </button>
                             </div>
                         <?php else : ?>
                             <div class="webhook-actions">
                                 <button type="button" class="action-btn secondary listen-webhook" 
                                         data-webhook-id="<?php echo esc_attr($webhook->webhook_id); ?>">
                                     <span class="btn-icon">👂</span> Escutar Webhook
+                                </button>
+                                <button type="button" class="action-btn warning recover-sales" 
+                                        data-webhook-id="<?php echo esc_attr($webhook->webhook_id); ?>"
+                                        data-webhook-name="<?php echo esc_attr($webhook->webhook_name); ?>">
+                                    <span class="btn-icon">🔄</span> Recuperação de Vendas
                                 </button>
                             </div>
                         <?php endif; ?>
@@ -3549,6 +3760,17 @@ class Webhook_Receiver {
 
         .action-btn.secondary:hover {
             background: #faf089;
+            transform: translateY(-1px);
+        }
+
+        .action-btn.warning {
+            background: #e6fffa;
+            color: #234e52;
+            border: 1px solid #81e6d9;
+        }
+
+        .action-btn.warning:hover {
+            background: #b2f5ea;
             transform: translateY(-1px);
         }
 
@@ -3828,6 +4050,8 @@ class Webhook_Receiver {
         $webhook_id = sanitize_key($_POST['webhook_id']);
         $course_ids = isset($_POST['course_ids']) ? array_map('intval', $_POST['course_ids']) : array();
         $enrollment_type = isset($_POST['enrollment_type']) ? sanitize_text_field($_POST['enrollment_type']) : 'enroll';
+        $fluentcrm_list_ids = isset($_POST['fluentcrm_list_ids']) ? array_map('intval', $_POST['fluentcrm_list_ids']) : array();
+        $fluentcrm_tag_ids  = isset($_POST['fluentcrm_tag_ids'])  ? array_map('intval', $_POST['fluentcrm_tag_ids'])  : array();
         
         if (empty($webhook_name) || empty($webhook_id) || empty($course_ids)) {
             wp_send_json_error(array('message' => 'Todos os campos obrigatórios devem ser preenchidos.'));
@@ -3851,12 +4075,14 @@ class Webhook_Receiver {
         $result = $wpdb->insert(
             $table_name,
             array(
-                'webhook_id' => $webhook_id,
-                'webhook_name' => $webhook_name,
-                'course_id' => 0,
-                'enrollment_type' => $enrollment_type,
-                'webhook_data' => null,
-                'created_at' => current_time('mysql')
+                'webhook_id'         => $webhook_id,
+                'webhook_name'       => $webhook_name,
+                'course_id'          => 0,
+                'enrollment_type'    => $enrollment_type,
+                'webhook_data'       => null,
+                'fluentcrm_list_ids' => !empty($fluentcrm_list_ids) ? json_encode($fluentcrm_list_ids) : null,
+                'fluentcrm_tag_ids'  => !empty($fluentcrm_tag_ids)  ? json_encode($fluentcrm_tag_ids)  : null,
+                'created_at'         => current_time('mysql')
             )
         );
         
@@ -4298,6 +4524,199 @@ class Webhook_Receiver {
         echo '<div class="wrap"><h1>Webhook Receiver - Documentação em breve</h1></div>';
     }
     
+    /**
+     * ========================================
+     * MIGRAÇÃO DE BANCO DE DADOS (para instâncias já ativas)
+     * ========================================
+     */
+    public function maybe_run_db_migrations() {
+        global $wpdb;
+        $webhooks_table = $wpdb->prefix . 'webhook_receiver_endpoints';
+
+        // Adicionar fluentcrm_list_ids se não existir
+        $col = $wpdb->get_var($wpdb->prepare(
+            "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = %s AND column_name = 'fluentcrm_list_ids'",
+            $webhooks_table
+        ));
+        if (!$col) {
+            $wpdb->query("ALTER TABLE $webhooks_table ADD COLUMN fluentcrm_list_ids text DEFAULT NULL");
+        }
+
+        // Adicionar fluentcrm_tag_ids se não existir
+        $col2 = $wpdb->get_var($wpdb->prepare(
+            "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = %s AND column_name = 'fluentcrm_tag_ids'",
+            $webhooks_table
+        ));
+        if (!$col2) {
+            $wpdb->query("ALTER TABLE $webhooks_table ADD COLUMN fluentcrm_tag_ids text DEFAULT NULL");
+        }
+    }
+    
+    /**
+     * ========================================
+     * INTEGRAÇÃO COM FLUENTCRM
+     * ========================================
+     */
+    public function add_contact_to_fluentcrm($sale_data, $webhook_config, $user_id = null) {
+        if (!function_exists('FluentCrmApi')) {
+            return;
+        }
+
+        $list_ids = array();
+        $tag_ids  = array();
+
+        if (!empty($webhook_config->fluentcrm_list_ids)) {
+            $decoded = json_decode($webhook_config->fluentcrm_list_ids, true);
+            if (is_array($decoded)) {
+                $list_ids = $decoded;
+            }
+        }
+        if (!empty($webhook_config->fluentcrm_tag_ids)) {
+            $decoded = json_decode($webhook_config->fluentcrm_tag_ids, true);
+            if (is_array($decoded)) {
+                $tag_ids = $decoded;
+            }
+        }
+
+        if (empty($list_ids) && empty($tag_ids)) {
+            return;
+        }
+
+        $email      = isset($sale_data['payer_email']) ? $sale_data['payer_email'] : '';
+        $first_name = isset($sale_data['first_name']) ? $sale_data['first_name'] : '';
+        $last_name  = isset($sale_data['last_name'])  ? $sale_data['last_name']  : '';
+
+        if (empty($email)) {
+            return;
+        }
+
+        try {
+            $contactApi = FluentCrmApi('contacts');
+
+            $contact_data = array(
+                'email'      => $email,
+                'first_name' => $first_name,
+                'last_name'  => $last_name,
+                'status'     => 'subscribed',
+            );
+
+            if (!empty($sale_data['telefone'])) {
+                $contact_data['phone'] = $sale_data['telefone'];
+            }
+
+            $contact = $contactApi->createOrUpdate($contact_data);
+
+            if ($contact && !is_wp_error($contact)) {
+                if (!empty($list_ids)) {
+                    $contact->attachLists($list_ids);
+                }
+                if (!empty($tag_ids)) {
+                    $contact->attachTags($tag_ids);
+                }
+            }
+        } catch (\Exception $e) {
+            if (get_option('webhook_receiver_enable_logs', 'yes') === 'yes') {
+                $this->log_webhook("FLUENTCRM ERRO: " . $e->getMessage() . " para email: $email");
+            }
+        }
+    }
+
+    /**
+     * ========================================
+     * AJAX PARA RECUPERAÇÃO DE VENDAS
+     * ========================================
+     */
+    public function ajax_recover_sales() {
+        check_ajax_referer('webhook_receiver_recover_sales', 'nonce');
+
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(array('message' => 'Permissão negada.'));
+            return;
+        }
+
+        $webhook_id = sanitize_key($_POST['webhook_id']);
+        $limit      = min(100, max(1, intval($_POST['limit'] ?? 10)));
+
+        if (empty($webhook_id)) {
+            wp_send_json_error(array('message' => 'ID do webhook inválido.'));
+            return;
+        }
+
+        global $wpdb;
+        $sales_table   = $wpdb->prefix . 'webhook_sales';
+        $webhooks_table = $wpdb->prefix . 'webhook_receiver_endpoints';
+
+        // Buscar configuração do webhook
+        $webhook_config = $wpdb->get_row($wpdb->prepare(
+            "SELECT * FROM $webhooks_table WHERE webhook_id = %s",
+            $webhook_id
+        ));
+
+        if (!$webhook_config) {
+            wp_send_json_error(array('message' => 'Webhook não encontrado.'));
+            return;
+        }
+
+        // Buscar as últimas N vendas para este webhook
+        $sales = $wpdb->get_results($wpdb->prepare(
+            "SELECT * FROM $sales_table WHERE webhook_id = %s ORDER BY created_at DESC LIMIT %d",
+            $webhook_id,
+            $limit
+        ));
+
+        if (empty($sales)) {
+            wp_send_json_error(array('message' => 'Nenhuma venda encontrada para este webhook.'));
+            return;
+        }
+
+        $processed = 0;
+        $details   = array();
+
+        foreach ($sales as $sale) {
+            $raw = json_decode($sale->raw_data, true);
+            if (!$raw) {
+                $details[] = "⚠️ Venda ID {$sale->id}: JSON inválido, ignorada.";
+                continue;
+            }
+
+            // Remontar mapped_data a partir do raw_data armazenado
+            $mapped_data = $this->map_webhook_data($raw, $webhook_id);
+
+            if (empty($mapped_data['payer_email'])) {
+                $details[] = "⚠️ Venda ID {$sale->id}: e-mail não identificado.";
+                continue;
+            }
+
+            // Obter cursos principais do webhook
+            $courses_table = $wpdb->prefix . 'webhook_receiver_courses';
+            $course_ids = $wpdb->get_col($wpdb->prepare(
+                "SELECT course_id FROM $courses_table WHERE webhook_id = %s",
+                $webhook_id
+            ));
+
+            if (empty($course_ids) && $webhook_config->course_id > 0) {
+                $course_ids = array($webhook_config->course_id);
+            }
+
+            $enrollment_type = isset($webhook_config->enrollment_type) ? $webhook_config->enrollment_type : 'enroll';
+
+            if ($enrollment_type === 'unenroll') {
+                $this->maybe_unenroll_user($mapped_data, $course_ids, $webhook_config);
+                $details[] = "🔄 Venda ID {$sale->id}: desmatrícula reprocessada para {$mapped_data['payer_email']}.";
+            } else {
+                $user_id = $this->maybe_create_user($mapped_data, $course_ids, $webhook_config);
+                $details[] = "✅ Venda ID {$sale->id}: matrícula reprocessada para {$mapped_data['payer_email']}" . ($user_id ? " (user #{$user_id})" : '') . ".";
+            }
+
+            $processed++;
+        }
+
+        wp_send_json_success(array(
+            'processed' => $processed,
+            'details'   => $details,
+        ));
+    }
+
     /**
      * ========================================
      * PÁGINA DE CONFIGURAÇÕES
