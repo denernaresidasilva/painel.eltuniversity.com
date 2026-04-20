@@ -243,6 +243,14 @@
                 setText('q-failed', d.queue_stats.failed);
             }
 
+            // Email stats (7-day).
+            if (d.email_stats) {
+                setText('dash-email-sent', d.email_stats.sent);
+                setText('dash-email-opened', d.email_stats.opened);
+                setText('dash-email-clicked', d.email_stats.clicked);
+                setText('dash-email-failed', d.email_stats.failed);
+            }
+
             // Recent events
             var tbody = document.getElementById('recent-events-body');
             if (tbody && d.recent_events) {
@@ -811,9 +819,37 @@
             });
         }
 
+        var conditionType = document.getElementById('condition-type');
+        if (conditionType) {
+            conditionType.addEventListener('change', function () {
+                updateConditionFields(conditionType.value);
+            });
+        }
+
         var confirmBtn = document.getElementById('btn-confirm-step');
         if (confirmBtn) {
             confirmBtn.addEventListener('click', addStep);
+        }
+    }
+
+    function updateConditionFields(condType) {
+        var fieldRow  = document.getElementById('condition-field-row');
+        var valueLabel = document.getElementById('condition-value-label');
+        var emailHours = ['email_opened', 'email_clicked', 'email_not_opened'];
+
+        if (fieldRow) {
+            fieldRow.style.display = (condType === 'field_equals') ? 'block' : 'none';
+        }
+        if (valueLabel) {
+            if (emailHours.indexOf(condType) !== -1) {
+                valueLabel.textContent = 'Número de Horas';
+                var valInput = document.getElementById('condition-value');
+                if (valInput) { valInput.placeholder = '24'; valInput.type = 'number'; }
+            } else {
+                valueLabel.textContent = 'Valor';
+                var valInput2 = document.getElementById('condition-value');
+                if (valInput2) { valInput2.placeholder = ''; valInput2.type = 'text'; }
+            }
         }
     }
 
@@ -839,11 +875,28 @@
                 html = '<div class="wpla-field"><label>Nome da Tag</label><input type="text" id="action-tag-name" class="wpla-input" placeholder="e.g. lead" /></div>';
                 break;
             case 'subscribe_list':
+            case 'unsubscribe_list':
                 html = '<div class="wpla-field"><label>ID da Lista</label><input type="number" id="action-list-id" class="wpla-input" placeholder="1" /></div>';
                 break;
             case 'send_email':
-                html = '<div class="wpla-field"><label>Assunto</label><input type="text" id="action-email-subject" class="wpla-input" /></div>' +
-                       '<div class="wpla-field"><label>Corpo (HTML)</label><textarea id="action-email-body" class="wpla-input" rows="4"></textarea></div>';
+                html = '<div class="wpla-field">' +
+                           '<label>Modelo de Email (opcional)</label>' +
+                           '<select id="action-email-template" class="wpla-select"><option value="0">— Sem modelo (usar corpo abaixo) —</option></select>' +
+                       '</div>' +
+                       '<div class="wpla-field"><label>Assunto</label><input type="text" id="action-email-subject" class="wpla-input" placeholder="Olá {{first_name}}!" /></div>' +
+                       '<div class="wpla-field"><label>Corpo (HTML) — ignorado se modelo selecionado</label><textarea id="action-email-body" class="wpla-input" rows="4"></textarea></div>';
+                // Load templates into the select.
+                ajax('wpla_list_email_templates', {}, function (res) {
+                    var sel = document.getElementById('action-email-template');
+                    if (sel && res.success && res.data.items) {
+                        res.data.items.forEach(function (t) {
+                            var opt = document.createElement('option');
+                            opt.value = t.id;
+                            opt.textContent = t.name + ' — ' + t.subject;
+                            sel.appendChild(opt);
+                        });
+                    }
+                });
                 break;
             case 'send_whatsapp':
                 html = '<div class="wpla-field"><label>Mensagem</label><textarea id="action-wa-message" class="wpla-input" rows="3"></textarea></div>';
@@ -875,10 +928,14 @@
         };
 
         if (type === 'condition') {
+            var condType = document.getElementById('condition-type').value;
             step.config = {
-                condition_type: document.getElementById('condition-type').value,
+                condition_type: condType,
                 value: document.getElementById('condition-value').value,
             };
+            if (condType === 'field_equals') {
+                step.config.field = document.getElementById('condition-field') ? document.getElementById('condition-field').value : '';
+            }
         } else if (type === 'action') {
             var actionType = document.getElementById('action-type').value;
             step.action_type = actionType;
@@ -890,9 +947,11 @@
                     step.config.tag_name = getVal('action-tag-name');
                     break;
                 case 'subscribe_list':
+                case 'unsubscribe_list':
                     step.config.list_id = getVal('action-list-id');
                     break;
                 case 'send_email':
+                    step.config.template_id = parseInt(getVal('action-email-template')) || 0;
                     step.config.subject = getVal('action-email-subject');
                     step.config.body = getVal('action-email-body');
                     break;
@@ -980,6 +1039,7 @@
             case 'action':
                 if (c.tag_name) return 'Tag: ' + c.tag_name;
                 if (c.list_id) return 'Lista: ' + c.list_id;
+                if (c.template_id && parseInt(c.template_id) > 0) return 'Modelo #' + c.template_id + (c.subject ? ' — ' + c.subject : '');
                 if (c.subject) return 'Assunto: ' + c.subject;
                 if (c.message) return c.message.substring(0, 50);
                 if (c.url) return c.url;
@@ -1018,8 +1078,19 @@
      * Email Page
      * ─────────────────────────────────── */
     function initEmail() {
+        // Tab navigation.
+        initTabNavigation();
+
+        // Load email log.
         loadMessages('email', 'email-tbody');
 
+        // Load templates.
+        loadEmailTemplates();
+
+        // Load email stats.
+        loadEmailStats();
+
+        // Test send form.
         var form = document.getElementById('test-email-form');
         if (form) {
             form.addEventListener('submit', function (e) {
@@ -1033,15 +1104,172 @@
                 });
             });
         }
+
+        // New template button.
+        var addBtn = document.getElementById('btn-add-email-template');
+        if (addBtn) {
+            addBtn.addEventListener('click', function () {
+                openEmailTemplateModal(null);
+            });
+        }
+
+        // Save template button.
+        var saveBtn = document.getElementById('btn-save-email-template');
+        if (saveBtn) {
+            saveBtn.addEventListener('click', saveEmailTemplate);
+        }
+
+        // Preview button.
+        var previewBtn = document.getElementById('btn-preview-template');
+        if (previewBtn) {
+            previewBtn.addEventListener('click', function () {
+                var body = document.getElementById('tpl-body').value;
+                var preview = document.getElementById('tpl-preview');
+                if (preview) {
+                    preview.innerHTML = body;
+                    preview.style.display = preview.style.display === 'none' ? 'block' : 'none';
+                }
+            });
+        }
     }
 
+    /**
+     * Simple tab navigation — works for any page that has .wpla-tabs / .wpla-tab-panel.
+     */
+    function initTabNavigation() {
+        document.querySelectorAll('.wpla-tab-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var target = btn.dataset.tab;
+                document.querySelectorAll('.wpla-tab-btn').forEach(function (b) { b.classList.remove('active'); });
+                document.querySelectorAll('.wpla-tab-panel').forEach(function (p) { p.style.display = 'none'; p.classList.remove('active'); });
+                btn.classList.add('active');
+                var panel = document.getElementById('tab-' + target);
+                if (panel) { panel.style.display = 'block'; panel.classList.add('active'); }
+            });
+        });
+    }
+
+    function loadEmailTemplates() {
+        var tbody = document.getElementById('email-templates-tbody');
+        if (!tbody) return;
+
+        ajax('wpla_list_email_templates', {}, function (res) {
+            if (!res.success || !res.data.items) {
+                tbody.innerHTML = '<tr><td colspan="5" class="wpla-text-center">Nenhum modelo encontrado.</td></tr>';
+                return;
+            }
+            var items = res.data.items;
+            if (!items.length) {
+                tbody.innerHTML = '<tr><td colspan="5" class="wpla-text-center">Nenhum modelo ainda. Clique em "+ Novo Modelo" para começar.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = items.map(function (t) {
+                var badge = t.status === 'active' ? 'wpla-badge-success' : 'wpla-badge-warning';
+                var statusLabel = t.status === 'active' ? 'Ativo' : 'Rascunho';
+                return '<tr>' +
+                    '<td>' + esc(t.name) + '</td>' +
+                    '<td>' + esc(t.subject) + '</td>' +
+                    '<td><span class="wpla-badge ' + badge + '">' + statusLabel + '</span></td>' +
+                    '<td>' + esc(t.created_at || '') + '</td>' +
+                    '<td>' +
+                        '<button class="wpla-btn wpla-btn-sm" onclick="WPLA.editEmailTemplate(' + t.id + ')">Editar</button> ' +
+                        '<button class="wpla-btn wpla-btn-sm wpla-btn-danger" onclick="WPLA.deleteEmailTemplate(' + t.id + ')">Excluir</button>' +
+                    '</td>' +
+                '</tr>';
+            }).join('');
+        });
+    }
+
+    function loadEmailStats() {
+        ajax('wpla_get_dashboard_stats', {}, function (res) {
+            if (!res.success || !res.data.email_stats) return;
+            var s = res.data.email_stats;
+            setText('estat-sent', s.sent);
+            setText('estat-opened', s.opened);
+            setText('estat-clicked', s.clicked);
+            setText('estat-failed', s.failed);
+            setText('estat-unsub', s.unsubscribed);
+        });
+    }
+
+    function openEmailTemplateModal(template) {
+        document.getElementById('tpl-id').value = template ? template.id : '0';
+        document.getElementById('tpl-name').value = template ? template.name : '';
+        document.getElementById('tpl-subject').value = template ? template.subject : '';
+        document.getElementById('tpl-body').value = template ? template.body : '';
+        document.getElementById('tpl-status').value = template ? template.status : 'draft';
+        document.getElementById('email-template-modal-title').textContent = template ? 'Editar Modelo' : 'Novo Modelo de Email';
+        var preview = document.getElementById('tpl-preview');
+        if (preview) { preview.style.display = 'none'; preview.innerHTML = ''; }
+        WPLA.openModal('email-template-modal');
+    }
+
+    function saveEmailTemplate() {
+        var id      = document.getElementById('tpl-id').value;
+        var name    = document.getElementById('tpl-name').value.trim();
+        var subject = document.getElementById('tpl-subject').value.trim();
+        var body    = document.getElementById('tpl-body').value.trim();
+        var status  = document.getElementById('tpl-status').value;
+
+        if (!name) { showToast('Informe o nome do modelo.', 'error'); return; }
+        if (!subject) { showToast('Informe o assunto.', 'error'); return; }
+
+        ajax('wpla_save_email_template', { id: id, name: name, subject: subject, body: body, status: status }, function (res) {
+            if (res.success) {
+                showToast('Modelo salvo!');
+                WPLA.closeModal('email-template-modal');
+                loadEmailTemplates();
+            } else {
+                showToast('Erro ao salvar modelo.', 'error');
+            }
+        });
+    }
+
+    WPLA.editEmailTemplate = function (id) {
+        ajax('wpla_get_email_template', { id: id }, function (res) {
+            if (res.success && res.data.template) {
+                openEmailTemplateModal(res.data.template);
+            }
+        });
+    };
+
+    WPLA.deleteEmailTemplate = function (id) {
+        if (!confirm('Excluir este modelo de email?')) return;
+        ajax('wpla_delete_email_template', { id: id }, function (res) {
+            if (res.success) {
+                showToast('Modelo excluído.');
+                loadEmailTemplates();
+            }
+        });
+    };
+
+    /**
+     * Insert a merge variable at the cursor position in a textarea.
+     */
+    WPLA.insertVar = function (textareaId, variable) {
+        var el = document.getElementById(textareaId);
+        if (!el) return;
+        var start = el.selectionStart;
+        var end   = el.selectionEnd;
+        el.value = el.value.substring(0, start) + variable + el.value.substring(end);
+        el.selectionStart = el.selectionEnd = start + variable.length;
+        el.focus();
+    };
+
     function loadMessages(channel, tbodyId) {
-        // We use a simple approach: fetch via REST or use admin-ajax.
-        // For now, we'll show a placeholder. In production, add a REST endpoint.
         var tbody = document.getElementById(tbodyId);
-        if (tbody) {
-            tbody.innerHTML = '<tr><td colspan="5" class="wpla-text-center">O histórico de mensagens é carregado da fila.</td></tr>';
-        }
+        if (!tbody) return;
+        tbody.innerHTML = '<tr><td colspan="5" class="wpla-text-center">Carregando...</td></tr>';
+
+        restGet('email-stats', function () {}); // warm up.
+
+        // Fetch recent messages via AJAX (pass channel as filter).
+        ajax('wpla_get_dashboard_stats', {}, function (res) {
+            if (!res.success) return;
+            // We use queue stats for the summary; detailed log shows a placeholder for now.
+            tbody.innerHTML = '<tr><td colspan="5" class="wpla-text-center wpla-text-muted">Histórico detalhado disponível via REST: <code>' +
+                (typeof wpla !== 'undefined' ? wpla.rest_url : '') + 'email-stats</code></td></tr>';
+        });
     }
 
     /* ───────────────────────────────────

@@ -1,6 +1,6 @@
 <?php
 /**
- * Email integration — templates, sending, tracking.
+ * Email integration — templates, sending, tracking, unsubscribe.
  *
  * @package LC_CRM_Automation
  */
@@ -18,50 +18,55 @@ class WPLA_Email {
      * @return bool
      */
     public static function send( object $message ): bool {
+        // Rate limiting: max 3 emails per contact in 1 hour.
+        if ( ! self::allow_send( (int) $message->contact_id ) ) {
+            return false;
+        }
+
         $contact = WPLA_Contact::get( (int) $message->contact_id );
         $to      = $message->recipient;
         $subject = $message->subject;
-        $body    = self::render_template( $message->body, $contact );
+
+        // If a template_id is stored in the queue body (JSON), use it.
+        $body = $message->body;
+        if ( (int) $message->template_id > 0 ) {
+            $tpl = WPLA_Email_Template::get( (int) $message->template_id );
+            if ( $tpl ) {
+                if ( empty( $subject ) ) {
+                    $subject = $tpl->subject;
+                }
+                $body = $tpl->body;
+            }
+        }
+
+        // Render merge fields.
+        $body    = WPLA_Email_Template::render( $body, $contact );
+        $subject = $contact ? WPLA_Email_Template::render( $subject, $contact ) : $subject;
+
+        // Add unsubscribe link if not already present.
+        if ( $contact && strpos( $body, 'wpla_unsub' ) === false ) {
+            $unsub_url  = add_query_arg( array(
+                'wpla_unsub' => '1',
+                'email'      => rawurlencode( $contact->email ?? '' ),
+                'token'      => WPLA_Email_Template::unsubscribe_token( $contact->email ?? '' ),
+            ), home_url( '/' ) );
+            $body .= '<p style="font-size:11px;color:#9ca3af;text-align:center;margin-top:30px;">'
+                   . '<a href="' . esc_url( $unsub_url ) . '" style="color:#9ca3af;">'
+                   . esc_html__( 'Cancelar inscrição', 'lc-crm' )
+                   . '</a></p>';
+        }
 
         // Add tracking pixel.
         $tracking_url = add_query_arg( array(
             'wpla_track' => 'open',
             'tid'        => $message->tracking_id,
         ), home_url( '/' ) );
-
         $body .= '<img src="' . esc_url( $tracking_url ) . '" width="1" height="1" alt="" style="display:none" />';
 
         // Replace links with tracking links.
         $body = self::add_click_tracking( $body, $message->tracking_id );
 
-        $headers = array( 'Content-Type: text/html; charset=UTF-8' );
-
-        $from_name  = get_option( 'wpla_email_from_name', get_bloginfo( 'name' ) );
-        $from_email = get_option( 'wpla_email_from_address', get_bloginfo( 'admin_email' ) );
-        $headers[]  = "From: {$from_name} <{$from_email}>";
-
-        return wp_mail( $to, $subject, $body, $headers );
-    }
-
-    /**
-     * Render template with contact merge fields.
-     */
-    public static function render_template( string $body, ?object $contact ): string {
-        if ( ! $contact ) {
-            return $body;
-        }
-
-        $replacements = array(
-            '{{first_name}}' => $contact->first_name ?? '',
-            '{{last_name}}'  => $contact->last_name ?? '',
-            '{{email}}'      => $contact->email ?? '',
-            '{{phone}}'      => $contact->phone ?? '',
-            '{{company}}'    => $contact->company ?? '',
-        );
-
-        $body = str_replace( array_keys( $replacements ), array_values( $replacements ), $body );
-
-        // Wrap in template.
+        // Wrap in the default email template.
         ob_start();
         $template_file = WPLA_PLUGIN_DIR . 'templates/emails/default.php';
         if ( file_exists( $template_file ) ) {
@@ -69,7 +74,81 @@ class WPLA_Email {
         } else {
             echo $body; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         }
-        return ob_get_clean();
+        $html = ob_get_clean();
+
+        $headers = array( 'Content-Type: text/html; charset=UTF-8' );
+
+        $from_name  = get_option( 'wpla_email_from_name', get_bloginfo( 'name' ) );
+        $from_email = get_option( 'wpla_email_from_address', get_bloginfo( 'admin_email' ) );
+        $headers[]  = "From: {$from_name} <{$from_email}>";
+
+        $result = wp_mail( $to, $subject, $html, $headers );
+
+        if ( $result ) {
+            // Update contact email fields.
+            self::update_contact_email_meta( (int) $message->contact_id, 'sent' );
+        }
+
+        return $result;
+    }
+
+    /**
+     * Rate limit: allow at most 3 emails per contact per hour.
+     */
+    private static function allow_send( int $contact_id ): bool {
+        $max_per_hour = (int) get_option( 'wpla_email_rate_limit', 3 );
+        if ( $max_per_hour <= 0 ) {
+            return true; // No limit configured.
+        }
+        $trans_key = 'wpla_email_rate_' . $contact_id;
+        $count     = (int) get_transient( $trans_key );
+        if ( $count >= $max_per_hour ) {
+            return false;
+        }
+        set_transient( $trans_key, $count + 1, HOUR_IN_SECONDS );
+        return true;
+    }
+
+    /**
+     * Update contact email engagement fields.
+     *
+     * @param int    $contact_id Contact ID.
+     * @param string $event      'sent', 'opened', or 'clicked'.
+     */
+    public static function update_contact_email_meta( int $contact_id, string $event ): void {
+        global $wpdb;
+        $table = WPLA_Database::table( 'contacts' );
+        $now   = current_time( 'mysql' );
+
+        switch ( $event ) {
+            case 'sent':
+                $wpdb->query( $wpdb->prepare(
+                    "UPDATE $table SET last_email_sent = %s WHERE id = %d",
+                    $now, $contact_id
+                ) );
+                break;
+            case 'opened':
+                $wpdb->query( $wpdb->prepare(
+                    "UPDATE $table SET last_email_opened_at = %s WHERE id = %d",
+                    $now, $contact_id
+                ) );
+                break;
+            case 'clicked':
+                $wpdb->query( $wpdb->prepare(
+                    "UPDATE $table SET last_email_clicked_at = %s WHERE id = %d",
+                    $now, $contact_id
+                ) );
+                break;
+        }
+    }
+
+    /**
+     * Render template with contact merge fields.
+     *
+     * @deprecated Use WPLA_Email_Template::render() instead.
+     */
+    public static function render_template( string $body, ?object $contact ): string {
+        return WPLA_Email_Template::render( $body, $contact );
     }
 
     /**
@@ -80,8 +159,8 @@ class WPLA_Email {
             '/<a\s([^>]*?)href=["\']([^"\']+)["\']/',
             function ( $matches ) use ( $tracking_id ) {
                 $url = $matches[2];
-                // Don't track unsubscribe / tracking links.
-                if ( strpos( $url, 'wpla_track' ) !== false ) {
+                // Don't track unsubscribe / existing tracking links.
+                if ( strpos( $url, 'wpla_track' ) !== false || strpos( $url, 'wpla_unsub' ) !== false ) {
                     return $matches[0];
                 }
                 $tracked = add_query_arg( array(
@@ -135,9 +214,41 @@ class WPLA_Email {
     }
 
     /**
-     * Handle tracking requests (open / click). Hooked to template_redirect.
+     * Handle tracking requests (open / click) and unsubscribe. Hooked to template_redirect.
      */
     public static function handle_tracking(): void {
+        // Handle unsubscribe request.
+        if ( isset( $_GET['wpla_unsub'] ) && isset( $_GET['email'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+            $email = sanitize_email( rawurldecode( wp_unslash( $_GET['email'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification
+            $token = sanitize_text_field( wp_unslash( $_GET['token'] ?? '' ) ); // phpcs:ignore WordPress.Security.NonceVerification
+
+            if ( is_email( $email ) && WPLA_Email_Template::verify_unsubscribe_token( $email, $token ) ) {
+                $contact = WPLA_Contact::get_by_email( $email );
+                if ( $contact ) {
+                    // Mark contact as unsubscribed.
+                    global $wpdb;
+                    $wpdb->update(
+                        WPLA_Database::table( 'contacts' ),
+                        array(
+                            'email_status' => 'unsubscribed',
+                            'status'       => 'unsubscribed',
+                        ),
+                        array( 'id' => (int) $contact->id ),
+                        array( '%s', '%s' ),
+                        array( '%d' )
+                    );
+                    do_action( 'wpla_event', 'email_unsubscribed', (int) $contact->id, array( 'email' => $email ) );
+                }
+            }
+
+            // Show a simple confirmation page.
+            wp_die(
+                esc_html__( 'Você foi descadastrado com sucesso.', 'lc-crm' ),
+                esc_html__( 'Descadastrado', 'lc-crm' ),
+                array( 'response' => 200 )
+            );
+        }
+
         if ( ! isset( $_GET['wpla_track'], $_GET['tid'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
             return;
         }
@@ -158,7 +269,12 @@ class WPLA_Email {
         }
 
         if ( 'open' === $type ) {
+            // Only update status once (first open).
+            if ( 'sent' === $message->status ) {
+                $wpdb->update( $table, array( 'status' => 'opened' ), array( 'id' => $message->id ), array( '%s' ), array( '%d' ) );
+            }
             do_action( 'wpla_event', 'email_opened', (int) $message->contact_id, array( 'tracking_id' => $tracking_id ) );
+            self::update_contact_email_meta( (int) $message->contact_id, 'opened' );
 
             // Return a 1x1 transparent GIF.
             header( 'Content-Type: image/gif' );
@@ -180,14 +296,55 @@ class WPLA_Email {
                 'tracking_id' => $tracking_id,
                 'url'         => $url,
             ) );
+            self::update_contact_email_meta( (int) $message->contact_id, 'clicked' );
 
             wp_redirect( $url ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- External URL redirect for email click tracking.
             exit;
         }
     }
+
+    /**
+     * Get email engagement statistics.
+     *
+     * @param string $since  Optional MySQL datetime string for the earliest date.
+     * @return array
+     */
+    public static function get_stats( string $since = '' ): array {
+        global $wpdb;
+        $table = WPLA_Database::table( 'message_queue' );
+
+        $where = $since ? $wpdb->prepare( "AND created_at >= %s", $since ) : '';
+
+        $rows = $wpdb->get_results(
+            "SELECT status, COUNT(*) as cnt FROM $table WHERE channel = 'email' $where GROUP BY status" // phpcs:ignore WordPress.DB.PreparedSQL
+        );
+
+        $stats = array(
+            'sent'       => 0,
+            'opened'     => 0,
+            'clicked'    => 0,
+            'failed'     => 0,
+            'pending'    => 0,
+            'unsubscribed' => 0,
+        );
+
+        foreach ( $rows as $row ) {
+            if ( isset( $stats[ $row->status ] ) ) {
+                $stats[ $row->status ] = (int) $row->cnt;
+            }
+        }
+
+        // Unsubscribed contacts.
+        $contacts_table       = WPLA_Database::table( 'contacts' );
+        $stats['unsubscribed'] = (int) $wpdb->get_var(
+            "SELECT COUNT(*) FROM $contacts_table WHERE email_status = 'unsubscribed'" // phpcs:ignore WordPress.DB.PreparedSQL
+        );
+
+        return $stats;
+    }
 }
 
-// Hook tracking handler.
+// Hook tracking/unsubscribe handler.
 add_action( 'template_redirect', array( 'WPLA_Email', 'handle_tracking' ), 1 );
 
 // Configure SMTP via PHPMailer when settings are present.

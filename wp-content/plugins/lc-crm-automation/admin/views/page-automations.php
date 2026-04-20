@@ -80,6 +80,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <optgroup label="<?php esc_attr_e( 'Email', 'lc-crm' ); ?>">
                     <option value="email_opened"><?php esc_html_e( 'Email Aberto', 'lc-crm' ); ?></option>
                     <option value="link_clicked"><?php esc_html_e( 'Link Clicado', 'lc-crm' ); ?></option>
+                    <option value="email_unsubscribed"><?php esc_html_e( 'Descadastrado', 'lc-crm' ); ?></option>
                 </optgroup>
                 <optgroup label="<?php esc_attr_e( 'Externo', 'lc-crm' ); ?>">
                     <option value="webhook_received"><?php esc_html_e( 'Webhook Recebido', 'lc-crm' ); ?></option>
@@ -122,14 +123,31 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <div class="wpla-field">
                     <label><?php esc_html_e( 'Tipo de Condição', 'lc-crm' ); ?></label>
                     <select id="condition-type" class="wpla-select">
-                        <option value="has_tag"><?php esc_html_e( 'Possui Tag', 'lc-crm' ); ?></option>
-                        <option value="in_list"><?php esc_html_e( 'Na Lista', 'lc-crm' ); ?></option>
-                        <option value="score_above"><?php esc_html_e( 'Pontuação Acima de', 'lc-crm' ); ?></option>
-                        <option value="field_equals"><?php esc_html_e( 'Campo Igual a', 'lc-crm' ); ?></option>
+                        <optgroup label="<?php esc_attr_e( 'Tags', 'lc-crm' ); ?>">
+                            <option value="has_tag"><?php esc_html_e( 'Possui Tag', 'lc-crm' ); ?></option>
+                            <option value="contains_tag"><?php esc_html_e( 'Contém Tag', 'lc-crm' ); ?></option>
+                            <option value="received_tag"><?php esc_html_e( 'Recebeu Tag', 'lc-crm' ); ?></option>
+                        </optgroup>
+                        <optgroup label="<?php esc_attr_e( 'Listas', 'lc-crm' ); ?>">
+                            <option value="in_list"><?php esc_html_e( 'Na Lista', 'lc-crm' ); ?></option>
+                        </optgroup>
+                        <optgroup label="<?php esc_attr_e( 'Email', 'lc-crm' ); ?>">
+                            <option value="email_opened"><?php esc_html_e( 'Email Aberto (nas últimas X horas)', 'lc-crm' ); ?></option>
+                            <option value="email_clicked"><?php esc_html_e( 'Link Clicado (nas últimas X horas)', 'lc-crm' ); ?></option>
+                            <option value="email_not_opened"><?php esc_html_e( 'Email NÃO Aberto (nas últimas X horas)', 'lc-crm' ); ?></option>
+                        </optgroup>
+                        <optgroup label="<?php esc_attr_e( 'Contato', 'lc-crm' ); ?>">
+                            <option value="score_above"><?php esc_html_e( 'Pontuação Acima de', 'lc-crm' ); ?></option>
+                            <option value="field_equals"><?php esc_html_e( 'Campo Igual a', 'lc-crm' ); ?></option>
+                        </optgroup>
                     </select>
                 </div>
+                <div class="wpla-field" id="condition-field-row" style="display:none;">
+                    <label><?php esc_html_e( 'Campo', 'lc-crm' ); ?></label>
+                    <input type="text" id="condition-field" class="wpla-input" placeholder="first_name" />
+                </div>
                 <div class="wpla-field">
-                    <label><?php esc_html_e( 'Valor', 'lc-crm' ); ?></label>
+                    <label id="condition-value-label"><?php esc_html_e( 'Valor', 'lc-crm' ); ?></label>
                     <input type="text" id="condition-value" class="wpla-input" />
                 </div>
             </div>
@@ -139,14 +157,23 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <div class="wpla-field">
                     <label><?php esc_html_e( 'Tipo de Ação', 'lc-crm' ); ?></label>
                     <select id="action-type" class="wpla-select">
-                        <option value="add_tag"><?php esc_html_e( 'Adicionar Tag', 'lc-crm' ); ?></option>
-                        <option value="remove_tag"><?php esc_html_e( 'Remover Tag', 'lc-crm' ); ?></option>
-                        <option value="subscribe_list"><?php esc_html_e( 'Inscrever na Lista', 'lc-crm' ); ?></option>
-                        <option value="send_email"><?php esc_html_e( 'Enviar Email', 'lc-crm' ); ?></option>
-                        <option value="send_whatsapp"><?php esc_html_e( 'Enviar WhatsApp', 'lc-crm' ); ?></option>
-                        <option value="update_field"><?php esc_html_e( 'Atualizar Campo', 'lc-crm' ); ?></option>
-                        <option value="update_score"><?php esc_html_e( 'Atualizar Pontuação', 'lc-crm' ); ?></option>
-                        <option value="webhook"><?php esc_html_e( 'Enviar Webhook', 'lc-crm' ); ?></option>
+                        <optgroup label="<?php esc_attr_e( 'Tags', 'lc-crm' ); ?>">
+                            <option value="add_tag"><?php esc_html_e( 'Adicionar Tag', 'lc-crm' ); ?></option>
+                            <option value="remove_tag"><?php esc_html_e( 'Remover Tag', 'lc-crm' ); ?></option>
+                        </optgroup>
+                        <optgroup label="<?php esc_attr_e( 'Listas', 'lc-crm' ); ?>">
+                            <option value="subscribe_list"><?php esc_html_e( 'Inscrever na Lista', 'lc-crm' ); ?></option>
+                            <option value="unsubscribe_list"><?php esc_html_e( 'Remover da Lista', 'lc-crm' ); ?></option>
+                        </optgroup>
+                        <optgroup label="<?php esc_attr_e( 'Mensagens', 'lc-crm' ); ?>">
+                            <option value="send_email"><?php esc_html_e( '📧 Enviar Email', 'lc-crm' ); ?></option>
+                            <option value="send_whatsapp"><?php esc_html_e( '💬 Enviar WhatsApp', 'lc-crm' ); ?></option>
+                            <option value="webhook"><?php esc_html_e( '🔗 Enviar Webhook', 'lc-crm' ); ?></option>
+                        </optgroup>
+                        <optgroup label="<?php esc_attr_e( 'Contato', 'lc-crm' ); ?>">
+                            <option value="update_field"><?php esc_html_e( 'Atualizar Campo', 'lc-crm' ); ?></option>
+                            <option value="update_score"><?php esc_html_e( 'Atualizar Pontuação', 'lc-crm' ); ?></option>
+                        </optgroup>
                     </select>
                 </div>
                 <div id="action-config-fields"></div>

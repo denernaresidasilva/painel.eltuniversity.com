@@ -156,7 +156,7 @@ class WPLA_Database {
             subject VARCHAR(255) DEFAULT '',
             body LONGTEXT NOT NULL,
             template_id BIGINT UNSIGNED DEFAULT 0,
-            status ENUM('pending','processing','sent','failed') DEFAULT 'pending',
+            status ENUM('pending','processing','sent','opened','failed') DEFAULT 'pending',
             attempts INT DEFAULT 0,
             scheduled_at DATETIME DEFAULT NULL,
             sent_at DATETIME DEFAULT NULL,
@@ -171,6 +171,10 @@ class WPLA_Database {
             KEY tracking_id (tracking_id)
         ) $charset_collate;";
         dbDelta( $sql );
+
+        // Extend message_queue ENUM to include 'opened' on existing installs.
+        $mq_table = $prefix . 'message_queue';
+        $wpdb->query( "ALTER TABLE $mq_table MODIFY COLUMN status ENUM('pending','processing','sent','opened','failed') DEFAULT 'pending'" );
 
         // 10. Automation execution logs
         $sql = "CREATE TABLE {$prefix}automation_logs (
@@ -211,6 +215,31 @@ class WPLA_Database {
             KEY status (status)
         ) $charset_collate;";
         dbDelta( $sql );
+
+        // 12. Email templates (reusable HTML blocks for automation actions)
+        $sql = "CREATE TABLE {$prefix}email_templates (
+            id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+            name VARCHAR(191) NOT NULL,
+            subject VARCHAR(255) NOT NULL DEFAULT '',
+            body LONGTEXT NOT NULL,
+            status ENUM('active','draft') DEFAULT 'draft',
+            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY  (id),
+            KEY status (status)
+        ) $charset_collate;";
+        dbDelta( $sql );
+
+        // Extend contacts with email engagement columns (ALTER is safe via dbDelta for new cols).
+        $contacts_table = $prefix . 'contacts';
+        $col_check      = $wpdb->get_results( "SHOW COLUMNS FROM $contacts_table LIKE 'email_status'" );
+        if ( empty( $col_check ) ) {
+            $wpdb->query( "ALTER TABLE $contacts_table
+                ADD COLUMN email_status VARCHAR(50) DEFAULT 'active' AFTER status,
+                ADD COLUMN last_email_sent DATETIME DEFAULT NULL,
+                ADD COLUMN last_email_opened_at DATETIME DEFAULT NULL,
+                ADD COLUMN last_email_clicked_at DATETIME DEFAULT NULL" );
+        }
 
         update_option( 'wpla_db_version', WPLA_DB_VERSION );
         update_option( 'wpla_installed_at', current_time( 'mysql' ) );

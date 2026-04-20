@@ -97,6 +97,45 @@ class WPLA_Rest_Api {
             'callback'            => array( __CLASS__, 'get_stats' ),
             'permission_callback' => array( __CLASS__, 'admin_permission' ),
         ) );
+
+        // Email templates CRUD.
+        register_rest_route( 'wpla/v1', '/email-templates', array(
+            array(
+                'methods'             => 'GET',
+                'callback'            => array( __CLASS__, 'get_email_templates' ),
+                'permission_callback' => array( __CLASS__, 'admin_permission' ),
+            ),
+            array(
+                'methods'             => 'POST',
+                'callback'            => array( __CLASS__, 'create_email_template' ),
+                'permission_callback' => array( __CLASS__, 'admin_permission' ),
+            ),
+        ) );
+
+        register_rest_route( 'wpla/v1', '/email-templates/(?P<id>\d+)', array(
+            array(
+                'methods'             => 'GET',
+                'callback'            => array( __CLASS__, 'get_email_template' ),
+                'permission_callback' => array( __CLASS__, 'admin_permission' ),
+            ),
+            array(
+                'methods'             => 'PUT,PATCH',
+                'callback'            => array( __CLASS__, 'update_email_template' ),
+                'permission_callback' => array( __CLASS__, 'admin_permission' ),
+            ),
+            array(
+                'methods'             => 'DELETE',
+                'callback'            => array( __CLASS__, 'delete_email_template' ),
+                'permission_callback' => array( __CLASS__, 'admin_permission' ),
+            ),
+        ) );
+
+        // Email statistics.
+        register_rest_route( 'wpla/v1', '/email-stats', array(
+            'methods'             => 'GET',
+            'callback'            => array( __CLASS__, 'get_email_stats' ),
+            'permission_callback' => array( __CLASS__, 'admin_permission' ),
+        ) );
     }
 
     /**
@@ -370,7 +409,43 @@ class WPLA_Rest_Api {
             'automations_active' => WPLA_Automation_Engine::count_active(),
             'events_total'       => WPLA_Event_Manager::count_total(),
             'queue_stats'        => WPLA_Message_Queue::stats(),
+            'email_stats'        => WPLA_Email::get_stats(),
             'recent_contacts'    => WPLA_Event_Manager::count_by_type( 'contact_created', $seven_days_ago ),
         ) );
+    }
+
+    /* ───── Email Template endpoints ───── */
+
+    public static function get_email_templates(): WP_REST_Response {
+        return new WP_REST_Response( WPLA_Email_Template::all() );
+    }
+
+    public static function get_email_template( WP_REST_Request $request ): WP_REST_Response {
+        $tpl = WPLA_Email_Template::get( (int) $request['id'] );
+        if ( ! $tpl ) {
+            return new WP_REST_Response( array( 'error' => 'Not found' ), 404 );
+        }
+        return new WP_REST_Response( $tpl );
+    }
+
+    public static function create_email_template( WP_REST_Request $request ): WP_REST_Response {
+        $params = $request->get_json_params();
+        $id     = WPLA_Email_Template::create( $params );
+        return new WP_REST_Response( array( 'id' => $id ), 201 );
+    }
+
+    public static function update_email_template( WP_REST_Request $request ): WP_REST_Response {
+        $success = WPLA_Email_Template::update( (int) $request['id'], $request->get_json_params() );
+        return new WP_REST_Response( array( 'success' => $success ) );
+    }
+
+    public static function delete_email_template( WP_REST_Request $request ): WP_REST_Response {
+        $success = WPLA_Email_Template::delete( (int) $request['id'] );
+        return new WP_REST_Response( array( 'success' => $success ) );
+    }
+
+    public static function get_email_stats( WP_REST_Request $request ): WP_REST_Response {
+        $since = $request->get_param( 'since' ) ? sanitize_text_field( $request->get_param( 'since' ) ) : '';
+        return new WP_REST_Response( WPLA_Email::get_stats( $since ) );
     }
 }
