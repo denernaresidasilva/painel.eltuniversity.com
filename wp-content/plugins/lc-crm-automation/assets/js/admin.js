@@ -126,16 +126,26 @@
             });
     }
 
-    function restGet(endpoint, callback) {
+    function restGet(endpoint, callback, errorCallback) {
         if (typeof wpla === 'undefined') return;
 
         fetch(wpla.rest_url + endpoint, {
             headers: { 'X-WP-Nonce': wpla.rest_nonce },
         })
-            .then(function (r) { return r.json(); })
+            .then(function (r) {
+                return r.json().then(function (body) {
+                    if (!r.ok) {
+                        throw body;
+                    }
+                    return body;
+                });
+            })
             .then(callback)
             .catch(function (err) {
                 console.error('WPLA REST error:', err);
+                if (errorCallback) {
+                    errorCallback(err);
+                }
             });
     }
 
@@ -319,11 +329,20 @@
     }
 
     function loadContacts() {
-        restGet('contacts?search=' + encodeURIComponent(state.contacts.search) + '&status=' + state.contacts.status + '&page=' + state.contacts.page + '&per_page=' + state.contacts.perPage, function (data) {
-            state.contacts.items = data.items || [];
-            state.contacts.total = data.total || 0;
-            renderContacts();
-        });
+        restGet(
+            'contacts?search=' + encodeURIComponent(state.contacts.search) + '&status=' + state.contacts.status + '&page=' + state.contacts.page + '&per_page=' + state.contacts.perPage,
+            function (data) {
+                state.contacts.items = (data && Array.isArray(data.items)) ? data.items : [];
+                state.contacts.total = (data && data.total) ? data.total : 0;
+                renderContacts();
+            },
+            function () {
+                var tbody = document.getElementById('contacts-tbody');
+                if (tbody) {
+                    tbody.innerHTML = '<tr><td colspan="8" class="wpla-text-center">Erro ao carregar contatos. Verifique as permissões da API REST.</td></tr>';
+                }
+            }
+        );
     }
 
     function renderContacts() {
@@ -419,31 +438,41 @@
     }
 
     function loadLists() {
-        restGet('lists', function (lists) {
-            var tbody = document.getElementById('lists-tbody');
-            if (!tbody) return;
+        restGet(
+            'lists',
+            function (lists) {
+                var tbody = document.getElementById('lists-tbody');
+                if (!tbody) return;
 
-            updateListIntegrationOptions(lists || []);
+                var arr = Array.isArray(lists) ? lists : [];
+                updateListIntegrationOptions(arr);
 
-            if (!lists || lists.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="wpla-text-center">Nenhuma lista ainda.</td></tr>';
-                return;
+                if (arr.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="wpla-text-center">Nenhuma lista ainda.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = arr.map(function (l) {
+                    var shortcode = '[wpla_form list="' + l.id + '"]';
+                    return '<tr>' +
+                        '<td><strong>' + esc(l.name) + '</strong></td>' +
+                        '<td>' + esc(l.description || '—') + '</td>' +
+                        '<td>—</td>' +
+                        '<td><code class="wpla-code">' + esc(shortcode) + '</code></td>' +
+                        '<td>' + esc(l.created_at) + '</td>' +
+                        '<td>' +
+                            '<button class="wpla-btn wpla-btn-sm" onclick="WPLA.editList(' + l.id + ',\'' + escAttr(l.name) + '\',\'' + escAttr(l.description || '') + '\')">Editar</button> ' +
+                            '<button class="wpla-btn wpla-btn-sm wpla-btn-danger" onclick="WPLA.deleteList(' + l.id + ')">Excluir</button>' +
+                        '</td></tr>';
+                }).join('');
+            },
+            function () {
+                var tbody = document.getElementById('lists-tbody');
+                if (tbody) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="wpla-text-center">Erro ao carregar listas. Verifique as permissões da API REST.</td></tr>';
+                }
             }
-
-            tbody.innerHTML = lists.map(function (l) {
-                var shortcode = '[wpla_form list="' + l.id + '"]';
-                return '<tr>' +
-                    '<td><strong>' + esc(l.name) + '</strong></td>' +
-                    '<td>' + esc(l.description || '—') + '</td>' +
-                    '<td>—</td>' +
-                    '<td><code class="wpla-code">' + esc(shortcode) + '</code></td>' +
-                    '<td>' + esc(l.created_at) + '</td>' +
-                    '<td>' +
-                        '<button class="wpla-btn wpla-btn-sm" onclick="WPLA.editList(' + l.id + ',\'' + escAttr(l.name) + '\',\'' + escAttr(l.description || '') + '\')">Editar</button> ' +
-                        '<button class="wpla-btn wpla-btn-sm wpla-btn-danger" onclick="WPLA.deleteList(' + l.id + ')">Excluir</button>' +
-                    '</td></tr>';
-            }).join('');
-        });
+        );
     }
 
     WPLA.editList = function (id, name, desc) {
@@ -563,30 +592,41 @@
     }
 
     function loadTags() {
-        restGet('tags', function (tags) {
-            var grid = document.getElementById('tags-grid');
-            if (!grid) return;
+        restGet(
+            'tags',
+            function (tags) {
+                var grid = document.getElementById('tags-grid');
+                if (!grid) return;
 
-            if (!tags || tags.length === 0) {
-                grid.innerHTML = '<p class="wpla-text-center">Nenhuma tag ainda.</p>';
-                return;
-            }
+                var arr = Array.isArray(tags) ? tags : [];
 
-            grid.innerHTML = tags.map(function (t) {
-                return '<div class="wpla-tag-card">' +
-                    '<div class="wpla-tag-card-info">' +
-                        '<span class="wpla-tag-dot" style="background:' + esc(t.color) + '"></span>' +
-                        '<div>' +
-                            '<div class="wpla-tag-card-name">' + esc(t.name) + '</div>' +
+                if (arr.length === 0) {
+                    grid.innerHTML = '<p class="wpla-text-center">Nenhuma tag ainda.</p>';
+                    return;
+                }
+
+                grid.innerHTML = arr.map(function (t) {
+                    return '<div class="wpla-tag-card">' +
+                        '<div class="wpla-tag-card-info">' +
+                            '<span class="wpla-tag-dot" style="background:' + esc(t.color) + '"></span>' +
+                            '<div>' +
+                                '<div class="wpla-tag-card-name">' + esc(t.name) + '</div>' +
+                            '</div>' +
                         '</div>' +
-                    '</div>' +
-                    '<div>' +
-                        '<button class="wpla-btn wpla-btn-sm" onclick="WPLA.editTag(' + t.id + ',\'' + escAttr(t.name) + '\',\'' + escAttr(t.color) + '\')">Editar</button> ' +
-                        '<button class="wpla-btn wpla-btn-sm wpla-btn-danger" onclick="WPLA.deleteTag(' + t.id + ')">×</button>' +
-                    '</div>' +
-                '</div>';
-            }).join('');
-        });
+                        '<div>' +
+                            '<button class="wpla-btn wpla-btn-sm" onclick="WPLA.editTag(' + t.id + ',\'' + escAttr(t.name) + '\',\'' + escAttr(t.color) + '\')">Editar</button> ' +
+                            '<button class="wpla-btn wpla-btn-sm wpla-btn-danger" onclick="WPLA.deleteTag(' + t.id + ')">×</button>' +
+                        '</div>' +
+                    '</div>';
+                }).join('');
+            },
+            function () {
+                var grid = document.getElementById('tags-grid');
+                if (grid) {
+                    grid.innerHTML = '<p class="wpla-text-center">Erro ao carregar tags.</p>';
+                }
+            }
+        );
     }
 
     WPLA.editTag = function (id, name, color) {
@@ -642,28 +682,39 @@
     }
 
     function loadAutomations() {
-        restGet('automations', function (automations) {
-            var tbody = document.getElementById('automations-tbody');
-            if (!tbody) return;
+        restGet(
+            'automations',
+            function (automations) {
+                var tbody = document.getElementById('automations-tbody');
+                if (!tbody) return;
 
-            if (!automations || automations.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="wpla-text-center">Nenhuma automação ainda.</td></tr>';
-                return;
+                var arr = Array.isArray(automations) ? automations : [];
+
+                if (arr.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="wpla-text-center">Nenhuma automação ainda.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = arr.map(function (a) {
+                    var statusClass = 'wpla-status-' + (a.status || 'draft');
+                    return '<tr>' +
+                        '<td><strong>' + esc(a.name) + '</strong></td>' +
+                        '<td><span class="wpla-badge wpla-badge-info">' + esc(a.trigger_type) + '</span></td>' +
+                        '<td><span class="' + statusClass + '">' + esc(a.status) + '</span></td>' +
+                        '<td>' + esc(a.created_at) + '</td>' +
+                        '<td>' +
+                            '<button class="wpla-btn wpla-btn-sm" onclick="WPLA.editAutomation(' + a.id + ')">Editar</button> ' +
+                            '<button class="wpla-btn wpla-btn-sm wpla-btn-danger" onclick="WPLA.deleteAutomation(' + a.id + ')">Excluir</button>' +
+                        '</td></tr>';
+                }).join('');
+            },
+            function () {
+                var tbody = document.getElementById('automations-tbody');
+                if (tbody) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="wpla-text-center">Erro ao carregar automações.</td></tr>';
+                }
             }
-
-            tbody.innerHTML = automations.map(function (a) {
-                var statusClass = 'wpla-status-' + (a.status || 'draft');
-                return '<tr>' +
-                    '<td><strong>' + esc(a.name) + '</strong></td>' +
-                    '<td><span class="wpla-badge wpla-badge-info">' + esc(a.trigger_type) + '</span></td>' +
-                    '<td><span class="' + statusClass + '">' + esc(a.status) + '</span></td>' +
-                    '<td>' + esc(a.created_at) + '</td>' +
-                    '<td>' +
-                        '<button class="wpla-btn wpla-btn-sm" onclick="WPLA.editAutomation(' + a.id + ')">Editar</button> ' +
-                        '<button class="wpla-btn wpla-btn-sm wpla-btn-danger" onclick="WPLA.deleteAutomation(' + a.id + ')">Excluir</button>' +
-                    '</td></tr>';
-            }).join('');
-        });
+        );
     }
 
     function showBuilder() {
@@ -678,7 +729,8 @@
 
     WPLA.editAutomation = function (id) {
         restGet('automations', function (automations) {
-            var auto = automations.find(function (a) { return parseInt(a.id) === id; });
+            var arr = Array.isArray(automations) ? automations : [];
+            var auto = arr.find(function (a) { return parseInt(a.id) === id; });
             if (!auto) return;
 
             state.automationId = id;
@@ -687,7 +739,7 @@
             document.getElementById('automation-status').value = auto.status || 'draft';
 
             restGet('automations/' + id + '/steps', function (steps) {
-                state.automationSteps = (steps || []).map(function (s) {
+                state.automationSteps = (Array.isArray(steps) ? steps : []).map(function (s) {
                     return {
                         step_type: s.step_type,
                         action_type: s.action_type || '',
