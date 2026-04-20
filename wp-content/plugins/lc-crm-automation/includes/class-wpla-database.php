@@ -172,9 +172,12 @@ class WPLA_Database {
         ) $charset_collate;";
         dbDelta( $sql );
 
-        // Extend message_queue ENUM to include 'opened' on existing installs.
-        $mq_table = $prefix . 'message_queue';
-        $wpdb->query( "ALTER TABLE $mq_table MODIFY COLUMN status ENUM('pending','processing','sent','opened','failed') DEFAULT 'pending'" );
+        // Extend message_queue ENUM to include 'opened' on existing installs — only if needed.
+        $mq_table  = $prefix . 'message_queue';
+        $mq_col    = $wpdb->get_row( "SHOW COLUMNS FROM $mq_table LIKE 'status'" );
+        if ( $mq_col && strpos( $mq_col->Type, "'opened'" ) === false ) {
+            $wpdb->query( "ALTER TABLE $mq_table MODIFY COLUMN status ENUM('pending','processing','sent','opened','failed') DEFAULT 'pending'" );
+        }
 
         // 10. Automation execution logs
         $sql = "CREATE TABLE {$prefix}automation_logs (

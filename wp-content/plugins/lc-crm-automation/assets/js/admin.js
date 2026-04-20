@@ -843,12 +843,12 @@
         if (valueLabel) {
             if (emailHours.indexOf(condType) !== -1) {
                 valueLabel.textContent = 'Número de Horas';
-                var valInput = document.getElementById('condition-value');
-                if (valInput) { valInput.placeholder = '24'; valInput.type = 'number'; }
+                var valueInput = document.getElementById('condition-value');
+                if (valueInput) { valueInput.placeholder = '24'; valueInput.type = 'number'; }
             } else {
                 valueLabel.textContent = 'Valor';
-                var valInput2 = document.getElementById('condition-value');
-                if (valInput2) { valInput2.placeholder = ''; valInput2.type = 'text'; }
+                var valueInput = document.getElementById('condition-value'); // eslint-disable-line no-redeclare
+                if (valueInput) { valueInput.placeholder = ''; valueInput.type = 'text'; }
             }
         }
     }
@@ -1261,7 +1261,7 @@
         if (!tbody) return;
         tbody.innerHTML = '<tr><td colspan="5" class="wpla-text-center">Carregando...</td></tr>';
 
-        restGet('email-stats', function () {}); // warm up.
+        restGet('email-stats', function () {}); // Pre-fetch to let the browser cache the endpoint.
 
         // Fetch recent messages via AJAX (pass channel as filter).
         ajax('wpla_get_dashboard_stats', {}, function (res) {

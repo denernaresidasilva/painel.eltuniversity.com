@@ -332,10 +332,17 @@ class WPLA_Automation_Engine {
                 $body        = wp_kses_post( $config['body'] ?? '' );
                 $contact     = WPLA_Contact::get( $contact_id );
 
-                // Load subject from template if not explicitly set.
-                if ( $template_id && empty( $subject ) ) {
-                    $tpl     = WPLA_Email_Template::get( $template_id );
-                    $subject = $tpl ? $tpl->subject : '';
+                // When a template is selected, load subject from it if not overridden.
+                // The body is loaded lazily inside WPLA_Email::send() so that merge fields
+                // are rendered with the live contact data at send time, not at queue time.
+                if ( $template_id ) {
+                    $tpl = WPLA_Email_Template::get( $template_id );
+                    if ( $tpl ) {
+                        if ( empty( $subject ) ) {
+                            $subject = $tpl->subject;
+                        }
+                        // Keep $body empty so WPLA_Email::send() loads and renders the template.
+                    }
                 }
 
                 if ( $contact ) {

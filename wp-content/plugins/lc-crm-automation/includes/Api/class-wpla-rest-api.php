@@ -57,7 +57,7 @@ class WPLA_Rest_Api {
                 'permission_callback' => array( __CLASS__, 'admin_permission' ),
             ),
             array(
-                'methods'             => 'PUT,PATCH',
+                'methods'             => array( 'PUT', 'PATCH' ),
                 'callback'            => array( __CLASS__, 'update_contact' ),
                 'permission_callback' => array( __CLASS__, 'admin_permission' ),
             ),
@@ -119,7 +119,7 @@ class WPLA_Rest_Api {
                 'permission_callback' => array( __CLASS__, 'admin_permission' ),
             ),
             array(
-                'methods'             => 'PUT,PATCH',
+                'methods'             => array( 'PUT', 'PATCH' ),
                 'callback'            => array( __CLASS__, 'update_email_template' ),
                 'permission_callback' => array( __CLASS__, 'admin_permission' ),
             ),

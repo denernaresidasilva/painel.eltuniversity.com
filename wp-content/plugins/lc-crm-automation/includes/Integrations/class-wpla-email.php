@@ -223,21 +223,29 @@ class WPLA_Email {
             $token = sanitize_text_field( wp_unslash( $_GET['token'] ?? '' ) ); // phpcs:ignore WordPress.Security.NonceVerification
 
             if ( is_email( $email ) && WPLA_Email_Template::verify_unsubscribe_token( $email, $token ) ) {
-                $contact = WPLA_Contact::get_by_email( $email );
-                if ( $contact ) {
-                    // Mark contact as unsubscribed.
-                    global $wpdb;
-                    $wpdb->update(
-                        WPLA_Database::table( 'contacts' ),
-                        array(
-                            'email_status' => 'unsubscribed',
-                            'status'       => 'unsubscribed',
-                        ),
-                        array( 'id' => (int) $contact->id ),
-                        array( '%s', '%s' ),
-                        array( '%d' )
-                    );
-                    do_action( 'wpla_event', 'email_unsubscribed', (int) $contact->id, array( 'email' => $email ) );
+                // Rate limit unsubscribe processing: max 5 requests per IP per minute.
+                $ip         = sanitize_text_field( $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0' );
+                $rate_key   = 'wpla_unsub_rate_' . md5( $ip );
+                $rate_count = (int) get_transient( $rate_key );
+                if ( $rate_count < 5 ) {
+                    set_transient( $rate_key, $rate_count + 1, MINUTE_IN_SECONDS );
+
+                    $contact = WPLA_Contact::get_by_email( $email );
+                    if ( $contact ) {
+                        // Mark contact as unsubscribed.
+                        global $wpdb;
+                        $wpdb->update(
+                            WPLA_Database::table( 'contacts' ),
+                            array(
+                                'email_status' => 'unsubscribed',
+                                'status'       => 'unsubscribed',
+                            ),
+                            array( 'id' => (int) $contact->id ),
+                            array( '%s', '%s' ),
+                            array( '%d' )
+                        );
+                        do_action( 'wpla_event', 'email_unsubscribed', (int) $contact->id, array( 'email' => $email ) );
+                    }
                 }
             }
 
@@ -269,8 +277,8 @@ class WPLA_Email {
         }
 
         if ( 'open' === $type ) {
-            // Only update status once (first open).
-            if ( 'sent' === $message->status ) {
+            // Update status to 'opened' for sent or still-processing messages (timing race).
+            if ( in_array( $message->status, array( 'sent', 'processing' ), true ) ) {
                 $wpdb->update( $table, array( 'status' => 'opened' ), array( 'id' => $message->id ), array( '%s' ), array( '%d' ) );
             }
             do_action( 'wpla_event', 'email_opened', (int) $message->contact_id, array( 'tracking_id' => $tracking_id ) );
