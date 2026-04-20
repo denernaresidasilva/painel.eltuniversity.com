@@ -14,7 +14,7 @@ class WPLA_Message_Queue {
     /**
      * Add a message to the queue.
      */
-    public static function enqueue( int $contact_id, string $channel, string $recipient, string $subject, string $body, ?string $scheduled_at = null ): int {
+    public static function enqueue( int $contact_id, string $channel, string $recipient, string $subject, string $body, ?string $scheduled_at = null, int $template_id = 0 ): int {
         global $wpdb;
 
         $tracking_id = wp_generate_password( 32, false );
@@ -27,11 +27,12 @@ class WPLA_Message_Queue {
                 'recipient'    => sanitize_text_field( $recipient ),
                 'subject'      => sanitize_text_field( $subject ),
                 'body'         => wp_kses_post( $body ),
+                'template_id'  => $template_id,
                 'status'       => 'pending',
                 'scheduled_at' => $scheduled_at ?: current_time( 'mysql' ),
                 'tracking_id'  => $tracking_id,
             ),
-            array( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
+            array( '%d', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s' )
         );
 
         return (int) $wpdb->insert_id;
@@ -85,7 +86,7 @@ class WPLA_Message_Queue {
 
         $results = $wpdb->get_results( "SELECT status, COUNT(*) as cnt FROM $table GROUP BY status" );
 
-        $stats = array( 'pending' => 0, 'processing' => 0, 'sent' => 0, 'failed' => 0 );
+        $stats = array( 'pending' => 0, 'processing' => 0, 'sent' => 0, 'opened' => 0, 'failed' => 0 );
         foreach ( $results as $row ) {
             $stats[ $row->status ] = (int) $row->cnt;
         }

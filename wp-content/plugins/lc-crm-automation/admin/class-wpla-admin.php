@@ -32,6 +32,11 @@ class WPLA_Admin {
             'wpla_contact_subscribe_list',
             'wpla_send_test_email',
             'wpla_send_test_whatsapp',
+            // Email template handlers.
+            'wpla_list_email_templates',
+            'wpla_save_email_template',
+            'wpla_delete_email_template',
+            'wpla_get_email_template',
             // Webinar handlers.
             'wpla_save_webinar',
             'wpla_delete_webinar',
@@ -343,6 +348,8 @@ class WPLA_Admin {
             'automations_active' => WPLA_Automation_Engine::count_active(),
             'events_total'       => WPLA_Event_Manager::count_total(),
             'queue_stats'        => WPLA_Message_Queue::stats(),
+            'email_stats'        => WPLA_Email::get_stats( $seven_days ),
+            'email_templates'    => WPLA_Email_Template::count( 'active' ),
             'new_contacts_7d'    => WPLA_Event_Manager::count_by_type( 'contact_created', $seven_days ),
             'recent_events'      => WPLA_Event_Manager::get_recent( 15 ),
         ) );
@@ -598,5 +605,58 @@ class WPLA_Admin {
         } else {
             wp_send_json_error( array( 'message' => __( 'Não foi possível obter o QR Code. Verifique se a instância existe.', 'lc-crm' ) ) );
         }
+    }
+
+    /* ── Email Templates ── */
+
+    public function wpla_list_email_templates(): void {
+        $this->verify_nonce();
+
+        $templates = WPLA_Email_Template::all();
+        wp_send_json_success( array(
+            'items' => $templates,
+            'total' => count( $templates ),
+        ) );
+    }
+
+    public function wpla_get_email_template(): void {
+        $this->verify_nonce();
+
+        $id  = isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0;
+        $tpl = WPLA_Email_Template::get( $id );
+
+        if ( ! $tpl ) {
+            wp_send_json_error( array( 'message' => __( 'Modelo não encontrado.', 'lc-crm' ) ) );
+            return;
+        }
+
+        wp_send_json_success( array( 'template' => $tpl ) );
+    }
+
+    public function wpla_save_email_template(): void {
+        $this->verify_nonce();
+
+        $id = isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0;
+
+        $data = array(
+            'name'    => isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '',
+            'subject' => isset( $_POST['subject'] ) ? sanitize_text_field( wp_unslash( $_POST['subject'] ) ) : '',
+            'body'    => isset( $_POST['body'] ) ? wp_kses_post( wp_unslash( $_POST['body'] ) ) : '',
+            'status'  => isset( $_POST['status'] ) ? sanitize_text_field( wp_unslash( $_POST['status'] ) ) : 'draft',
+        );
+
+        if ( $id ) {
+            WPLA_Email_Template::update( $id, $data );
+            wp_send_json_success( array( 'id' => $id ) );
+        } else {
+            $new_id = WPLA_Email_Template::create( $data );
+            wp_send_json_success( array( 'id' => $new_id ) );
+        }
+    }
+
+    public function wpla_delete_email_template(): void {
+        $this->verify_nonce();
+        $id = isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0;
+        wp_send_json_success( array( 'deleted' => WPLA_Email_Template::delete( $id ) ) );
     }
 }

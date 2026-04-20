@@ -214,6 +214,8 @@ class WPLA_Automation_Engine {
 
         switch ( $type ) {
             case 'has_tag':
+            case 'contains_tag':
+            case 'received_tag':
                 $tag = WPLA_Tag::get_by_name( $value );
                 if ( ! $tag ) {
                     return false;
@@ -246,6 +248,30 @@ class WPLA_Automation_Engine {
                     return $contact->$field === $value;
                 }
                 return false;
+
+            case 'email_opened':
+                // True if the contact has opened an email within the last X hours (value = hours).
+                $hours   = max( 1, (int) $value );
+                $since   = gmdate( 'Y-m-d H:i:s', strtotime( "-{$hours} hours" ) );
+                $contact = WPLA_Contact::get( $contact_id );
+                return $contact && ! empty( $contact->last_email_opened_at ) && $contact->last_email_opened_at >= $since;
+
+            case 'email_clicked':
+                // True if the contact clicked a link within the last X hours (value = hours).
+                $hours   = max( 1, (int) $value );
+                $since   = gmdate( 'Y-m-d H:i:s', strtotime( "-{$hours} hours" ) );
+                $contact = WPLA_Contact::get( $contact_id );
+                return $contact && ! empty( $contact->last_email_clicked_at ) && $contact->last_email_clicked_at >= $since;
+
+            case 'email_not_opened':
+                // True if the contact has NOT opened an email in the last X hours.
+                $hours   = max( 1, (int) $value );
+                $since   = gmdate( 'Y-m-d H:i:s', strtotime( "-{$hours} hours" ) );
+                $contact = WPLA_Contact::get( $contact_id );
+                if ( ! $contact ) {
+                    return false;
+                }
+                return empty( $contact->last_email_opened_at ) || $contact->last_email_opened_at < $since;
 
             default:
                 return (bool) apply_filters( 'wpla_condition_evaluate', false, $type, $contact_id, $config );
@@ -301,11 +327,26 @@ class WPLA_Automation_Engine {
                 return "webinar_routed:{$webinar_id}:{$destination}";
 
             case 'send_email':
-                $subject = sanitize_text_field( $config['subject'] ?? '' );
-                $body    = wp_kses_post( $config['body'] ?? '' );
-                $contact = WPLA_Contact::get( $contact_id );
+                $template_id = absint( $config['template_id'] ?? 0 );
+                $subject     = sanitize_text_field( $config['subject'] ?? '' );
+                $body        = wp_kses_post( $config['body'] ?? '' );
+                $contact     = WPLA_Contact::get( $contact_id );
+
+                // When a template is selected, load subject from it if not overridden.
+                // The body is loaded lazily inside WPLA_Email::send() so that merge fields
+                // are rendered with the live contact data at send time, not at queue time.
+                if ( $template_id ) {
+                    $tpl = WPLA_Email_Template::get( $template_id );
+                    if ( $tpl ) {
+                        if ( empty( $subject ) ) {
+                            $subject = $tpl->subject;
+                        }
+                        // Keep $body empty so WPLA_Email::send() loads and renders the template.
+                    }
+                }
+
                 if ( $contact ) {
-                    WPLA_Message_Queue::enqueue( $contact_id, 'email', $contact->email, $subject, $body );
+                    WPLA_Message_Queue::enqueue( $contact_id, 'email', $contact->email, $subject, $body, null, $template_id );
                 }
                 return "email_queued:{$subject}";
 

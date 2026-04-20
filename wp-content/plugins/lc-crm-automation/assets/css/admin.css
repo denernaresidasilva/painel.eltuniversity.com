@@ -1259,3 +1259,95 @@ body.wpla-modal-open {
 .wpla-p-3   { padding: 12px; }
 .wpla-bg-light { background: var(--wpla-surface); }
 .wpla-rounded  { border-radius: 8px; }
+
+/* ─────────────────────────────────────
+   Tab Navigation
+   ───────────────────────────────────── */
+.wpla-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--wpla-border);
+    padding-bottom: 0;
+}
+.wpla-tab-btn {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--wpla-text-secondary);
+    cursor: pointer;
+    transition: color var(--wpla-transition), border-color var(--wpla-transition);
+    margin-bottom: -1px;
+}
+.wpla-tab-btn:hover {
+    color: var(--wpla-text);
+}
+.wpla-tab-btn.active {
+    color: var(--wpla-primary);
+    border-bottom-color: var(--wpla-primary);
+}
+.wpla-tab-panel { display: none; }
+.wpla-tab-panel.active { display: block; }
+
+/* ─────────────────────────────────────
+   Email Template Editor
+   ───────────────────────────────────── */
+.wpla-editor-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+.wpla-code-editor {
+    font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    resize: vertical;
+}
+.wpla-email-preview {
+    border: 1px solid var(--wpla-border);
+    border-radius: var(--wpla-radius);
+    padding: 16px;
+    margin-top: 8px;
+    background: #fff;
+    color: #333;
+    font-size: 14px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* ─────────────────────────────────────
+   Danger button
+   ───────────────────────────────────── */
+.wpla-btn-danger {
+    color: var(--wpla-danger);
+    border-color: var(--wpla-danger);
+}
+.wpla-btn-danger:hover {
+    background: var(--wpla-danger);
+    color: #fff;
+}
+
+/* ─────────────────────────────────────
+   Stat card — small variant
+   ───────────────────────────────────── */
+.wpla-stat-card-sm {
+    padding: 14px 16px;
+}
+.wpla-stat-card-sm .wpla-stat-value {
+    font-size: 22px;
+}
+
+/* ─────────────────────────────────────
+   Large modal
+   ───────────────────────────────────── */
+.wpla-modal-lg {
+    max-width: 780px;
+    width: 95%;
+}
+.wpla-field-full {
+    grid-column: 1 / -1;
+}

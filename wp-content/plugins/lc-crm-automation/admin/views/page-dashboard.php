@@ -56,6 +56,41 @@ if ( ! defined( 'ABSPATH' ) ) {
         </div>
     </div>
 
+    <!-- Email stats -->
+    <div class="wpla-card">
+        <h3><?php esc_html_e( 'Email — Últimos 7 dias', 'lc-crm' ); ?></h3>
+        <div class="wpla-stats-grid">
+            <div class="wpla-stat-card wpla-stat-card-sm">
+                <div class="wpla-stat-icon">📤</div>
+                <div class="wpla-stat-info">
+                    <span class="wpla-stat-value" id="dash-email-sent">—</span>
+                    <span class="wpla-stat-label"><?php esc_html_e( 'Enviados', 'lc-crm' ); ?></span>
+                </div>
+            </div>
+            <div class="wpla-stat-card wpla-stat-card-sm">
+                <div class="wpla-stat-icon">👁️</div>
+                <div class="wpla-stat-info">
+                    <span class="wpla-stat-value" id="dash-email-opened">—</span>
+                    <span class="wpla-stat-label"><?php esc_html_e( 'Abertos', 'lc-crm' ); ?></span>
+                </div>
+            </div>
+            <div class="wpla-stat-card wpla-stat-card-sm">
+                <div class="wpla-stat-icon">🖱️</div>
+                <div class="wpla-stat-info">
+                    <span class="wpla-stat-value" id="dash-email-clicked">—</span>
+                    <span class="wpla-stat-label"><?php esc_html_e( 'Cliques', 'lc-crm' ); ?></span>
+                </div>
+            </div>
+            <div class="wpla-stat-card wpla-stat-card-sm">
+                <div class="wpla-stat-icon">❌</div>
+                <div class="wpla-stat-info">
+                    <span class="wpla-stat-value" id="dash-email-failed">—</span>
+                    <span class="wpla-stat-label"><?php esc_html_e( 'Falhas', 'lc-crm' ); ?></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Queue status -->
     <div class="wpla-card">
         <h3><?php esc_html_e( 'Fila de Mensagens', 'lc-crm' ); ?></h3>
