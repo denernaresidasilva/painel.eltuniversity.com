@@ -1,8 +1,8 @@
 /**
- * LC CRM AUTOMATION — Admin JavaScript
+ * LEADS SAAS — Admin JavaScript
  * Powers all admin UI interactions, AJAX calls, and flow builder.
  *
- * @package LC_CRM_Automation
+ * @package Plugin_Leads_SaaS
  */
 
 (function () {
@@ -121,7 +121,7 @@
                 if (callback) callback(res);
             })
             .catch(function (err) {
-                console.error("PLS Ajax error":', err);
+                console.error('PLS Ajax error:', err);
                 showToast('Erro de rede.', 'error');
             });
     }
@@ -142,7 +142,7 @@
             })
             .then(callback)
             .catch(function (err) {
-                console.error("PLS REST error":', err);
+                console.error('PLS REST error:', err);
                 if (errorCallback) {
                     errorCallback(err);
                 }
